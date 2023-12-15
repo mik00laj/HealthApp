@@ -12,7 +12,21 @@
 #define MAX30102_Led_On 4
 #define MAX30102_Led_Off 0
 #define WiFi_Led_On 17
-#define WiFi_Led_Off 16 
+#define WiFi_Led_Off 16
+#define SendDataLed 18
+#define temperatureBtn 26
+#define heartbeatBtn 25
+#define saturationBtn 33
+#define stopBtn 32
+
+bool dataLed = false;
+bool sendTemperatureDataFlag = false;
+bool sendSaturationDataFlag = false;
+bool sendHeartbeatDataFlag = false;
+bool stopSendFlag = false;
+unsigned long currentTime = 0;  // Zmienna do przechowywanai aktualnego czasu 
+unsigned long savedTime = 0; // Zmienna do przechowywania czasu ostatniego uruchomienia części kodu
+unsigned long interval = 1000; // wysyłanie danych co 1s 
 
 #ifdef I2C_COMMUNICATION
   #define I2C_ADDRESS 0x57
@@ -89,6 +103,36 @@ void connectToWiFi() {
     Serial.println(WiFi.localIP());
 }
 
+void sendDataToServer(float temperatureC, float saturation, int heartbeat) {
+  HTTPClient http;
+  // Adres URL serwera
+  String url = "http://" + String(serverAddress) + ":" + String(serverPort) + "/ESP/PULS-SENSOR";
+  // Dane do wysłania w formie JSON
+  String postData = "{\"temperature\": " + String(temperatureC) +
+                    ", \"saturation\": " + String(saturation) +
+                    ", \"heartbeat\": " + String(heartbeat) + "}";
+
+  // Rozpoczęcie połączenia HTTP
+  http.begin(url);
+  // Ustawienie nagłówków
+  http.addHeader("Content-Type", "application/json");
+  // Wysłanie danych POST na serwer
+  int httpResponseCode = http.POST(postData);
+  // Sprawdzenie odpowiedzi serwera
+  if (httpResponseCode > 0) {
+    Serial.print("HTTP Response code: ");
+    Serial.println(httpResponseCode);
+    String response = http.getString();
+    Serial.println(response);
+  } else {
+    Serial.print("HTTP Request failed. Error code: ");
+    Serial.println(httpResponseCode);
+  }
+
+  // Zamknięcie połączenia HTTP
+  http.end();
+}
+
 void setup() {
   Serial.begin(9600);
   //LED
@@ -98,7 +142,13 @@ void setup() {
   pinMode(MAX30102_Led_Off, OUTPUT);
   pinMode(WiFi_Led_On, OUTPUT);
   pinMode(WiFi_Led_Off, OUTPUT);
+  pinMode(SendDataLed, OUTPUT);
   
+  //BTN
+  pinMode(temperatureBtn, INPUT_PULLUP);
+  pinMode(saturationBtn, INPUT_PULLUP);
+  pinMode(heartbeatBtn, INPUT_PULLUP);
+  pinMode(stopBtn, INPUT_PULLUP);
 
   delay(100); 
   initializeDS18B20();
@@ -121,9 +171,9 @@ void loop() {
     digitalWrite(DS18B20_Led_On, HIGH); 
     digitalWrite(DS18B20_Led_Off, LOW); 
 
-    Serial.print("Zmierzona temperatura: ");
-    Serial.print(temperatureC);
-    Serial.println("°C");
+    // Serial.print("Zmierzona temperatura: ");
+    // Serial.print(temperatureC);
+    // Serial.println("°C");
   }
   //Pobieranie danych z czujnika tętna i pulsoksymetr MAX30102 
   MAX30102.sensorStartCollect();
@@ -142,13 +192,13 @@ void loop() {
     digitalWrite(MAX30102_Led_On, HIGH); 
     digitalWrite(MAX30102_Led_Off, LOW); 
 
-    Serial.print("SPO2= ");
-    Serial.print(saturation);
-    Serial.println("%");
+    // Serial.print("SPO2= ");
+    // Serial.print(saturation);
+    // Serial.println("%");
 
-    Serial.print("BPM= ");
-    Serial.print(heartbeat);
-    Serial.println("");
+    // Serial.print("BPM= ");
+    // Serial.print(heartbeat);
+    // Serial.println("");
   }
 
   if (WiFi.status() != WL_CONNECTED){
@@ -161,5 +211,61 @@ void loop() {
     digitalWrite(WiFi_Led_On, HIGH); 
     digitalWrite(WiFi_Led_Off, LOW); 
   }
+
+  if (digitalRead(temperatureBtn) == LOW) {
+    delay(20);
+    dataLed = true;
+    digitalWrite(SendDataLed, dataLed);
+    sendTemperatureDataFlag = true;   
+    sendSaturationDataFlag = false;
+    sendHeartbeatDataFlag = false;
+    stopSendFlag = false; 
+    while (digitalRead(temperatureBtn) == LOW);
+    delay(20); 
+  }
+
+  if (digitalRead(saturationBtn) == LOW) {
+    delay(20);
+    dataLed = true;
+    digitalWrite(SendDataLed, dataLed);
+    sendTemperatureDataFlag = false;
+    sendSaturationDataFlag = true;    
+    sendHeartbeatDataFlag = false;
+    stopSendFlag = true;     
+    while (digitalRead(saturationBtn) == LOW);
+    delay(20); 
+  }
+
+  if (digitalRead(heartbeatBtn) == LOW) {
+    delay(20);
+    dataLed = true;
+    digitalWrite(SendDataLed, dataLed);    
+    sendTemperatureDataFlag = false;
+    sendSaturationDataFlag = false;
+    sendHeartbeatDataFlag = true;
+    stopSendFlag = false;     
+    while (digitalRead(heartbeatBtn) == LOW);
+    delay(20); 
+  }
+
+ if (digitalRead(stopBtn) == LOW) {
+    delay(20);
+    dataLed = false;
+    digitalWrite(SendDataLed, dataLed);
+    sendTemperatureDataFlag = false;
+    sendSaturationDataFlag = false;
+    sendHeartbeatDataFlag = false;
+    stopSendFlag = true;   
+    while (digitalRead(stopBtn) == LOW);
+    delay(20); 
+  }  
+
+  currentTime = millis(); // Pobierz liczbę milisekund od startu
+  if (sendTemperatureDataFlag || sendSaturationDataFlag || sendHeartbeatDataFlag) {
+    if (currentTime - savedTime >= interval) {
+      savedTime = currentTime;  // Zapisz bieżący czas
+      sendDataToServer(temperatureC, saturation, heartbeat);
+    }
+  }  
 
 }
