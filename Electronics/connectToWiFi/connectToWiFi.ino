@@ -43,8 +43,6 @@ void loop() {
   }else{
     digitalWrite(WiFi_Led_On, HIGH); 
     digitalWrite(WiFi_Led_Off, LOW); 
-    Serial.print("\nPołączono z siecią Wi-Fi: ");
-    Serial.println(ssid);
     delay(1000);
   }
 }
