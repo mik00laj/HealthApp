@@ -47,6 +47,5 @@ void loop() {
     Serial.println(ssid);
     delay(1000);
   }
-
 }
 
