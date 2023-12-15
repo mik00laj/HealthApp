@@ -23,7 +23,7 @@ bool dataLed = false;
 bool sendTemperatureDataFlag = false;
 bool sendSaturationDataFlag = false;
 bool sendHeartbeatDataFlag = false;
-bool stopSendFlag = false;
+bool stopSendFlag = true;
 unsigned long currentTime = 0;  // Zmienna do przechowywanai aktualnego czasu 
 unsigned long savedTime = 0; // Zmienna do przechowywania czasu ostatniego uruchomienia części kodu
 unsigned long interval = 1000; // wysyłanie danych co 1s 
@@ -42,6 +42,7 @@ String ConnectedDS18B20 = "Czujnik temperatury DS18B20 podłączony.";
 String ConnectedMAX30102 = "Czujnik tętna i pulsoksymetr MAX30102 podłączony ";
 String notConnectedDS18B20 = "Brak czujnika temperatury DS18B20. Sprawdź podłączenie.";
 String notConnectedMAX30102 = "Brak czujnika tętna i pulsoksymetr MAX30102. Sprawdź podłączenie.";
+String postData; 
 
 const char* ssid = "Domek";
 const char* password = "Awruk123";
@@ -85,22 +86,22 @@ void initializeMAX30102() {
 }
 
 void connectToWiFi() {
-    WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, password);
-    Serial.println("\nŁączenie z sięcią ..");
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  Serial.println("\nŁączenie z sięcią ..");
  
-    while(WiFi.status() != WL_CONNECTED){
-        Serial.print(".");
-        digitalWrite(WiFi_Led_On, LOW); 
-        digitalWrite(WiFi_Led_Off, HIGH); 
+  while(WiFi.status() != WL_CONNECTED){
+      Serial.print(".");
+      digitalWrite(WiFi_Led_On, LOW); 
+      digitalWrite(WiFi_Led_Off, HIGH); 
 
-    }
-    digitalWrite(WiFi_Led_On, HIGH); 
-    digitalWrite(WiFi_Led_Off, LOW); 
-    Serial.print("\nPołączono z siecią Wi-Fi: ");
-    Serial.println(ssid);
-    Serial.print("Local ESP32 IP: ");
-    Serial.println(WiFi.localIP());
+  }
+  digitalWrite(WiFi_Led_On, HIGH); 
+  digitalWrite(WiFi_Led_Off, LOW); 
+  Serial.print("\nPołączono z siecią Wi-Fi: ");
+  Serial.println(ssid);
+  Serial.print("Local ESP32 IP: ");
+  Serial.println(WiFi.localIP());
 }
 
 void sendDataToServer(float temperatureC, float saturation, int heartbeat) {
@@ -108,9 +109,13 @@ void sendDataToServer(float temperatureC, float saturation, int heartbeat) {
   // Adres URL serwera
   String url = "http://" + String(serverAddress) + ":" + String(serverPort) + "/ESP/PULS-SENSOR";
   // Dane do wysłania w formie JSON
-  String postData = "{\"temperature\": " + String(temperatureC) +
-                    ", \"saturation\": " + String(saturation) +
-                    ", \"heartbeat\": " + String(heartbeat) + "}";
+  if (sendTemperatureDataFlag == true) {  
+      postData = "{\"temperature\": " + String(temperatureC) + "}";
+  } else if (sendHeartbeatDataFlag == true) {  
+      postData = "{\"saturation\": " + String(heartbeat) + "}";
+  } else if (sendSaturationDataFlag == true) {  
+      postData = "{\"heartbeat\": " + String(saturation) + "}";
+  }
 
   // Rozpoczęcie połączenia HTTP
   http.begin(url);
@@ -128,7 +133,6 @@ void sendDataToServer(float temperatureC, float saturation, int heartbeat) {
     Serial.print("HTTP Request failed. Error code: ");
     Serial.println(httpResponseCode);
   }
-
   // Zamknięcie połączenia HTTP
   http.end();
 }
@@ -212,7 +216,7 @@ void loop() {
     digitalWrite(WiFi_Led_Off, LOW); 
   }
 
-  if (digitalRead(temperatureBtn) == LOW) {
+  if (digitalRead(temperatureBtn) == LOW && stopSendFlag == true) {
     delay(20);
     dataLed = true;
     digitalWrite(SendDataLed, dataLed);
@@ -224,19 +228,19 @@ void loop() {
     delay(20); 
   }
 
-  if (digitalRead(saturationBtn) == LOW) {
+  if (digitalRead(saturationBtn) == LOW && stopSendFlag == true) {
     delay(20);
     dataLed = true;
     digitalWrite(SendDataLed, dataLed);
     sendTemperatureDataFlag = false;
     sendSaturationDataFlag = true;    
     sendHeartbeatDataFlag = false;
-    stopSendFlag = true;     
+    stopSendFlag = false;     
     while (digitalRead(saturationBtn) == LOW);
     delay(20); 
   }
 
-  if (digitalRead(heartbeatBtn) == LOW) {
+  if (digitalRead(heartbeatBtn) == LOW && stopSendFlag == true) {
     delay(20);
     dataLed = true;
     digitalWrite(SendDataLed, dataLed);    
@@ -248,7 +252,7 @@ void loop() {
     delay(20); 
   }
 
- if (digitalRead(stopBtn) == LOW) {
+ if (digitalRead(stopBtn) == LOW && stopSendFlag == false) {
     delay(20);
     dataLed = false;
     digitalWrite(SendDataLed, dataLed);
@@ -258,14 +262,13 @@ void loop() {
     stopSendFlag = true;   
     while (digitalRead(stopBtn) == LOW);
     delay(20); 
-  }  
+  } 
 
   currentTime = millis(); // Pobierz liczbę milisekund od startu
   if (sendTemperatureDataFlag || sendSaturationDataFlag || sendHeartbeatDataFlag) {
     if (currentTime - savedTime >= interval) {
       savedTime = currentTime;  // Zapisz bieżący czas
-      sendDataToServer(temperatureC, saturation, heartbeat);
+        sendDataToServer(temperatureC, saturation, heartbeat);
     }
   }  
-
 }
