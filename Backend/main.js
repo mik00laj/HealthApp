@@ -7,7 +7,7 @@ const port = 4001
 const username = 'HealthAppUser'
 const password = 'admin'
 const clusterName = 'healthappdb'
-const databaseName = 'HealthApp'
+const databaseName = 'User1'
 const connectionStringMongoDB = `mongodb+srv://${username}:${password}@${clusterName}.tir6wnc.mongodb.net/${databaseName}?retryWrites=true&w=majority`
 
 mongoose.connect(connectionStringMongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
