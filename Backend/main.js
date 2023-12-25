@@ -12,13 +12,13 @@ const connectionStringMongoDB = `mongodb+srv://${username}:${password}@${cluster
 
 mongoose.connect(connectionStringMongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
 
-const db = mongoose.connection
-db.on('error', console.error.bind(console, 'Błąd połączenia z MongoDB:'))
-db.once('open', () => {
+const dataBaseStatus = mongoose.connection
+dataBaseStatus.on('error', console.error.bind(console, 'Błąd połączenia z MongoDB:'))
+dataBaseStatus.once('open', () => {
 	console.log('Połączono z MongoDB Atlas')
 })
 
-const temperatureSchema = new mongoose.Schema({
+const TemperatureSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'DS18B20' },
 	measureId: Number,
 	measure: Number,
@@ -27,10 +27,10 @@ const temperatureSchema = new mongoose.Schema({
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
 })
 
-const TemperatureModel = mongoose.model('Temperature', temperatureSchema, 'Temperature')
+const TemperatureModel = mongoose.model('Temperature', TemperatureSchema, 'Temperature')
 
-const bpmSchema = new mongoose.Schema({
-	sensorId: { type: String, default: 'MAX30102_bpm' },
+const HearthBeatSchema = new mongoose.Schema({
+	sensorId: { type: String, default: 'MAX30102_HearthBeat' },
 	measureId: Number,
 	measure: Number,
 	value: Number,
@@ -38,9 +38,9 @@ const bpmSchema = new mongoose.Schema({
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
 })
 
-const BPMModel = mongoose.model('Hearthbeat', bpmSchema, 'BPM')
+const HearthBeatModel = mongoose.model('Hearthbeat', HearthBeatSchema, 'HearthBeat')
 
-const saturationSchema = new mongoose.Schema({
+const SaturationSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'MAX30102_saturation' },
 	measureId: Number,
 	measure: Number,
@@ -49,7 +49,7 @@ const saturationSchema = new mongoose.Schema({
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
 })
 
-const SaturationModel = mongoose.model('Saturation', saturationSchema, 'Saturation')
+const SaturationModel = mongoose.model('saturation', SaturationSchema, 'Saturation')
 
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -80,7 +80,7 @@ app.post('/esp/puls-sensor', async (req, res) => {
 		const dataPuls = req.body
 		console.log('Received puls data:', dataPuls)
 
-		const pulsEntry = new BPMModel({
+		const pulsEntry = new HearthBeatModel({
 			value: dataPuls.heartbeat,
 			measureId: dataPuls.measureId,
 			measure: dataPuls.measure,
