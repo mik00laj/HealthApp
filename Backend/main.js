@@ -23,7 +23,15 @@ const TemperatureSchema = new mongoose.Schema({
 	measureId: Number,
 	measure: Number,
 	value: Number,
-	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
+	year: { type: Number, default: () => new Date().getFullYear() },
+	month: {
+	  type: String,
+	  default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
+	},
+	day: {
+	  type: String,
+	  default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
+	},
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
 })
 
@@ -34,7 +42,15 @@ const HearthBeatSchema = new mongoose.Schema({
 	measureId: Number,
 	measure: Number,
 	value: Number,
-	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
+	year: { type: Number, default: () => new Date().getFullYear() },
+	month: {
+	  type: String,
+	  default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
+	},
+	day: {
+	  type: String,
+	  default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
+	},
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
 })
 
@@ -45,11 +61,19 @@ const SaturationSchema = new mongoose.Schema({
 	measureId: Number,
 	measure: Number,
 	value: Number,
-	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
+	year: { type: Number, default: () => new Date().getFullYear() },
+	month: {
+	  type: String,
+	  default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
+	},
+	day: {
+	  type: String,
+	  default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
+	},
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
 })
 
-const SaturationModel = mongoose.model('saturation', SaturationSchema, 'Saturation')
+const SaturationModel = mongoose.model('Saturation', SaturationSchema, 'Saturation')
 
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -77,13 +101,13 @@ app.post('/esp/temperature-sensor', async (req, res) => {
 
 app.post('/esp/puls-sensor', async (req, res) => {
 	try {
-		const dataPuls = req.body
-		console.log('Received puls data:', dataPuls)
+		const dataHearthBeat = req.body
+		console.log('Received HearthBeat data:', dataHearthBeat)
 
 		const pulsEntry = new HearthBeatModel({
-			value: dataPuls.heartbeat,
-			measureId: dataPuls.measureId,
-			measure: dataPuls.measure,
+			value: dataHearthBeat.heartbeat,
+			measureId: dataHearthBeat.measureId,
+			measure: dataHearthBeat.measure,
 		})
 
 		pulsEntry.save();
