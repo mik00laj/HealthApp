@@ -30,7 +30,7 @@
   int measure = 0;
   unsigned long currentTime = 0;  // Zmienna do przechowywanai aktualnego czasu 
   unsigned long savedTime = 0; // Zmienna do przechowywania czasu ostatniego uruchomienia części kodu
-  unsigned long interval = 10000; // wysyłanie danych co 1s 
+  unsigned long interval = 1000; // wysyłanie danych co 1s 
 
   #ifdef I2C_COMMUNICATION
     #define I2C_ADDRESS 0x57

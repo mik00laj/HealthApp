@@ -11,7 +11,8 @@ const clusterName = 'healthappdb'
 const databaseName = 'User1'
 const connectionStringMongoDB = `mongodb+srv://${username}:${password}@${clusterName}.tir6wnc.mongodb.net/${databaseName}?retryWrites=true&w=majority`
 
-mongoose.connect(connectionStringMongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(connectionStringMongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+
 
 const dataBaseStatus = mongoose.connection
 dataBaseStatus.on('error', console.error.bind(console, 'Błąd połączenia z MongoDB:'))
@@ -82,10 +83,7 @@ const SaturationModel = mongoose.model('Saturation', SaturationSchema, 'Saturati
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-app.use(cors())
-app.listen(port, () => {
-	console.log(`Serwer Express nasłuchuje na porcie ${port}`)
-})
+app.use(cors());
 
 app.post('/esp/temperature-sensor', async (req, res) => {
 	try {
