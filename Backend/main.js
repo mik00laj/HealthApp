@@ -1,6 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const cors = require('cors');
 
 const app = express()
 const port = 4001
@@ -20,60 +21,60 @@ dataBaseStatus.once('open', () => {
 
 const TemperatureSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'DS18B20' },
-	measureId: Number,
-	measure: Number,
-	value: Number,
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
 	year: { type: Number, default: () => new Date().getFullYear() },
 	month: {
-	  type: String,
-	  default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
+		type: String,
+		default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
 	},
 	day: {
-	  type: String,
-	  default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
+		type: String,
+		default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
 	},
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
+	measureId: Number,
+	measure: Number,
+	value: Number,
 })
 
 const TemperatureModel = mongoose.model('Temperature', TemperatureSchema, 'Temperature')
 
 const HearthRateSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'MAX30102_HearthRate' },
-	measureId: Number,
-	measure: Number,
-	value: Number,
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
 	year: { type: Number, default: () => new Date().getFullYear() },
 	month: {
-	  type: String,
-	  default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
+		type: String,
+		default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
 	},
 	day: {
-	  type: String,
-	  default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
+		type: String,
+		default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
 	},
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
+	measureId: Number,
+	measure: Number,
+	value: Number,
 })
 
 const HearthRateModel = mongoose.model('HearthRate', HearthRateSchema, 'HearthRate')
 
 const SaturationSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'MAX30102_saturation' },
-	measureId: Number,
-	measure: Number,
-	value: Number,
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
 	year: { type: Number, default: () => new Date().getFullYear() },
 	month: {
-	  type: String,
-	  default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
+		type: String,
+		default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
 	},
 	day: {
-	  type: String,
-	  default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
+		type: String,
+		default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
 	},
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
+	measureId: Number,
+	measure: Number,
+	value: Number,
 })
 
 const SaturationModel = mongoose.model('Saturation', SaturationSchema, 'Saturation')
@@ -81,11 +82,15 @@ const SaturationModel = mongoose.model('Saturation', SaturationSchema, 'Saturati
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use(cors())
+app.listen(port, () => {
+	console.log(`Serwer Express nasłuchuje na porcie ${port}`)
+})
 
 app.post('/esp/temperature-sensor', async (req, res) => {
 	try {
 		const dataTemperature = req.body
-		console.log('Received temperature data:', dataTemperature)
+		console.log('Received Temperature data:', dataTemperature)
 
 		const temperatureEntry = new TemperatureModel({
 			value: dataTemperature.temperature,
@@ -93,7 +98,7 @@ app.post('/esp/temperature-sensor', async (req, res) => {
 			measure: dataTemperature.measure,
 		})
 
-		temperatureEntry.save();
+		temperatureEntry.save()
 
 		res.status(200).send('Zapytanie POST zostało odebrane przez serwer.')
 	} catch (error) {
@@ -113,7 +118,7 @@ app.post('/esp/puls-sensor', async (req, res) => {
 			measure: dataHearthRate.measure,
 		})
 
-		pulsEntry.save();
+		pulsEntry.save()
 
 		res.status(200).send('Zapytanie POST zostało odebrane przez serwer.')
 	} catch (error) {
@@ -125,7 +130,7 @@ app.post('/esp/puls-sensor', async (req, res) => {
 app.post('/esp/saturation-sensor', async (req, res) => {
 	try {
 		const dataSaturation = req.body
-		console.log('Received saturation data:', dataSaturation)
+		console.log('Received Saturation data:', dataSaturation)
 
 		const saturationEntry = new SaturationModel({
 			value: dataSaturation.saturation,
@@ -133,12 +138,48 @@ app.post('/esp/saturation-sensor', async (req, res) => {
 			measure: dataSaturation.measure,
 		})
 
-		saturationEntry.save();
+		saturationEntry.save()
 
 		res.status(200).send('Zapytanie POST zostało odebrane przez serwer.')
 	} catch (error) {
 		console.error('Błąd podczas zapisywania danych:', error)
 		res.status(500).send('Wystąpił błąd podczas zapisywania danych.')
+	}
+})
+app.get('/api/latest-temperature', async (req, res) => {
+	try {
+		const latestTemperature = await TemperatureModel.findOne().sort({ _id: -1 }).limit(1)
+
+		res.json({
+			latestTemperature,
+		})
+	} catch (error) {
+		console.error('Błąd podczas pobierania temperatury:', error)
+		res.status(500).send('Wystąpił błąd podczas pobierania temperatury.')
+	}
+})
+app.get('/api/latest-hearth-rate', async (req, res) => {
+	try {
+		const latestHearthRate = await HearthRateModel.findOne().sort({ _id: -1 }).limit(1)
+
+		res.json({
+			latestHearthRate,
+		})
+	} catch (error) {
+		console.error('Błąd podczas pobierania tętna:', error)
+		res.status(500).send('Wystąpił błąd podczas pobierania tętna.')
+	}
+})
+app.get('/api/latest-saturation', async (req, res) => {
+	try {
+		const latestSaturation = await SaturationModel.findOne().sort({ _id: -1 }).limit(1)
+
+		res.json({
+			latestSaturation,
+		})
+	} catch (error) {
+		console.error('Błąd podczas pobierania saturacji krwi:', error)
+		res.status(500).send('Wystąpił błąd podczas pobierania saturacji krwi.')
 	}
 })
 

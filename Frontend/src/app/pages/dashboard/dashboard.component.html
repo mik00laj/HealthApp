@@ -7,7 +7,7 @@
 
                 <div class="dashboard__item">
                     <div class="dashboard__item-text">
-                        <p class="dashboard__item-data">36°C</p>
+                        <p class="dashboard__item-data">{{ latestTemperature }}°C</p>
                         <p class="dashboard__item-title">Temperature</p>
                     </div>
                     <div class="dashboard__item-icon"><i class="fa-solid fa-temperature-quarter"></i></div>
@@ -15,17 +15,17 @@
 
                 <div class="dashboard__item">
                     <div class="dashboard__item-text">
-                        <p class="dashboard__item-data">97</p>
+                        <p class="dashboard__item-data">{{ latestSaturation }}</p>
                         <p class="dashboard__item-title">Blood Saturation</p>
                     </div>
                     <div class="dashboard__item-icon"><i class="fa-solid fa-fire-flame-simple"
-                            style="color: #5d98fd;"></i>
+                            style="color: #e62200;"></i>
                     </div>
                 </div>
 
                 <div class="dashboard__item">
                     <div class="dashboard__item-text">
-                        <p class="dashboard__item-data">100</p>
+                        <p class="dashboard__item-data">{{ latestHearthRate }}</p>
                         <p class="dashboard__item-title">Hearth Rate</p>
                     </div>
                     <div class="dashboard__item-icon"><i class="fa-solid fa-heart-pulse"></i></div>
