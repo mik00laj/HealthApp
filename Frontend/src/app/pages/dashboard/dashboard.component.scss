@@ -1,0 +1,37 @@
+.dashboard {
+  height: 100vh;
+  width: 100%;
+  border: 2px solid red;
+
+  &__box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #e7f2ff;
+  }
+
+  &__box-data {
+    display: flex;
+    // flex-direction: column;
+    border: 2px solid black;
+    border-radius: 20px;
+    overflow: hidden;
+
+  }
+  &__item {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    width: 300px;
+    height: 100px;
+    background-color: #fff;
+
+    
+
+    &-text{
+        width: 175px;
+        text-transform: uppercase;  
+    }
+  }
+}

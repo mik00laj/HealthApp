@@ -23,6 +23,7 @@ const TemperatureSchema = new mongoose.Schema({
 	measureId: Number,
 	measure: Number,
 	value: Number,
+	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
 	year: { type: Number, default: () => new Date().getFullYear() },
 	month: {
 	  type: String,
@@ -37,11 +38,12 @@ const TemperatureSchema = new mongoose.Schema({
 
 const TemperatureModel = mongoose.model('Temperature', TemperatureSchema, 'Temperature')
 
-const HearthBeatSchema = new mongoose.Schema({
-	sensorId: { type: String, default: 'MAX30102_HearthBeat' },
+const HearthRateSchema = new mongoose.Schema({
+	sensorId: { type: String, default: 'MAX30102_HearthRate' },
 	measureId: Number,
 	measure: Number,
 	value: Number,
+	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
 	year: { type: Number, default: () => new Date().getFullYear() },
 	month: {
 	  type: String,
@@ -54,13 +56,14 @@ const HearthBeatSchema = new mongoose.Schema({
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
 })
 
-const HearthBeatModel = mongoose.model('Hearthbeat', HearthBeatSchema, 'HearthBeat')
+const HearthRateModel = mongoose.model('HearthRate', HearthRateSchema, 'HearthRate')
 
 const SaturationSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'MAX30102_saturation' },
 	measureId: Number,
 	measure: Number,
 	value: Number,
+	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
 	year: { type: Number, default: () => new Date().getFullYear() },
 	month: {
 	  type: String,
@@ -101,13 +104,13 @@ app.post('/esp/temperature-sensor', async (req, res) => {
 
 app.post('/esp/puls-sensor', async (req, res) => {
 	try {
-		const dataHearthBeat = req.body
-		console.log('Received HearthBeat data:', dataHearthBeat)
+		const dataHearthRate = req.body
+		console.log('Received HearthRate data:', dataHearthRate)
 
-		const pulsEntry = new HearthBeatModel({
-			value: dataHearthBeat.heartbeat,
-			measureId: dataHearthBeat.measureId,
-			measure: dataHearthBeat.measure,
+		const pulsEntry = new HearthRateModel({
+			value: dataHearthRate.heartbeat,
+			measureId: dataHearthRate.measureId,
+			measure: dataHearthRate.measure,
 		})
 
 		pulsEntry.save();

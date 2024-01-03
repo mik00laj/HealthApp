@@ -1,0 +1,15 @@
+.wrapper {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.main {
+
+  .main__box {
+  display: flex;  
+  }
+  &__pages{
+    width: 100%; 
+  }
+}
