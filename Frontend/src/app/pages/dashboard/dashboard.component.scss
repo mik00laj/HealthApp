@@ -16,7 +16,6 @@
     border: 2px solid black;
     border-radius: 20px;
     overflow: hidden;
-
   }
   &__item {
     display: flex;
@@ -27,11 +26,17 @@
     height: 100px;
     background-color: #fff;
 
-    
-
-    &-text{
-        width: 175px;
-        text-transform: uppercase;  
+    &--temperature,&--saturation,&--hearth-rate{
+      border-right: 2px solid black;
     }
+    &--temperature,&--saturation,&--body-weight,&--respiration-rate{
+      border-bottom: 2px solid black;
+    }
+  }
+  &__itemtext {
+    width: 175px;
+  }
+  &__itemtitle {
+    text-transform: uppercase;
   }
 }

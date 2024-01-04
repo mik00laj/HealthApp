@@ -12,16 +12,28 @@ export class DataService {
     
   constructor(private http: HttpClient) {}
 
-  getLatestTemperature(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/latest-temperature`); 
+  getLatestBodyTemperature(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/latest-body-temperature`); 
   }
 
   getLatestHearthRate(): Observable<any> { 
     return this.http.get<any>(`${this.apiUrl}/latest-hearth-rate`); 
   }
 
-  getLatestSaturation(): Observable<any> { 
-    return this.http.get<any>(`${this.apiUrl}/latest-saturation`); 
+  getLatestBloodSaturation(): Observable<any> { 
+    return this.http.get<any>(`${this.apiUrl}/latest-blood-saturation`); 
+  }
+
+  getLatestBodyWeight(): Observable<any> { 
+    return this.http.get<any>(`${this.apiUrl}/latest-body-weight`); 
+  }
+
+  getLatestRespirationRate(): Observable<any> { 
+    return this.http.get<any>(`${this.apiUrl}/latest-respiration-rate`); 
+  }
+
+  getLatestBloodPressure(): Observable<any> { 
+    return this.http.get<any>(`${this.apiUrl}/latest-blood-pressure`); 
   }
 }
 

@@ -5,17 +5,17 @@
 
             <div class="dashboard__box-items">
 
-                <div class="dashboard__item">
+                <div class="dashboard__item dashboard__item--temperature">
                     <div class="dashboard__item-text">
-                        <p class="dashboard__item-data">{{ latestTemperature }}°C</p>
+                        <p class="dashboard__item-data">{{ latestBodyTemperature }} °C</p>
                         <p class="dashboard__item-title">Temperature</p>
                     </div>
                     <div class="dashboard__item-icon"><i class="fa-solid fa-temperature-quarter"></i></div>
                 </div>
 
-                <div class="dashboard__item">
+                <div class="dashboard__item dashboard__item--saturation">
                     <div class="dashboard__item-text">
-                        <p class="dashboard__item-data">{{ latestSaturation }}</p>
+                        <p class="dashboard__item-data">{{ latestBloodSaturation }} %</p>
                         <p class="dashboard__item-title">Blood Saturation</p>
                     </div>
                     <div class="dashboard__item-icon"><i class="fa-solid fa-fire-flame-simple"
@@ -23,9 +23,9 @@
                     </div>
                 </div>
 
-                <div class="dashboard__item">
+                <div class="dashboard__item dashboard__item--hearth-rate">
                     <div class="dashboard__item-text">
-                        <p class="dashboard__item-data">{{ latestHearthRate }}</p>
+                        <p class="dashboard__item-data">{{ latestHearthRate }} bpm</p>
                         <p class="dashboard__item-title">Hearth Rate</p>
                     </div>
                     <div class="dashboard__item-icon"><i class="fa-solid fa-heart-pulse"></i></div>
@@ -36,25 +36,25 @@
 
             <div class="dashboard__box-items">
 
-                <div class="dashboard__item">
+                <div class="dashboard__item dashboard__item--body-weight">
                     <div class="dashboard__item-text">
-                        <p class="dashboard__item-data">70kg</p>
+                        <p class="dashboard__item-data">{{latestBodyWeight}} kg</p>
                         <p class="dashboard__item-title">Body Weight</p>
                     </div>
                     <div class="dashboard__item-icon"><i class="fa-solid fa-weight-scale"></i></div>
                 </div>
 
-                <div class="dashboard__item">
+                <div class="dashboard__item dashboard__item--respiration-rate">
                     <div class="dashboard__item-text">
-                        <p class="dashboard__item-data">15</p>
+                        <p class="dashboard__item-data">{{latestRespirationRate}} / min</p>
                         <p class="dashboard__item-title">Respiration Rate</p>
                     </div>
                     <div class="dashboard__item-icon"><i class="fa-solid fa-lungs"></i></div>
                 </div>
 
-                <div class="dashboard__item">
+                <div class="dashboard__item dashboard__item--blood--pressure">
                     <div class=" dashboard__item-text">
-                        <p class="dashboard__item-data">130/80</p>
+                        <p class="dashboard__item-data">{{latestBloodPressureSystolic}}/{{latestBloodPressureDiastolic}} mm Hg</p>
                         <p class="dashboard__item-title">Blood Pressure</p>
                     </div>
                     <div class="dashboard__item-icon"><i class="fa-solid fa-droplet" style="color: #e62200;"></i></div>
@@ -65,7 +65,10 @@
 
 
         <div class="dashboard__box-chart">
-            <div class="dashboard__chart">1212</div>
+            <div class="dashboard__chart-container">
+                <canvas  id="chart-line"  ></canvas>
+          </div>
+            
         </div>
 
         <div class="dashboard__box-table">

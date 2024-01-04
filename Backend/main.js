@@ -20,8 +20,8 @@ dataBaseStatus.once('open', () => {
 	console.log('Połączono z MongoDB Atlas')
 })
 
-const TemperatureSchema = new mongoose.Schema({
-	sensorId: { type: String, default: 'DS18B20' },
+const BodyTemperatureSchema = new mongoose.Schema({
+	sensorId: { type: String, default: 'DS18B20 Temperature Sensor' },
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
 	year: { type: Number, default: () => new Date().getFullYear() },
 	month: {
@@ -38,10 +38,10 @@ const TemperatureSchema = new mongoose.Schema({
 	value: Number,
 })
 
-const TemperatureModel = mongoose.model('Temperature', TemperatureSchema, 'Temperature')
+const BodyTemperatureModel = mongoose.model('BodyTemperature', BodyTemperatureSchema, 'BodyTemperature')
 
 const HearthRateSchema = new mongoose.Schema({
-	sensorId: { type: String, default: 'MAX30102_HearthRate' },
+	sensorId: { type: String, default: 'MAX30102_HearthRate Sensor' },
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
 	year: { type: Number, default: () => new Date().getFullYear() },
 	month: {
@@ -60,8 +60,8 @@ const HearthRateSchema = new mongoose.Schema({
 
 const HearthRateModel = mongoose.model('HearthRate', HearthRateSchema, 'HearthRate')
 
-const SaturationSchema = new mongoose.Schema({
-	sensorId: { type: String, default: 'MAX30102_saturation' },
+const BloodSaturationSchema = new mongoose.Schema({
+	sensorId: { type: String, default: 'MAX30102_saturation Sensor' },
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
 	year: { type: Number, default: () => new Date().getFullYear() },
 	month: {
@@ -78,7 +78,68 @@ const SaturationSchema = new mongoose.Schema({
 	value: Number,
 })
 
-const SaturationModel = mongoose.model('Saturation', SaturationSchema, 'Saturation')
+const BloodSaturationModel = mongoose.model('BloodSaturation', BloodSaturationSchema, 'BloodSaturation')
+
+const BodyWeightSchema = new mongoose.Schema({
+	sensorId: { type: String, default: 'Body Weight Sensor' },
+	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
+	year: { type: Number, default: () => new Date().getFullYear() },
+	month: {
+		type: String,
+		default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
+	},
+	day: {
+		type: String,
+		default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
+	},
+	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
+	measureId: Number,
+	measure: Number,
+	value: Number,
+})
+
+const BodyWeightModel = mongoose.model('BodyWeight', BodyWeightSchema, 'BodyWeight')
+
+const RespirationRateSchema = new mongoose.Schema({
+	sensorId: { type: String, default: 'Respiration Rate Sensor' },
+	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
+	year: { type: Number, default: () => new Date().getFullYear() },
+	month: {
+		type: String,
+		default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
+	},
+	day: {
+		type: String,
+		default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
+	},
+	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
+	measureId: Number,
+	measure: Number,
+	value: Number,
+})
+
+const RespirationRateModel = mongoose.model('RespirationRate', RespirationRateSchema, 'RespirationRate')
+
+const BloodPressureSchema = new mongoose.Schema({
+	sensorId: { type: String, default: 'Blood Pressure Sensor' },
+	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
+	year: { type: Number, default: () => new Date().getFullYear() },
+	month: {
+		type: String,
+		default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
+	},
+	day: {
+		type: String,
+		default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
+	},
+	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
+	measureId: Number,
+	measure: Number,
+	valueSystolic: Number,
+	valueDiastolic: Number,
+})
+
+const BloodPressureModel = mongoose.model('BloodPressure', BloodPressureSchema, 'BloodPressure')
 
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -87,16 +148,16 @@ app.use(cors());
 
 app.post('/esp/temperature-sensor', async (req, res) => {
 	try {
-		const dataTemperature = req.body
-		console.log('Received Temperature data:', dataTemperature)
+		const dataBodyTemperature = req.body
+		console.log('Received Temperature data:', dataBodyTemperature)
 
-		const temperatureEntry = new TemperatureModel({
-			value: dataTemperature.temperature,
-			measureId: dataTemperature.measureId,
-			measure: dataTemperature.measure,
+		const BodyTemperatureEntry = new BodyTemperatureModel({
+			value: dataBodyTemperature.temperature,
+			measureId: dataBodyTemperature.measureId,
+			measure: dataBodyTemperature.measure,
 		})
 
-		temperatureEntry.save()
+		BodyTemperatureEntry.save()
 
 		res.status(200).send('Zapytanie POST zostało odebrane przez serwer.')
 	} catch (error) {
@@ -110,13 +171,13 @@ app.post('/esp/puls-sensor', async (req, res) => {
 		const dataHearthRate = req.body
 		console.log('Received HearthRate data:', dataHearthRate)
 
-		const pulsEntry = new HearthRateModel({
+		const HearthRateEntry = new HearthRateModel({
 			value: dataHearthRate.heartbeat,
 			measureId: dataHearthRate.measureId,
 			measure: dataHearthRate.measure,
 		})
 
-		pulsEntry.save()
+		HearthRateEntry.save()
 
 		res.status(200).send('Zapytanie POST zostało odebrane przez serwer.')
 	} catch (error) {
@@ -127,16 +188,16 @@ app.post('/esp/puls-sensor', async (req, res) => {
 
 app.post('/esp/saturation-sensor', async (req, res) => {
 	try {
-		const dataSaturation = req.body
-		console.log('Received Saturation data:', dataSaturation)
+		const dataBloodSaturation = req.body
+		console.log('Received Saturation data:', dataBloodSaturation)
 
-		const saturationEntry = new SaturationModel({
-			value: dataSaturation.saturation,
-			measureId: dataSaturation.measureId,
-			measure: dataSaturation.measure,
+		const BloodSaturationEntry = new BloodSaturationModel({
+			value: dataBloodSaturation.saturation,
+			measureId: dataBloodSaturation.measureId,
+			measure: dataBloodSaturation.measure,
 		})
 
-		saturationEntry.save()
+		BloodSaturationEntry.save()
 
 		res.status(200).send('Zapytanie POST zostało odebrane przez serwer.')
 	} catch (error) {
@@ -144,12 +205,12 @@ app.post('/esp/saturation-sensor', async (req, res) => {
 		res.status(500).send('Wystąpił błąd podczas zapisywania danych.')
 	}
 })
-app.get('/api/latest-temperature', async (req, res) => {
+app.get('/api/latest-body-temperature', async (req, res) => {
 	try {
-		const latestTemperature = await TemperatureModel.findOne().sort({ _id: -1 }).limit(1)
+		const latestBodyTemperature = await BodyTemperatureModel.findOne().sort({ _id: -1 }).limit(1)
 
 		res.json({
-			latestTemperature,
+			latestBodyTemperature,
 		})
 	} catch (error) {
 		console.error('Błąd podczas pobierania temperatury:', error)
@@ -168,12 +229,50 @@ app.get('/api/latest-hearth-rate', async (req, res) => {
 		res.status(500).send('Wystąpił błąd podczas pobierania tętna.')
 	}
 })
-app.get('/api/latest-saturation', async (req, res) => {
+app.get('/api/latest-blood-saturation', async (req, res) => {
 	try {
-		const latestSaturation = await SaturationModel.findOne().sort({ _id: -1 }).limit(1)
+		const latestBloodSaturation = await BloodSaturationModel.findOne().sort({ _id: -1 }).limit(1)
 
 		res.json({
-			latestSaturation,
+			latestBloodSaturation,
+		})
+	} catch (error) {
+		console.error('Błąd podczas pobierania saturacji krwi:', error)
+		res.status(500).send('Wystąpił błąd podczas pobierania saturacji krwi.')
+	}
+})
+app.get('/api/latest-body-weight', async (req, res) => {
+	try {
+		const latestBodyWeight = await BodyWeightModel.findOne().sort({ _id: -1 }).limit(1)
+
+		res.json({
+			latestBodyWeight,
+		})
+	} catch (error) {
+		console.error('Błąd podczas pobierania saturacji krwi:', error)
+		res.status(500).send('Wystąpił błąd podczas pobierania saturacji krwi.')
+	}
+})
+
+app.get('/api/latest-respiration-rate', async (req, res) => {
+	try {
+		const latestRespirationRate = await RespirationRateModel.findOne().sort({ _id: -1 }).limit(1)
+
+		res.json({
+			latestRespirationRate,
+		})
+	} catch (error) {
+		console.error('Błąd podczas pobierania saturacji krwi:', error)
+		res.status(500).send('Wystąpił błąd podczas pobierania saturacji krwi.')
+	}
+})
+
+app.get('/api/latest-blood-pressure', async (req, res) => {
+	try {
+		const latestBloodPressure = await BloodPressureModel.findOne().sort({ _id: -1 }).limit(1)
+
+		res.json({
+			latestBloodPressure,
 		})
 	} catch (error) {
 		console.error('Błąd podczas pobierania saturacji krwi:', error)
