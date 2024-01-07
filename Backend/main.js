@@ -23,15 +23,6 @@ dataBaseStatus.once('open', () => {
 const BodyTemperatureSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'DS18B20 Temperature Sensor' },
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
-	year: { type: Number, default: () => new Date().getFullYear() },
-	month: {
-		type: String,
-		default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
-	},
-	day: {
-		type: String,
-		default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
-	},
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
 	measureId: Number,
 	measure: Number,
@@ -40,38 +31,10 @@ const BodyTemperatureSchema = new mongoose.Schema({
 
 const BodyTemperatureModel = mongoose.model('BodyTemperature', BodyTemperatureSchema, 'BodyTemperature')
 
-const HearthRateSchema = new mongoose.Schema({
-	sensorId: { type: String, default: 'MAX30102_HearthRate Sensor' },
-	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
-	year: { type: Number, default: () => new Date().getFullYear() },
-	month: {
-		type: String,
-		default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
-	},
-	day: {
-		type: String,
-		default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
-	},
-	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
-	measureId: Number,
-	measure: Number,
-	value: Number,
-})
-
-const HearthRateModel = mongoose.model('HearthRate', HearthRateSchema, 'HearthRate')
 
 const BloodSaturationSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'MAX30102_saturation Sensor' },
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
-	year: { type: Number, default: () => new Date().getFullYear() },
-	month: {
-		type: String,
-		default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
-	},
-	day: {
-		type: String,
-		default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
-	},
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
 	measureId: Number,
 	measure: Number,
@@ -80,18 +43,20 @@ const BloodSaturationSchema = new mongoose.Schema({
 
 const BloodSaturationModel = mongoose.model('BloodSaturation', BloodSaturationSchema, 'BloodSaturation')
 
+const HearthRateSchema = new mongoose.Schema({
+	sensorId: { type: String, default: 'MAX30102_HearthRate Sensor' },
+	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
+	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
+	measureId: Number,
+	measure: Number,
+	value: Number,
+})
+
+const HearthRateModel = mongoose.model('HearthRate', HearthRateSchema, 'HearthRate')
+
 const BodyWeightSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'Body Weight Sensor' },
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
-	year: { type: Number, default: () => new Date().getFullYear() },
-	month: {
-		type: String,
-		default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
-	},
-	day: {
-		type: String,
-		default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
-	},
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
 	measureId: Number,
 	measure: Number,
@@ -103,15 +68,6 @@ const BodyWeightModel = mongoose.model('BodyWeight', BodyWeightSchema, 'BodyWeig
 const RespirationRateSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'Respiration Rate Sensor' },
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
-	year: { type: Number, default: () => new Date().getFullYear() },
-	month: {
-		type: String,
-		default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
-	},
-	day: {
-		type: String,
-		default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
-	},
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
 	measureId: Number,
 	measure: Number,
@@ -123,15 +79,6 @@ const RespirationRateModel = mongoose.model('RespirationRate', RespirationRateSc
 const BloodPressureSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'Blood Pressure Sensor' },
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
-	year: { type: Number, default: () => new Date().getFullYear() },
-	month: {
-		type: String,
-		default: () => new Date().toLocaleDateString('en-US', { month: 'long' }),
-	},
-	day: {
-		type: String,
-		default: () => new Date().toLocaleDateString('en-US', { weekday: 'long' }),
-	},
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
 	measureId: Number,
 	measure: Number,
@@ -279,6 +226,96 @@ app.get('/api/latest-blood-pressure', async (req, res) => {
 		res.status(500).send('Wystąpił błąd podczas pobierania saturacji krwi.')
 	}
 })
+
+
+app.get('/api/all-data-body-temperature', async (req, res) => {
+    try {
+        const allBodyTemperature = {
+            bodyTemperature: await BodyTemperatureModel.find(),
+
+        };
+
+        res.json(allBodyTemperature);
+    } catch (error) {
+        console.error('Błąd podczas pobierania wszystkich danych:', error);
+        res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.');
+    }
+});
+
+
+app.get('/api/all-data-blood-saturation', async (req, res) => {
+    try {
+        const allBloodSaturation = {
+
+            bloodSaturation: await BloodSaturationModel.find(),
+
+        };
+
+        res.json(allBloodSaturation);
+    } catch (error) {
+        console.error('Błąd podczas pobierania wszystkich danych:', error);
+        res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.');
+    }
+});
+
+
+app.get('/api/all-data-hearth-rate', async (req, res) => {
+    try {
+        const allHearthRate = {
+
+            hearthRate: await HearthRateModel.find(),
+
+        };
+
+        res.json(allHearthRate);
+    } catch (error) {
+        console.error('Błąd podczas pobierania wszystkich danych:', error);
+        res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.');
+    }
+});
+
+app.get('/api/all-data-body-weight', async (req, res) => {
+    try {
+        const allBodyWeight = {
+
+            bodyWeight: await BodyWeightModel.find(),
+
+        };
+
+        res.json(allBodyWeight);
+    } catch (error) {
+        console.error('Błąd podczas pobierania wszystkich danych:', error);
+        res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.');
+    }
+});
+
+app.get('/api/all-data-respiration-rate', async (req, res) => {
+    try {
+        const allRespirationRate = {
+
+            respirationRate: await RespirationRateModel.find(),
+         
+        };
+
+        res.json(allRespirationRate);
+    } catch (error) {
+        console.error('Błąd podczas pobierania wszystkich danych:', error);
+        res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.');
+    }
+});
+
+app.get('/api/all-data-blood-pressure', async (req, res) => {
+    try {
+        const allBloodPressure = {
+            bloodPressure: await BloodPressureModel.find(),
+        };
+
+        res.json(allBloodPressure);
+    } catch (error) {
+        console.error('Błąd podczas pobierania wszystkich danych:', error);
+        res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.');
+    }
+});
 
 app.listen(port, () => {
 	console.log(`Serwer Express nasłuchuje na porcie ${port}`)

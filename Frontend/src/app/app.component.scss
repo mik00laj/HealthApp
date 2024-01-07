@@ -5,11 +5,11 @@
 }
 
 .main {
-
   .main__box {
-  display: flex;  
+    display: flex;
   }
-  &__pages{
-    width: 100%; 
+  &__pages {
+    height: 100%;
+    width: 100%;
   }
 }

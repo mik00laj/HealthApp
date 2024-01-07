@@ -1,19 +1,21 @@
 .dashboard {
-  height: 100vh;
+  height: 100%;
   width: 100%;
+  display: flex;
+  justify-content: center;
   border: 2px solid red;
+  background-color: #fff;
 
   &__box {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #e7f2ff;
   }
 
   &__box-data {
     display: flex;
-    // flex-direction: column;
-    border: 2px solid black;
+    justify-content: space-around;
+    // flex-direction: column;  
     border-radius: 20px;
     overflow: hidden;
   }
@@ -21,22 +23,31 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    background-color: #6494ed8e;
+    margin: 3rem 1.5rem;
+    border-radius: 10px;
+    background: linear-gradient(145deg, #f0f0f0, #cacaca);
+    box-shadow: 6px 6px 12px #9d9d9d, -6px -6px 12px #ffffff;
+    cursor: pointer;
 
     width: 300px;
     height: 100px;
-    background-color: #fff;
-
-    &--temperature,&--saturation,&--hearth-rate{
-      border-right: 2px solid black;
-    }
-    &--temperature,&--saturation,&--body-weight,&--respiration-rate{
-      border-bottom: 2px solid black;
-    }
   }
-  &__itemtext {
-    width: 175px;
+  &__item-text {
+    width: 180px;
   }
-  &__itemtitle {
+  &__item-title {
     text-transform: uppercase;
+  }
+  // &__box-chart {
+  // }
+  &__chart-container {
+    canvas {
+      width: 600px;
+      background-color: #fff;
+    }
+  }
+  &__box-table {
+    width: 600px;
   }
 }

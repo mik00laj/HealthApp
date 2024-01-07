@@ -8,32 +8,50 @@ import { Observable } from 'rxjs';
 export class DataService {
   serverAddress = '192.168.0.14';
   serverPort = 4001;
-  private apiUrl = `http://${this.serverAddress}:${this.serverPort}/api`; 
-    
+  private apiUrl = `http://${this.serverAddress}:${this.serverPort}/api`;
+
   constructor(private http: HttpClient) {}
 
   getLatestBodyTemperature(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/latest-body-temperature`); 
+    return this.http.get<any>(`${this.apiUrl}/latest-body-temperature`);
   }
 
-  getLatestHearthRate(): Observable<any> { 
-    return this.http.get<any>(`${this.apiUrl}/latest-hearth-rate`); 
+  getLatestHearthRate(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/latest-hearth-rate`);
   }
 
-  getLatestBloodSaturation(): Observable<any> { 
-    return this.http.get<any>(`${this.apiUrl}/latest-blood-saturation`); 
+  getLatestBloodSaturation(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/latest-blood-saturation`);
   }
 
-  getLatestBodyWeight(): Observable<any> { 
-    return this.http.get<any>(`${this.apiUrl}/latest-body-weight`); 
+  getLatestBodyWeight(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/latest-body-weight`);
   }
 
-  getLatestRespirationRate(): Observable<any> { 
-    return this.http.get<any>(`${this.apiUrl}/latest-respiration-rate`); 
+  getLatestRespirationRate(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/latest-respiration-rate`);
   }
 
-  getLatestBloodPressure(): Observable<any> { 
-    return this.http.get<any>(`${this.apiUrl}/latest-blood-pressure`); 
+  getLatestBloodPressure(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/latest-blood-pressure`);
+  }
+
+  getAllTemperatureData(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/all-data-body-temperature`);
+  }
+  getAllHearthRate(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/all-data-hearth-rate`);
+  }
+  getAllBloodSaturation(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/all-data-blood-saturation`);
+  }
+  getAllBodyWeight(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/all-data-body-weight`);
+  }
+  getAllRespirationRate(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/all-data-respiration-rate`);
+  }
+  getAllBloodPressure(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/all-data-blood-pressure`);
   }
 }
-
