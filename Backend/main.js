@@ -1,7 +1,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
-const cors = require('cors');
+const cors = require('cors')
 
 const app = express()
 const port = 4001
@@ -11,88 +11,73 @@ const clusterName = 'healthappdb'
 const databaseName = 'User1'
 const connectionStringMongoDB = `mongodb+srv://${username}:${password}@${clusterName}.tir6wnc.mongodb.net/${databaseName}?retryWrites=true&w=majority`
 
-mongoose.connect(connectionStringMongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
-
-
+// Połączenie z MongoDB
+mongoose.connect(connectionStringMongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
 const dataBaseStatus = mongoose.connection
 dataBaseStatus.on('error', console.error.bind(console, 'Błąd połączenia z MongoDB:'))
-dataBaseStatus.once('open', () => {
-	console.log('Połączono z MongoDB Atlas')
-})
+dataBaseStatus.once('open', () => {console.log('Połączono z MongoDB Atlas')})
+// Połączenie z MongoDB
 
+// SCHEMATY BAZY DANYCH
 const BodyTemperatureSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'DS18B20 Temperature Sensor' },
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
-	measureId: Number,
-	measure: Number,
 	value: Number,
 })
-
-const BodyTemperatureModel = mongoose.model('BodyTemperature', BodyTemperatureSchema, 'BodyTemperature')
-
 
 const BloodSaturationSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'MAX30102_saturation Sensor' },
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
-	measureId: Number,
-	measure: Number,
 	value: Number,
 })
-
-const BloodSaturationModel = mongoose.model('BloodSaturation', BloodSaturationSchema, 'BloodSaturation')
 
 const HearthRateSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'MAX30102_HearthRate Sensor' },
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
-	measureId: Number,
-	measure: Number,
 	value: Number,
 })
-
-const HearthRateModel = mongoose.model('HearthRate', HearthRateSchema, 'HearthRate')
 
 const BodyWeightSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'Body Weight Sensor' },
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
-	measureId: Number,
-	measure: Number,
 	value: Number,
 })
-
-const BodyWeightModel = mongoose.model('BodyWeight', BodyWeightSchema, 'BodyWeight')
 
 const RespirationRateSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'Respiration Rate Sensor' },
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
-	measureId: Number,
-	measure: Number,
 	value: Number,
 })
-
-const RespirationRateModel = mongoose.model('RespirationRate', RespirationRateSchema, 'RespirationRate')
-
 const BloodPressureSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'Blood Pressure Sensor' },
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
 	time: { type: String, default: () => new Date().toISOString().split('T')[1].split('.')[0] },
-	measureId: Number,
-	measure: Number,
 	valueSystolic: Number,
 	valueDiastolic: Number,
 })
+// SCHEMATY BAZY DANYCH
 
+// MODELE BAZY DANYCH
+const BodyTemperatureModel = mongoose.model('BodyTemperature', BodyTemperatureSchema, 'BodyTemperature')
+const BloodSaturationModel = mongoose.model('BloodSaturation', BloodSaturationSchema, 'BloodSaturation')
+const HearthRateModel = mongoose.model('HearthRate', HearthRateSchema, 'HearthRate')
+const BodyWeightModel = mongoose.model('BodyWeight', BodyWeightSchema, 'BodyWeight')
+const RespirationRateModel = mongoose.model('RespirationRate', RespirationRateSchema, 'RespirationRate')
 const BloodPressureModel = mongoose.model('BloodPressure', BloodPressureSchema, 'BloodPressure')
+// MODELE BAZY DANYCH
 
+// Obsługa zapytań
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
-app.use(cors());
+app.use(cors())
 
+// OBSŁUGA ZAPYTAŃ Z ESP
 app.post('/esp/temperature-sensor', async (req, res) => {
 	try {
 		const dataBodyTemperature = req.body
@@ -100,8 +85,6 @@ app.post('/esp/temperature-sensor', async (req, res) => {
 
 		const BodyTemperatureEntry = new BodyTemperatureModel({
 			value: dataBodyTemperature.temperature,
-			measureId: dataBodyTemperature.measureId,
-			measure: dataBodyTemperature.measure,
 		})
 
 		BodyTemperatureEntry.save()
@@ -120,8 +103,6 @@ app.post('/esp/puls-sensor', async (req, res) => {
 
 		const HearthRateEntry = new HearthRateModel({
 			value: dataHearthRate.heartbeat,
-			measureId: dataHearthRate.measureId,
-			measure: dataHearthRate.measure,
 		})
 
 		HearthRateEntry.save()
@@ -140,8 +121,6 @@ app.post('/esp/saturation-sensor', async (req, res) => {
 
 		const BloodSaturationEntry = new BloodSaturationModel({
 			value: dataBloodSaturation.saturation,
-			measureId: dataBloodSaturation.measureId,
-			measure: dataBloodSaturation.measure,
 		})
 
 		BloodSaturationEntry.save()
@@ -152,6 +131,10 @@ app.post('/esp/saturation-sensor', async (req, res) => {
 		res.status(500).send('Wystąpił błąd podczas zapisywania danych.')
 	}
 })
+
+// OBSŁUGA ZAPYTAŃ Z ESP
+
+// OBSŁUGA ZAPYTAŃ Z FRONTEND
 app.get('/api/latest-body-temperature', async (req, res) => {
 	try {
 		const latestBodyTemperature = await BodyTemperatureModel.findOne().sort({ _id: -1 }).limit(1)
@@ -227,95 +210,84 @@ app.get('/api/latest-blood-pressure', async (req, res) => {
 	}
 })
 
-
 app.get('/api/all-data-body-temperature', async (req, res) => {
-    try {
-        const allBodyTemperature = {
-            bodyTemperature: await BodyTemperatureModel.find(),
+	try {
+		const allBodyTemperature = {
+			bodyTemperature: await BodyTemperatureModel.find(),
+		}
 
-        };
-
-        res.json(allBodyTemperature);
-    } catch (error) {
-        console.error('Błąd podczas pobierania wszystkich danych:', error);
-        res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.');
-    }
-});
-
+		res.json(allBodyTemperature)
+	} catch (error) {
+		console.error('Błąd podczas pobierania wszystkich danych:', error)
+		res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.')
+	}
+})
 
 app.get('/api/all-data-blood-saturation', async (req, res) => {
-    try {
-        const allBloodSaturation = {
+	try {
+		const allBloodSaturation = {
+			bloodSaturation: await BloodSaturationModel.find(),
+		}
 
-            bloodSaturation: await BloodSaturationModel.find(),
-
-        };
-
-        res.json(allBloodSaturation);
-    } catch (error) {
-        console.error('Błąd podczas pobierania wszystkich danych:', error);
-        res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.');
-    }
-});
-
+		res.json(allBloodSaturation)
+	} catch (error) {
+		console.error('Błąd podczas pobierania wszystkich danych:', error)
+		res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.')
+	}
+})
 
 app.get('/api/all-data-hearth-rate', async (req, res) => {
-    try {
-        const allHearthRate = {
+	try {
+		const allHearthRate = {
+			hearthRate: await HearthRateModel.find(),
+		}
 
-            hearthRate: await HearthRateModel.find(),
-
-        };
-
-        res.json(allHearthRate);
-    } catch (error) {
-        console.error('Błąd podczas pobierania wszystkich danych:', error);
-        res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.');
-    }
-});
+		res.json(allHearthRate)
+	} catch (error) {
+		console.error('Błąd podczas pobierania wszystkich danych:', error)
+		res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.')
+	}
+})
 
 app.get('/api/all-data-body-weight', async (req, res) => {
-    try {
-        const allBodyWeight = {
+	try {
+		const allBodyWeight = {
+			bodyWeight: await BodyWeightModel.find(),
+		}
 
-            bodyWeight: await BodyWeightModel.find(),
-
-        };
-
-        res.json(allBodyWeight);
-    } catch (error) {
-        console.error('Błąd podczas pobierania wszystkich danych:', error);
-        res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.');
-    }
-});
+		res.json(allBodyWeight)
+	} catch (error) {
+		console.error('Błąd podczas pobierania wszystkich danych:', error)
+		res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.')
+	}
+})
 
 app.get('/api/all-data-respiration-rate', async (req, res) => {
-    try {
-        const allRespirationRate = {
+	try {
+		const allRespirationRate = {
+			respirationRate: await RespirationRateModel.find(),
+		}
 
-            respirationRate: await RespirationRateModel.find(),
-         
-        };
-
-        res.json(allRespirationRate);
-    } catch (error) {
-        console.error('Błąd podczas pobierania wszystkich danych:', error);
-        res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.');
-    }
-});
+		res.json(allRespirationRate)
+	} catch (error) {
+		console.error('Błąd podczas pobierania wszystkich danych:', error)
+		res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.')
+	}
+})
 
 app.get('/api/all-data-blood-pressure', async (req, res) => {
-    try {
-        const allBloodPressure = {
-            bloodPressure: await BloodPressureModel.find(),
-        };
+	try {
+		const allBloodPressure = {
+			bloodPressure: await BloodPressureModel.find(),
+		}
 
-        res.json(allBloodPressure);
-    } catch (error) {
-        console.error('Błąd podczas pobierania wszystkich danych:', error);
-        res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.');
-    }
-});
+		res.json(allBloodPressure)
+	} catch (error) {
+		console.error('Błąd podczas pobierania wszystkich danych:', error)
+		res.status(500).send('Wystąpił błąd podczas pobierania wszystkich danych.')
+	}
+})
+// OBSŁUGA ZAPYTAŃ Z FRONTEND
 
 app.listen(port, () => {
 	console.log(`Serwer Express nasłuchuje na porcie ${port}`)

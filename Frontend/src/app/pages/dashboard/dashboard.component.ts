@@ -1,40 +1,51 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/get-data.service';
 import { Chart } from 'chart.js/auto';
-import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { MatSelectModule } from '@angular/material/select';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
-  latestBodyTemperature: number;
-  latestHearthRate: number;
-  latestBloodSaturation: number;
-  latestBodyWeight: number;
-  latestRespirationRate: number;
-  latestBloodPressureSystolic: number;
-  latestBloodPressureDiastolic: number;
+  latestData: any = {
+    latestBodyTemperature: null,
+    latestBloodSaturation: null,
+    latestHearthRate: null,
+    latestBodyWeight: null,
+    latestRespirationRate: null,
+    latestBloodPressureSystolic: null,
+    latestBloodPressureDiastolic: null
+  }
+
+  bodyTemperatureData: number[] = [];
+  hearthRateData: number[] = [];
+  bloodSaturationData: number[] = [];
+  bodyWeightData: number[] = [];
+  respirationRateData: number[] = [];
+  bloodPressureSystolicData: number[] = [];
+  bloodPressureDiastolicData: number[] = [];
 
   selectedStartDate: Date;
   selectedEndDate: Date;
   formattedStartDate: string;
   formattedEndDate: string;
-  formated;
+
   chart: any = [];
   labels = [];
-  bodyTemperatureData = [];
-  hearthRateData = [];
-  bloodSaturationData = [];
-  bodyWeightData = [];
-  respirationRateData = [];
-  bloodPressureSystolicData = [];
-  bloodPressureDiastolicData = [];
+
 
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
+    this.updateLatestData()
+    this.onChartClick(
+      'bodyTemperature',
+      this.dataService.getAllTemperatureData.bind(this.dataService),
+      'bodyTemperatureData',
+      'Body Temperature',
+      '[°C]'
+    );
     this.chart = new Chart('canvas', {
       type: 'line',
       data: {
@@ -67,7 +78,7 @@ export class DashboardComponent implements OnInit {
           x: {
             title: {
               display: true,
-              text: 'Oś X',
+              text: 'Date[YYYY-MM-DD]',
               color: 'black',
               align: 'end',
             },
@@ -91,99 +102,46 @@ export class DashboardComponent implements OnInit {
         },
       },
     });
+  }
 
-    this.dataService.getLatestBodyTemperature().subscribe((bodyTemperature) => {
-      this.latestBodyTemperature =
-        bodyTemperature?.latestBodyTemperature?.value;
-    });
-
-    this.dataService.getLatestHearthRate().subscribe((hearthRate) => {
-      this.latestHearthRate = hearthRate?.latestHearthRate?.value;
-    });
-
-    this.dataService.getLatestBloodSaturation().subscribe((bloodSaturation) => {
-      this.latestBloodSaturation = bloodSaturation?.latestSaturation?.value;
-    });
-
-    this.dataService.getLatestBodyWeight().subscribe((bodyWeight) => {
-      this.latestBodyWeight = bodyWeight?.latestBodyWeight?.value;
-    });
-
-    this.dataService.getLatestRespirationRate().subscribe((respirationRate) => {
-      this.latestRespirationRate =
-        respirationRate?.latestRespirationRate?.value;
-    });
-
+  updateLatestData(): void {
+    const fetchLatestData = () => {
+      this.fetchLatestDataFor('BodyTemperature', 'latestBodyTemperature');
+      this.fetchLatestDataFor('HearthRate', 'latestHearthRate');
+      this.fetchLatestDataFor('BloodSaturation', 'latestBloodSaturation');
+      this.fetchLatestDataFor('BodyWeight', 'latestBodyWeight');
+      this.fetchLatestDataFor('RespirationRate', 'latestRespirationRate');
+    };
+    
+    fetchLatestData();
     this.dataService.getLatestBloodPressure().subscribe((bloodPressure) => {
-      this.latestBloodPressureSystolic =
-        bloodPressure?.latestBloodPressure?.valueSystolic;
-      this.latestBloodPressureDiastolic =
-        bloodPressure?.latestBloodPressure?.valueDiastolic;
+      this.latestData.latestBloodPressureSystolic = bloodPressure?.latestBloodPressure?.valueSystolic;
+      this.latestData.latestBloodPressureDiastolic = bloodPressure?.latestBloodPressure?.valueDiastolic;
     });
 
-    setInterval(() => {
-      this.dataService
-        .getLatestBodyTemperature()
-        .subscribe((bodyTemperature) => {
-          this.latestBodyTemperature =
-            bodyTemperature?.latestBodyTemperature?.value;
-        });
-    }, 500);
-
-    setInterval(() => {
-      this.dataService.getLatestHearthRate().subscribe((hearthRate) => {
-        this.latestHearthRate = hearthRate?.latestHearthRate?.value;
-      });
-    }, 500);
-
-    setInterval(() => {
-      this.dataService
-        .getLatestBloodSaturation()
-        .subscribe((bloodSaturation) => {
-          this.latestBloodSaturation =
-            bloodSaturation?.latestBloodSaturation?.value;
-        });
-    }, 500);
-
-    setInterval(() => {
-      this.dataService.getLatestBodyWeight().subscribe((bodyWeight) => {
-        this.latestBodyWeight = bodyWeight?.latestBodyWeight?.value;
-      });
-    }, 500);
-
-    setInterval(() => {
-      this.dataService
-        .getLatestRespirationRate()
-        .subscribe((respirationRate) => {
-          this.latestRespirationRate =
-            respirationRate?.latestRespirationRate?.value;
-        });
-    }, 500);
-
+    setInterval(fetchLatestData, 500);
     setInterval(() => {
       this.dataService.getLatestBloodPressure().subscribe((bloodPressure) => {
-        this.latestBloodPressureSystolic =
-          bloodPressure?.latestBloodPressure?.valueSystolic;
-        this.latestBloodPressureDiastolic =
-          bloodPressure?.latestBloodPressure?.valueDiastolic;
+        this.latestData.latestBloodPressureSystolic = bloodPressure?.latestBloodPressure?.valueSystolic;
+        this.latestData.latestBloodPressureDiastolic = bloodPressure?.latestBloodPressure?.valueDiastolic;
       });
     }, 500);
+  }
 
-    this.dataService.getAllTemperatureData().subscribe((allBodyTemperature) => {
-      this.labels = allBodyTemperature.bodyTemperature.map(
-        (entry, index) => index
-      );
-      this.bodyTemperatureData = allBodyTemperature.bodyTemperature.map(
-        (entry) => entry.value
-      );
-      const labels = this.labels;
-      const data1 = this.bodyTemperatureData;
-      const data2 = [];
-      const title = 'Body Temperature';
-      const unit = '[°C]';
-      this.updateChart(labels, data1, data2, title, unit);
+  fetchLatestDataFor(dataType: string, ...properties: string[]): void {
+    this.dataService[`getLatest${dataType}`]().subscribe((latestData) => {
+      properties.forEach((property) => {
+        this.latestData[property] = latestData ? latestData[property]?.value : null;
+      });
     });
   }
+
+  formatDate = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = (date.getDate() + 1).toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   updateChart(
     labels: string[],
@@ -215,184 +173,86 @@ export class DashboardComponent implements OnInit {
     }
     this.chart.update();
   }
-  formatDate = (date: Date): string => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = (date.getDate() + 1).toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
 
-  onTemperatureClick() {
-    this.dataService.getAllTemperatureData().subscribe((allBodyTemperature) => {
+  onChartClick(
+    dataType: string,
+    dataServiceMethod: () => Observable<any>,
+    property: string,
+    chartTitle: string,
+    unit: string
+  ) {
+    dataServiceMethod().subscribe((data) => {
       if (this.selectedStartDate && this.selectedEndDate) {
         this.formattedStartDate = this.formatDate(this.selectedStartDate);
         this.formattedEndDate = this.formatDate(this.selectedEndDate);
-
-        // Filtrowanie na podstawie wybranego przedziału dat
-        const filteredData = allBodyTemperature.bodyTemperature.filter(
-          (entry) => {
-            return (
-              entry.date >= this.formattedStartDate &&
-              entry.date <= this.formattedEndDate
-            );
-          }
-        );
-
+        // Filtrowanie danych
+        const filteredData = data[dataType].filter((entry, index) => {
+          return (
+            entry.date >= this.formattedStartDate && entry.date <= this.formattedEndDate
+          );
+        });
+        console.log(filteredData);
         // Mapowanie danych
-        this.labels = filteredData.map((entry, index) => index);
-        this.bodyTemperatureData = filteredData.map((entry) => entry.value);
+        this.labels = filteredData.map((entry, index) => entry.date);
+        this[property] = filteredData.map((entry, index) => entry.value);
       } else {
-        //  Używanie wszystkich danych
-        this.labels = allBodyTemperature.bodyTemperature.map(
-          (entry, index) => index
-        );
-        this.bodyTemperatureData = allBodyTemperature.bodyTemperature.map(
-          (entry) => entry.value
-        );
+        // Używanie wszystkich danych
+        this.labels = data[dataType].map((entry, index) => entry.date);
+        this[property] = data[dataType].map((entry, index) => entry.value);
       }
-
-      const labels = this.labels;
-      const data1 = this.bodyTemperatureData;
-      const data2 = [];
-      const title = 'Body Temperature';
-      const unit = ' [°C]';
-      this.updateChart(labels, data1, data2, title, unit);
+      this.updateChart(this.labels, this[property], [], chartTitle, unit);
     });
   }
+
+  // Funkcje obsługujące kliknięcia dla różnych typów danych
+  onTemperatureClick() {
+    this.onChartClick(
+      'bodyTemperature',
+      this.dataService.getAllTemperatureData.bind(this.dataService),
+      'bodyTemperatureData',
+      'Body Temperature',
+      '[°C]'
+    );
+  }
+
   onSaturationClick() {
-    this.dataService.getAllBloodSaturation().subscribe((allBloodSaturation) => {
-      if (this.selectedStartDate && this.selectedEndDate) {
-        this.formattedStartDate = this.formatDate(this.selectedStartDate);
-        this.formattedEndDate = this.formatDate(this.selectedEndDate);
-
-        // Filtrowanie na podstawie wybranego przedziału dat
-        const filteredData = allBloodSaturation.bloodSaturation.filter(
-          (entry) => {
-            return (
-              entry.date >= this.formattedStartDate &&
-              entry.date <= this.formattedEndDate
-            );
-          }
-        );
-
-        // Mapowanie danych
-        this.labels = filteredData.map((entry, index) => index);
-        this.bloodSaturationData = filteredData.map((entry) => entry.value);
-      } else {
-        this.labels = allBloodSaturation.bloodSaturation.map(
-          (entry, index) => index
-        );
-        this.bloodSaturationData = allBloodSaturation.bloodSaturation.map(
-          (entry) => entry.value
-        );
-      }
-      const labels = this.labels;
-      const data1 = this.bloodSaturationData;
-      const data2 = [];
-      const title = 'Blood Saturation';
-      const unit = '[%]';
-      this.updateChart(labels, data1, data2, title, unit);
-    });
+    this.onChartClick(
+      'bloodSaturation',
+      this.dataService.getAllBloodSaturation.bind(this.dataService),
+      'bloodSaturationData',
+      'Blood Saturation',
+      '[%]'
+    );
   }
 
   onHearthRateClick() {
-    this.dataService.getAllHearthRate().subscribe((allHearthRate) => {
-      if (this.selectedStartDate && this.selectedEndDate) {
-        this.formattedStartDate = this.formatDate(this.selectedStartDate);
-        this.formattedEndDate = this.formatDate(this.selectedEndDate);
-
-        // Filtrowanie na podstawie wybranego przedziału dat
-        const filteredData = allHearthRate.hearthRate.filter((entry) => {
-          return (
-            entry.date >= this.formattedStartDate &&
-            entry.date <= this.formattedEndDate
-          );
-        });
-
-        // Mapowanie danych
-        this.labels = filteredData.map((entry, index) => index);
-        this.hearthRateData = filteredData.map((entry) => entry.value);
-      } else {
-        this.labels = allHearthRate.hearthRate.map((entry, index) => index);
-        this.hearthRateData = allHearthRate.hearthRate.map(
-          (entry) => entry.value
-        );
-      }
-      const labels = this.labels;
-      const data1 = this.hearthRateData;
-      const data2 = [];
-      const title = 'Hearth Rate';
-      const unit = '[bpm]';
-      this.updateChart(labels, data1, data2, title, unit);
-    });
+    this.onChartClick(
+      'hearthRate',
+      this.dataService.getAllHearthRate.bind(this.dataService),
+      'hearthRateData',
+      'Hearth Rate',
+      '[bpm]'
+    );
   }
 
   onBodyWeightClick() {
-    this.dataService.getAllBodyWeight().subscribe((allBodyWeight) => {
-      if (this.selectedStartDate && this.selectedEndDate) {
-        this.formattedStartDate = this.formatDate(this.selectedStartDate);
-        this.formattedEndDate = this.formatDate(this.selectedEndDate);
-
-        // Filtrowanie na podstawie wybranego przedziału dat
-        const filteredData = allBodyWeight.bodyWeight.filter((entry) => {
-          return (
-            entry.date >= this.formattedStartDate &&
-            entry.date <= this.formattedEndDate
-          );
-        });
-
-        // Mapowanie danych
-        this.labels = filteredData.map((entry, index) => index);
-        this.bodyWeightData = filteredData.map((entry) => entry.value);
-      } else {
-        this.labels = allBodyWeight.bodyWeight.map((entry, index) => index);
-        this.bodyWeightData = allBodyWeight.bodyWeight.map(
-          (entry) => entry?.value
-        );
-      }
-      const labels = this.labels;
-      const data1 = this.bodyWeightData;
-      const data2 = [];
-      const title = 'Body Weight';
-      const unit = '[kg]';
-      this.updateChart(labels, data1, data2, title, unit);
-    });
+    this.onChartClick(
+      'bodyWeight',
+      this.dataService.getAllBodyWeight.bind(this.dataService),
+      'bodyWeightData',
+      'Body Weight',
+      '[kg]'
+    );
   }
 
   onRespirationRateClick() {
-    this.dataService.getAllRespirationRate().subscribe((allRespirationRate) => {
-      if (this.selectedStartDate && this.selectedEndDate) {
-        this.formattedStartDate = this.formatDate(this.selectedStartDate);
-        this.formattedEndDate = this.formatDate(this.selectedEndDate);
-
-        // Filtrowanie na podstawie wybranego przedziału dat
-        const filteredData = allRespirationRate.respirationRate.filter(
-          (entry) => {
-            return (
-              entry.date >= this.formattedStartDate &&
-              entry.date <= this.formattedEndDate
-            );
-          }
-        );
-
-        // Mapowanie danych
-        this.labels = filteredData.map((entry, index) => index);
-        this.respirationRateData = filteredData.map((entry) => entry.value);
-      } else {
-        this.labels = allRespirationRate.respirationRate.map(
-          (entry, index) => index
-        );
-        this.respirationRateData = allRespirationRate.respirationRate.map(
-          (entry) => entry.value
-        );
-      }
-      const labels = this.labels;
-      const data1 = this.respirationRateData;
-      const data2 = [];
-      const title = 'Respiration Rate';
-      const unit = '[/min]';
-      this.updateChart(labels, data1, data2, title, unit);
-    });
+    this.onChartClick(
+      'respirationRate',
+      this.dataService.getAllRespirationRate.bind(this.dataService),
+      'respirationRateData',
+      'Respiration Rate',
+      '[/min]'
+    );
   }
 
   onBloodPressureClick() {
@@ -403,27 +263,26 @@ export class DashboardComponent implements OnInit {
 
         // Filtrowanie na podstawie wybranego przedziału dat
         const filteredData = allBloodPressure.bloodPressure.filter(
-          (entry) => {
+          (entry, index) => {
             return (
-              entry.date >= this.formattedStartDate &&
-              entry.date <= this.formattedEndDate
+              entry.date >= this.formattedStartDate && entry.date <= this.formattedEndDate
             );
           }
         );
 
         // Mapowanie danych
-        this.labels = filteredData.map((entry, index) => index);
-        this.bloodPressureSystolicData = filteredData.map((entry) => entry.valueSystolic);
-        this.bloodPressureDiastolicData = filteredData.map((entry) => entry.valueDiastolic);
+        this.labels = filteredData.map((entry, index) => entry.date);
+        this.bloodPressureSystolicData = filteredData.map((entry, index) => entry.valueSystolic);
+        this.bloodPressureDiastolicData = filteredData.map((entry, index) => entry.valueDiastolic);
       } else {
         this.labels = allBloodPressure.bloodPressure.map(
-          (entry, index) => index
+          (entry, index) =>  entry.date
         );
         this.bloodPressureSystolicData = allBloodPressure.bloodPressure.map(
-          (entry) => entry.valueSystolic
+          (entry, index) => entry.valueSystolic
         );
         this.bloodPressureDiastolicData = allBloodPressure.bloodPressure.map(
-          (entry) => entry.valueDiastolic
+          (entry, index) => entry.valueDiastolic
         );
       }
       const labels = this.labels;
@@ -435,3 +294,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 }
+
+
+
