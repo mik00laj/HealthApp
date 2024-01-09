@@ -3,8 +3,8 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  border: 2px solid red;
-  background-color: #fff;
+  // border: 2px solid red;
+  // background-color: #fff;
 
   &__box {
     display: flex;
@@ -15,7 +15,7 @@
   &__box-data {
     display: flex;
     justify-content: space-around;
-    // flex-direction: column;  
+    // flex-direction: column;
     border-radius: 20px;
     overflow: hidden;
   }
@@ -23,31 +23,44 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    background-color: #6494ed8e;
-    margin: 3rem 1.5rem;
-    border-radius: 10px;
-    background: linear-gradient(145deg, #f0f0f0, #cacaca);
-    box-shadow: 6px 6px 12px #9d9d9d, -6px -6px 12px #ffffff;
-    cursor: pointer;
-
     width: 300px;
     height: 100px;
+    margin: 5rem 5rem;
+    background-color: #ffffff;
+    box-shadow: 5px 5px 10px #bfbfbf, -5px -5px 10px #ffffff;
+    cursor: pointer;
   }
   &__item-text {
     width: 180px;
   }
-  &__item-title {
+  &__item-title,
+  &__box-title {
     text-transform: uppercase;
+    font-weight: bold;
   }
-  // &__box-chart {
-  // }
-  &__chart-container {
-    canvas {
-      width: 600px;
-      background-color: #fff;
+  &__item-icon{
+    .fa-solid{
+      font-size: 2.5rem;
     }
   }
+  
+  // &__box-filter {
+  //   // display: flex;
+  //   // flex-direction: column;
+  // }
+  &__box-chart {
+    width: 100%;
+    padding: 2.5rem 2.5rem;
+    box-shadow: 5px 5px 10px #bfbfbf, -5px -5px 10px #ffffff;
+  }
+
+  &__chart {
+    width: 100% !important;
+    height: 400px !important;
+    background-color: #fff;
+  }
+
   &__box-table {
-    width: 600px;
+    width: 800px;
   }
 }

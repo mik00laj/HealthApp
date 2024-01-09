@@ -13,7 +13,6 @@ import { FooterComponent } from './components/footer/footer.component';
 import { ChartsComponent } from './pages/charts/charts.component';
 import { DataTableComponent } from './shared/data-table/data-table.component';
 
-import { DatePipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -23,6 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import {MatButtonModule} from '@angular/material/button'
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,7 +48,9 @@ import { MatSelectModule } from '@angular/material/select';
     MatFormFieldModule,
     MatInputModule,
     MatNativeDateModule,
-    MatSelectModule
+    MatSelectModule,
+    MatButtonModule,
+    
   ],
   providers: [],
   bootstrap: [AppComponent],

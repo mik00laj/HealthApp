@@ -1,7 +1,5 @@
 <div class="dashboard">
     <div class="dashboard__box">
-
-
         <div class="dashboard__box-data">
 
             <div class="dashboard__box-items">
@@ -29,7 +27,7 @@
                         <p class="dashboard__item-data">{{latestData.latestHearthRate }}bpm</p>
                         <p class="dashboard__item-title">Hearth Rate</p>
                     </div>
-                    <div class="dashboard__item-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+                    <div class="dashboard__item-icon"><i class="fa-solid fa-heart-pulse" style="color: #FF4033;"></i></div>
                 </div>
 
             </div>
@@ -74,25 +72,21 @@
                 <mat-datepicker #startDatePicker></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field class="end-date">
+            <mat-form-field class="dashboard__end-date">
                 <input matInput [matDatepicker]="endDatePicker" placeholder="End Date" [(ngModel)]="selectedEndDate">
                 <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                 <mat-datepicker #endDatePicker></mat-datepicker>
             </mat-form-field>
         </div>
-
-
-
+        
+        
         <div class="dashboard__box-chart">
-            <div class="dashboard__chart-container">
-                <canvas id="canvas">{{chart}} </canvas>
-            </div>
+            <div class = 'dashboard__box-title'>{{title}}</div>
+            <canvas id="chart" class="dashboard__chart">{{chart}} </canvas>
         </div>
 
         <div class="dashboard__box-table">
-            <div class="dashboard__table">
-                <app-data-table></app-data-table>
-            </div>
+            <app-data-table></app-data-table>
         </div>
 
     </div>

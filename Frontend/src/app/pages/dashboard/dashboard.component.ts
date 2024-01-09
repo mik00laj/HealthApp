@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../services/get-data.service';
 import { Chart } from 'chart.js/auto';
 import { Observable } from 'rxjs';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -33,75 +34,14 @@ export class DashboardComponent implements OnInit {
 
   chart: any = [];
   labels = [];
-
+  title:string
 
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
     this.updateLatestData()
-    this.onChartClick(
-      'bodyTemperature',
-      this.dataService.getAllTemperatureData.bind(this.dataService),
-      'bodyTemperatureData',
-      'Body Temperature',
-      '[°C]'
-    );
-    this.chart = new Chart('canvas', {
-      type: 'line',
-      data: {
-        labels: [],
-        datasets: [
-          {
-            label: '',
-            data: [],
-            backgroundColor: 'red',
-            borderColor: '#007FFF',
-            borderWidth: 2,
-          },
-          {
-            label: '',
-            data: [],
-            backgroundColor: '',
-            borderColor: '',
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          title: {
-            display: true,
-            text: '',
-          },
-        },
-        scales: {
-          x: {
-            title: {
-              display: true,
-              text: 'Date[YYYY-MM-DD]',
-              color: 'black',
-              align: 'end',
-            },
-            beginAtZero: true,
-            grid: {
-              color: 'rgba(0, 0, 0, 0.1)',
-            },
-          },
-          y: {
-            title: {
-              display: true,
-              text: 'Oś Y',
-              color: 'black',
-              align: 'end',
-            },
-            beginAtZero: true,
-            grid: {
-              color: 'rgba(0, 0, 0, 0.1)',
-            },
-          },
-        },
-      },
-    });
+    this.onTemperatureClick()
+    this.createChart()
   }
 
   updateLatestData(): void {
@@ -136,12 +76,65 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  formatDate = (date: Date): string => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = (date.getDate() + 1).toString().padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
+  createChart(){
+    this.chart = new Chart('chart', {
+      type: 'line',
+      data: {
+        labels: [],
+        datasets: [
+          {
+            label: '',
+            data: [],
+            backgroundColor: '',
+            borderColor: '',
+            borderWidth: 2,
+          },
+          {
+            label: '',
+            data: [],
+            backgroundColor: '',
+            borderColor: '',
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: false,
+            text: '',
+          },
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Date[YYYY-MM-DD]',
+              color: 'black',
+              align: 'end',
+            },
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.1)',
+            },
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Oś Y',
+              color: 'black',
+              align: 'end',
+            },
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.1)',
+            },
+          },
+        },
+      },
+    });
+  }
 
   updateChart(
     labels: string[],
@@ -174,6 +167,13 @@ export class DashboardComponent implements OnInit {
     this.chart.update();
   }
 
+  formatDate = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = (date.getDate() + 1).toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   onChartClick(
     dataType: string,
     dataServiceMethod: () => Observable<any>,
@@ -191,7 +191,6 @@ export class DashboardComponent implements OnInit {
             entry.date >= this.formattedStartDate && entry.date <= this.formattedEndDate
           );
         });
-        console.log(filteredData);
         // Mapowanie danych
         this.labels = filteredData.map((entry, index) => entry.date);
         this[property] = filteredData.map((entry, index) => entry.value);
@@ -213,6 +212,7 @@ export class DashboardComponent implements OnInit {
       'Body Temperature',
       '[°C]'
     );
+    this.title = 'Body Temperture'
   }
 
   onSaturationClick() {
@@ -223,6 +223,7 @@ export class DashboardComponent implements OnInit {
       'Blood Saturation',
       '[%]'
     );
+    this.title = 'Blood Saturation'
   }
 
   onHearthRateClick() {
@@ -233,6 +234,7 @@ export class DashboardComponent implements OnInit {
       'Hearth Rate',
       '[bpm]'
     );
+    this.title = 'Hearth Rate'
   }
 
   onBodyWeightClick() {
@@ -243,6 +245,7 @@ export class DashboardComponent implements OnInit {
       'Body Weight',
       '[kg]'
     );
+    this.title = 'Body Weight'
   }
 
   onRespirationRateClick() {
@@ -253,6 +256,7 @@ export class DashboardComponent implements OnInit {
       'Respiration Rate',
       '[/min]'
     );
+    this.title = 'Respiration Rate'
   }
 
   onBloodPressureClick() {
@@ -288,12 +292,9 @@ export class DashboardComponent implements OnInit {
       const labels = this.labels;
       const data1 = this.bloodPressureSystolicData;
       const data2 = this.bloodPressureDiastolicData;
-      const title = 'Blood Pressure';
+      this.title = 'Blood Pressure';
       const unit = '[mmHg]';
-      this.updateChart(labels, data1, data2, title, unit);
+      this.updateChart(labels, data1, data2, this.title, unit);
     });
   }
-}
-
-
-
+} 
