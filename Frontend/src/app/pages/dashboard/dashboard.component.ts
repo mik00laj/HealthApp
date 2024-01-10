@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateLatestData()
-    this.onTemperatureClick()
+    this.onBodyTemperatureClick()
     this.createChart()
   }
 
@@ -204,7 +204,7 @@ export class DashboardComponent implements OnInit {
   }
 
   // Funkcje obsługujące kliknięcia dla różnych typów danych
-  onTemperatureClick() {
+  onBodyTemperatureClick() {
     this.onChartClick(
       'bodyTemperature',
       this.dataService.getAllTemperatureData.bind(this.dataService),
@@ -215,7 +215,7 @@ export class DashboardComponent implements OnInit {
     this.title = 'Body Temperture'
   }
 
-  onSaturationClick() {
+  onBloodSaturationClick() {
     this.onChartClick(
       'bloodSaturation',
       this.dataService.getAllBloodSaturation.bind(this.dataService),
@@ -296,5 +296,14 @@ export class DashboardComponent implements OnInit {
       const unit = '[mmHg]';
       this.updateChart(labels, data1, data2, this.title, unit);
     });
+  }
+  onUpdateChart(){
+    if(this.title ==='Body Temperture'){this.onBodyTemperatureClick()}
+    if(this.title ==='Blood Saturation'){this.onBloodSaturationClick()}
+    if(this.title ==='Blood Saturation'){this.onBloodSaturationClick()}
+    if(this.title ==='Hearth Rate'){this.onHearthRateClick()}
+    if(this.title ==='Body Weight'){this.onBodyWeightClick()}
+    if(this.title ==='Respiration Rate'){this.onRespirationRateClick()}
+    if(this.title ==='Blood Pressure'){this.onBloodPressureClick()}
   }
 } 

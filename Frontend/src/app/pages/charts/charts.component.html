@@ -1,22 +1,27 @@
 <div class="charts">
-    <div class="charts__header"><h1>Charts</h1></div>
+    <div class="charts__header">
+        <h1>Charts</h1>
+    </div>
     <div class="charts__box-filters">
-        <mat-form-field class="charts__start-date">
-            <input matInput [matDatepicker]="startDatePicker" placeholder="Start Date" [(ngModel)]="selectedStartDate">
-            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #startDatePicker></mat-datepicker>
-        </mat-form-field>
+        <div class="charts__box-filter">
+            <mat-form-field class="charts__start-date">
+                <input matInput [matDatepicker]="startDatePicker" placeholder="Start Date"
+                    [(ngModel)]="selectedStartDate">
+                <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #startDatePicker></mat-datepicker>
+            </mat-form-field>
 
-        <mat-form-field class="charts__end-date">
-            <input matInput [matDatepicker]="endDatePicker" placeholder="End Date" [(ngModel)]="selectedEndDate">
-            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #endDatePicker></mat-datepicker>
-        </mat-form-field>
-        <button class="charts__submit-btn " (click)="onRefreshCharts()">Submit</button>
+            <mat-form-field class="charts__end-date">
+                <input matInput [matDatepicker]="endDatePicker" placeholder="End Date" [(ngModel)]="selectedEndDate">
+                <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #endDatePicker></mat-datepicker>
+            </mat-form-field>
+        </div>
+        <button class="charts__submit-btn "><i class="fa-solid fa-rotate-right"  (click)="onRefreshCharts()"></i></button>
     </div>
     <div class="charts__container">
 
-        <div class="charts__box">
+        <div class="charts__box-chart">
             <div class="charts__box-items">
                 <div class='charts__box-title'>Body Temperature</div>
                 <canvas id="chartBodyTemperature" class="charts__chart">{{chartBodyTemperature}} </canvas>
@@ -24,7 +29,7 @@
 
         </div>
 
-        <div class="charts__box">
+        <div class="charts__box-chart">
             <div class="charts__box-items">
                 <div class='charts__box-title'>Blood Saturation</div>
                 <canvas id="chartBloodSaturation" class="charts__chart">{{chartBloodSaturation}} </canvas>
@@ -32,7 +37,7 @@
 
         </div>
 
-        <div class="charts__box">
+        <div class="charts__box-chart">
             <div class="charts__box-items">
                 <div class='charts__box-title'>Hearth Rate</div>
                 <canvas id="chartHearthRate" class="charts__chart">{{chartHearthRate}} </canvas>
@@ -40,7 +45,7 @@
 
         </div>
 
-        <div class="charts__box">
+        <div class="charts__box-chart">
             <div class="charts__box-items">
                 <div class='charts__box-title'>Body Weight</div>
                 <canvas id="chartBodyWeight" class="charts__chart">{{chartBodyWeight}} </canvas>
@@ -48,7 +53,7 @@
 
         </div>
 
-        <div class="charts__box">
+        <div class="charts__box-chart">
             <div class="charts__box-items">
                 <div class='charts__box-title'>Respiration Rate</div>
                 <canvas id="chartRespirationRate" class="charts__chart">{{chartRespirationRate}} </canvas>
@@ -56,7 +61,7 @@
 
         </div>
 
-        <div class="charts__box">
+        <div class="charts__box-chart">
             <div class="charts__box-items">
                 <div class='charts__box-title'>Blood Pressure</div>
                 <canvas id="chartBloodPressure" class="charts__chart">{{chartBloodPressure}} </canvas>

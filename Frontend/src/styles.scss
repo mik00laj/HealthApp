@@ -8,15 +8,21 @@
 html,
 body {
   height: 100%;
-  	// 10px
-	font-size: 62.5%;
-	scroll-behavior: smooth;
+  // 10px
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+
 }
 body {
   margin: 0;
   font-size: 1.6rem;
-//   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}

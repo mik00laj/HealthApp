@@ -1,18 +1,15 @@
 <div class="dashboard">
     <div class="dashboard__box">
         <div class="dashboard__box-data">
-
             <div class="dashboard__box-items">
-
-                <div class="dashboard__item dashboard__item--temperature" (click)="onTemperatureClick()">
+                <div class="dashboard__item dashboard__item--temperature" (click)="onBodyTemperatureClick()">
                     <div class="dashboard__item-text">
                         <p class="dashboard__item-data">{{latestData.latestBodyTemperature }}°C</p>
                         <p class="dashboard__item-title">Temperature</p>
                     </div>
                     <div class="dashboard__item-icon"><i class="fa-solid fa-temperature-quarter"></i></div>
                 </div>
-
-                <div class="dashboard__item dashboard__item--saturation" (click)="onSaturationClick()">
+                <div class="dashboard__item dashboard__item--saturation" (click)="onBloodSaturationClick()">
                     <div class="dashboard__item-text">
                         <p class="dashboard__item-data">{{latestData.latestBloodSaturation }}%</p>
                         <p class="dashboard__item-title">Blood Saturation</p>
@@ -21,20 +18,16 @@
                             style="color: #e62200;"></i>
                     </div>
                 </div>
-
                 <div class="dashboard__item dashboard__item--hearth-rate" (click)="onHearthRateClick()">
                     <div class="dashboard__item-text">
                         <p class="dashboard__item-data">{{latestData.latestHearthRate }}bpm</p>
                         <p class="dashboard__item-title">Hearth Rate</p>
                     </div>
-                    <div class="dashboard__item-icon"><i class="fa-solid fa-heart-pulse" style="color: #FF4033;"></i></div>
+                    <div class="dashboard__item-icon"><i class="fa-solid fa-heart-pulse" style="color: #FF4033;"></i>
+                    </div>
                 </div>
-
             </div>
-
-
             <div class="dashboard__box-items">
-
                 <div class="dashboard__item dashboard__item--body-weight" (click)="onBodyWeightClick()">
                     <div class="dashboard__item-text">
                         <p class="dashboard__item-data">{{latestData.latestBodyWeight}}kg</p>
@@ -42,7 +35,6 @@
                     </div>
                     <div class="dashboard__item-icon"><i class="fa-solid fa-weight-scale"></i></div>
                 </div>
-
                 <div class="dashboard__item dashboard__item--respiration-rate" (click)="onRespirationRateClick()">
                     <div class="dashboard__item-text">
                         <p class="dashboard__item-data">{{latestData.latestRespirationRate}}/min</p>
@@ -50,45 +42,40 @@
                     </div>
                     <div class="dashboard__item-icon" style="color: #0CAFFF;"><i class="fa-solid fa-lungs"></i></div>
                 </div>
-
                 <div class="dashboard__item dashboard__item--blood--pressure" (click)="onBloodPressureClick()">
                     <div class=" dashboard__item-text">
                         <p class="dashboard__item-data">
-                            {{latestData.latestBloodPressureSystolic}}/{{latestData.latestBloodPressureDiastolic}}mmHg</p>
+                            {{latestData.latestBloodPressureSystolic}}/{{latestData.latestBloodPressureDiastolic}}mmHg
+                        </p>
                         <p class="dashboard__item-title">Blood Pressure</p>
                     </div>
                     <div class="dashboard__item-icon"><i class="fa-solid fa-droplet" style="color: #e62200;"></i></div>
                 </div>
-
             </div>
         </div>
-  
-        <div class="dashboard__box-filter">
-
-            <mat-form-field class="dashboard__start-date">
-                <input matInput [matDatepicker]="startDatePicker" placeholder="Start Date"
-                    [(ngModel)]="selectedStartDate">
-                <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #startDatePicker></mat-datepicker>
-            </mat-form-field>
-
-            <mat-form-field class="dashboard__end-date">
-                <input matInput [matDatepicker]="endDatePicker" placeholder="End Date" [(ngModel)]="selectedEndDate">
-                <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-                <mat-datepicker #endDatePicker></mat-datepicker>
-            </mat-form-field>
+        <div class="dashboard__box-filters">
+            <div class="dashboard__box-filter">
+                <mat-form-field class="dashboard__start-date">
+                    <input matInput [matDatepicker]="startDatePicker" placeholder="Start Date"
+                        [(ngModel)]="selectedStartDate">
+                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePicker></mat-datepicker>
+                </mat-form-field>
+    
+                <mat-form-field class="dashboard__end-date">
+                    <input matInput [matDatepicker]="endDatePicker" placeholder="End Date" [(ngModel)]="selectedEndDate">
+                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <button class="dashboard__submit-btn "><i class="fa-solid fa-rotate-right" (click)="onUpdateChart()" ></i></button>
         </div>
-        
-        
         <div class="dashboard__box-chart">
-            <div class = 'dashboard__box-title'>{{title}}</div>
+            <div class='dashboard__box-title'>{{title}}</div>
             <canvas id="chart" class="dashboard__chart">{{chart}} </canvas>
         </div>
-
         <div class="dashboard__box-table">
             <app-data-table></app-data-table>
         </div>
-
     </div>
-
 </div>

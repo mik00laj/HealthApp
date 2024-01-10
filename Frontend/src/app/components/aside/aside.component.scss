@@ -1,6 +1,13 @@
-.aside{
-    height: 100%;
+.aside {
     width: 250px;
-    margin-right: 2rem;
-    border: 2px solid black
+    height: 100vh;
+    box-shadow: 5px 5px 10px #bfbfbf, -5px -5px 10px #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 100; 
+}
+
+.aside__container {
+    height: 100%;
+    overflow-y: auto; 
 }
