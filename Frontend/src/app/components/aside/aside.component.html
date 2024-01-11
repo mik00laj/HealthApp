@@ -1,35 +1,64 @@
 <aside class="aside">
     <div class="aside__container">
         <div class="aside__box">
-            <div>profil użytkownika</div>
+            <div class="aside__user">
+                <div class="aside__user-img">
+                    <div class="aside_-user-img-container"><img src="../../../assets/img/user-profile.png"
+                            alt="user photo"></div>
+                </div>
+                <div class="aside__user-info">
+                    <p><span class="aside__user-name"><b>name </b> </span><span
+                            class="aside__user-surname"><b>surname</b></span>
+                    </p>
+                </div>
+                <div class="aside__user-itmes"></div>
+                <div class=" aside__user-item aside__user--age">
+                    <p>Age</p>
+                    <p>24 yr.</p>
+                </div>
+                <div class=" aside__user-item aside__user--height">
+                    <p>Height</p>
+                    <p>175 cm</p>
+                </div>
+                <div class=" aside__user-item aside__user--weight">
+                    <p>Weight</p>
+                    <p>70 kg</p>
+                </div>
+                <div class=" aside__user-item aside__user--blood">
+                    <p>Blood </p>
+                    <p>O+</p>
+                </div>
+            </div>
             <hr>
             <nav class="aside__nav">
-                <div class="aside__items">
+                <div class="aside__nav-items">
 
-                    <div class="aside__item">
-                        <a href="#" routerLink="/dashboard" routerLinkActive="active">
-                            <i class="fa-solid fa-display"></i>
-                            <span class="aside__text"> Dashboard</span>
+                    <div class="aside__nav-item" routerLink="/dashboard" routerLinkActive="active">
+                        <a class="aside__nav-link">    
+                            <i class="fa-solid fa-display aside__nav-icon"></i>
+                            <span class="aside__nav-text">Dashboard</span>
+                        </a>
+                    </div>
+ 
+                    <div class="aside__nav-item" routerLink="/charts" routerLinkActive="active">
+                        <a class="aside__nav-link">
+                            <i class="fa-solid fa-chart-line aside__nav-icon"></i>
+                            <span class="aside__nav-text">Charts</span>
                         </a>
                     </div>
 
-
-                    <div class="aside__item">
-                        <a href="#" routerLink="/charts" routerLinkActive="active">
-                            <i class="fa-solid fa-chart-line"></i>
-                            <span class="aside__text"> Charts</span>
+                    <div class="aside__nav-item" routerLink="/tables" routerLinkActive="active">
+                        <a  class="aside__nav-link">
+                            <i class="fa fa-table aside__nav-icon"></i>
+                            <span class="aside__nav-text">Tables</span>
                         </a>
                     </div>
-
-                    <div class="aside__item">
-                        <a href="#" routerLink="/tables" routerLinkActive="active">
-                            <i class="fa fa-table"></i>
-                            <span class="aside__text"> Tables</span>
-                        </a>
-                    </div>
-
                 </div>
             </nav>
+            <div class="aside__calendar-box"></div>
+            <mat-card class="aside__calendar">
+                <mat-calendar></mat-calendar>
+              </mat-card>
         </div>
     </div>
 

@@ -36,7 +36,7 @@ export class DataService {
     return this.http.get<any>(`${this.apiUrl}/latest-blood-pressure`);
   }
 
-  getAllTemperatureData(): Observable<any> {
+  getAllBodyTemperature(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/all-data-body-temperature`);
   }
   getAllHearthRate(): Observable<any> {

@@ -11,7 +11,7 @@ import { AsideComponent } from './components/aside/aside.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { ChartsComponent } from './pages/charts/charts.component';
-import { DataTableComponent } from './shared/data-table/data-table.component';
+
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
@@ -22,7 +22,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import {MatButtonModule} from '@angular/material/button'
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { TableTemperatureComponent } from './shared/table-temperature/table-temperature.component';
+import { TableSaturationComponent } from './shared/table-saturation/table-saturation.component';
+import { TableHearthrateComponent } from './shared/table-hearthrate/table-hearthrate.component';
+import { TableWeightComponent } from './shared/table-weight/table-weight.component';
+import { TableRespirationComponent } from './shared/table-respiration/table-respiration.component';
+import { TablePressureComponent } from './shared/table-pressure/table-pressure.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,8 +40,12 @@ import {MatButtonModule} from '@angular/material/button'
     NavbarComponent,
     FooterComponent,
     ChartsComponent,
-    DataTableComponent,
-
+    TableTemperatureComponent,
+    TableSaturationComponent,
+    TableHearthrateComponent,
+    TableWeightComponent,
+    TableRespirationComponent,
+    TablePressureComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,7 +62,7 @@ import {MatButtonModule} from '@angular/material/button'
     MatNativeDateModule,
     MatSelectModule,
     MatButtonModule,
-    
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

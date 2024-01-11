@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
+  user_weight:number = 70
+
   latestData: any = {
     latestBodyTemperature: null,
     latestBloodSaturation: null,
@@ -18,6 +20,8 @@ export class DashboardComponent implements OnInit {
     latestBloodPressureSystolic: null,
     latestBloodPressureDiastolic: null
   }
+  latestBodyWeightResult:string
+
 
   bodyTemperatureData: number[] = [];
   hearthRateData: number[] = [];
@@ -54,18 +58,20 @@ export class DashboardComponent implements OnInit {
     };
     
     fetchLatestData();
-    this.dataService.getLatestBloodPressure().subscribe((bloodPressure) => {
-      this.latestData.latestBloodPressureSystolic = bloodPressure?.latestBloodPressure?.valueSystolic;
-      this.latestData.latestBloodPressureDiastolic = bloodPressure?.latestBloodPressure?.valueDiastolic;
+    this.dataService.getLatestBloodPressure().subscribe((latestbloodPressure) => {
+      this.latestData.latestBloodPressureSystolic = latestbloodPressure?.latestBloodPressure?.valueSystolic;
+      this.latestData.latestBloodPressureDiastolic = latestbloodPressure?.latestBloodPressure?.valueDiastolic;
     });
 
     setInterval(fetchLatestData, 500);
     setInterval(() => {
-      this.dataService.getLatestBloodPressure().subscribe((bloodPressure) => {
-        this.latestData.latestBloodPressureSystolic = bloodPressure?.latestBloodPressure?.valueSystolic;
-        this.latestData.latestBloodPressureDiastolic = bloodPressure?.latestBloodPressure?.valueDiastolic;
+      this.dataService.getLatestBloodPressure().subscribe((latestbloodPressure) => {
+        this.latestData.latestBloodPressureSystolic = latestbloodPressure?.latestBloodPressure?.valueSystolic;
+        this.latestData.latestBloodPressureDiastolic = latestbloodPressure?.latestBloodPressure?.valueDiastolic;
       });
     }, 500);
+
+    this.calculateBodyWeightResult(this.user_weight,this.latestData.latestBodyWeight)
   }
 
   fetchLatestDataFor(dataType: string, ...properties: string[]): void {
@@ -74,6 +80,16 @@ export class DashboardComponent implements OnInit {
         this.latestData[property] = latestData ? latestData[property]?.value : null;
       });
     });
+  }
+
+  calculateBodyWeightResult(user_weight: number, currentValue: number) {
+    if (currentValue > user_weight) {
+      this.latestBodyWeightResult = 'Gain Weight';
+    } else if (currentValue < user_weight) {
+      this.latestBodyWeightResult = 'Lose Weight';
+    } else {
+      this.latestBodyWeightResult =  'Normal';
+    }
   }
 
   createChart(){
@@ -207,7 +223,7 @@ export class DashboardComponent implements OnInit {
   onBodyTemperatureClick() {
     this.onChartClick(
       'bodyTemperature',
-      this.dataService.getAllTemperatureData.bind(this.dataService),
+      this.dataService.getAllBodyTemperature.bind(this.dataService),
       'bodyTemperatureData',
       'Body Temperature',
       '[°C]'
@@ -299,7 +315,6 @@ export class DashboardComponent implements OnInit {
   }
   onUpdateChart(){
     if(this.title ==='Body Temperture'){this.onBodyTemperatureClick()}
-    if(this.title ==='Blood Saturation'){this.onBloodSaturationClick()}
     if(this.title ==='Blood Saturation'){this.onBloodSaturationClick()}
     if(this.title ==='Hearth Rate'){this.onHearthRateClick()}
     if(this.title ==='Body Weight'){this.onBodyWeightClick()}

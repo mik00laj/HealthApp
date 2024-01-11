@@ -1,60 +1,79 @@
 .dashboard {
   height: 100%;
   width: 100%;
-  display: flex;
-  justify-content: center;
-
-  &__box {
+  &__container {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
   }
+  &__title {
+    margin-top: 2rem;
+  }
   &__box-data {
     width: 95%;
   }
-  &__box-items {
+
+  &__data-items {
     display: flex;
     justify-content: center;
-  }
-  &__item {
-    display: flex;
-    justify-content: space-around;
     align-items: center;
-    width: 325px;
-    height: 100px;
-    margin: 1.5rem 3rem;
+  }
+
+  &__data-item-box {
     background-color: #ffffff;
     box-shadow: 5px 5px 10px #bfbfbf, -5px -5px 10px #ffffff;
+    padding: 0rem 2rem;
+    margin: 1.5rem 3rem;
     cursor: pointer;
   }
-  &__item-text {
+
+  &__data-item {
+    display: flex;
+    justify-content: space-between;
+    width: 325px;
+    align-items: center;
+    padding-top: 2rem;
+    cursor: pointer;
+  }
+
+  &__data-item-text {
     width: 180px;
   }
-  &__item-title,
+
+  &__data-item-icon {
+    .fa-solid {
+      font-size: 2.75rem;
+    }
+  }
+
+  &__data-item-result {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  &__data-item-title,
   &__box-title {
     text-transform: uppercase;
     font-weight: bold;
   }
+
   &__box-title {
     font-size: 1.8rem;
     text-align: center;
+  }
 
-  }
-  &__item-icon {
-    .fa-solid {
-      font-size: 2.5rem;
-    }
-  }
   &__box-filters {
     display: flex;
     justify-content: center;
-    margin: 3rem ;
+    margin: 3rem;
   }
-  &__box-filter{
+
+  &__box-filter {
     padding: 0.5rem 2rem;
     box-shadow: 5px 5px 10px #bfbfbf, -5px -5px 10px #ffffff;
   }
+
   &__submit-btn {
     padding: 22px;
     font-size: 1.55rem;
@@ -63,18 +82,20 @@
     background-color: #dadada;
     border: 0px solid black;
     transition: background-color 0.5s, box-shadow 0.5s;
+    cursor: pointer;
 
     &:hover {
       background-color: #f5f5f5;
       box-shadow: 5px 5px 10px #bfbfbf, -5px -5px 10px #ffffff;
-      cursor: pointer;
+
     }
 
-    i{
+    i {
       font-size: 2rem;
       font-weight: bold;
     }
   }
+
   &__box-chart {
     width: 95%;
     padding: 2.5rem 2.5rem;
@@ -91,6 +112,5 @@
   &__box-table {
     width: 95%;
     margin: 5rem 0;
-    
   }
 }

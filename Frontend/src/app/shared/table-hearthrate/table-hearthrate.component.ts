@@ -1,28 +1,28 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { DataTableDataSource, DataTableItem } from './data-table-datasource';
+import { TableHearthrateDataSource, TableHearthrateItem } from './table-hearthrate-datasource';
 import { DataService } from '../../services/get-data.service';
 
 @Component({
-  selector: 'app-data-table',
-  templateUrl: './data-table.component.html',
-  styleUrls: ['./data-table.component.scss']
+  selector: 'app-table-hearthrate',
+  templateUrl: './table-hearthrate.component.html',
+  styleUrls: ['./table-hearthrate.component.scss']
 })
-export class DataTableComponent implements AfterViewInit, OnInit {
+export class TableHearthrateComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<DataTableItem>;
-  dataSource = new DataTableDataSource();
+  @ViewChild(MatTable) table!: MatTable<TableHearthrateItem>;
+  dataSource = new TableHearthrateDataSource();
 
+ 
   constructor(private dataService: DataService) {}
 
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['id', 'date', 'value', 'result'];
   id: number[];
   date: string[];
-  bodyTemperatureValues: number[];
+  hearthRateValues: number[];
   result: string[];
 
   selectedStartDate: Date;
@@ -30,19 +30,14 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   formattedStartDate: string;
   formattedEndDate: string;
 
-  
   ngOnInit(): void {
-    this.createBodyTemperatureTable() 
-    
+    this.createHearthRateTable();
   }
 
   ngAfterViewInit(): void {
-    this.createBodyTemperatureTable() 
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
-    
-
   }
 
   formatDate = (date: Date): string => {
@@ -53,40 +48,46 @@ export class DataTableComponent implements AfterViewInit, OnInit {
   };
 
   updateTableData() {
-    // Mapowanie danych do tablicy EXAMPLE_DATA zgodnie z warunkiem
+    // Mapowanie danych do tablicy TEMPERATURE_DATA zgodnie z warunkiem
     this.dataSource.data = this.id.map((_, index) => ({
       id: this.id[index],
       date: this.date[index],
-      value: this.bodyTemperatureValues[index],
+      value: this.hearthRateValues[index],
       result: this.result[index],
     }));
   }
 
-  createBodyTemperatureTable() {
-    this.dataService.getAllTemperatureData().subscribe((allBodyTemperature) => {
+  createHearthRateTable() {
+    this.dataService.getAllHearthRate().subscribe((allHearthRate) => {
       if (this.selectedStartDate && this.selectedEndDate) {
         this.formattedStartDate = this.formatDate(this.selectedStartDate);
         this.formattedEndDate = this.formatDate(this.selectedEndDate);
 
         // Filtrowanie na podstawie wybranego przedziału dat
-        const filteredData = allBodyTemperature.bodyTemperature.filter(
-          (entry) => entry.date >= this.formattedStartDate && entry.date <= this.formattedEndDate
+        const filteredData = allHearthRate.hearthRate.filter(
+          (entry) =>
+            entry.date >= this.formattedStartDate &&
+            entry.date <= this.formattedEndDate
         );
 
         // Mapowanie danych
-        this.id = filteredData.map((entry,index) => index);
+        this.id = filteredData.map((entry, index) => index);
         this.date = filteredData.map((entry) => entry.date);
-        this.bodyTemperatureValues = filteredData.map((entry) => entry.value);
-        this.result = this.bodyTemperatureValues.map(value => (value > 37 ? 'High' : 'Normal'));
-
+        this.hearthRateValues = filteredData.map((entry) => entry.value);
+        this.result = this.hearthRateValues.map((value) =>
+          value > 37 ? 'High' : 'Normal'
+        );
       } else {
-        this.id = allBodyTemperature.bodyTemperature.map((entry,index) => index);
-        this.date = allBodyTemperature.bodyTemperature.map((entry) => entry.date);
-        this.bodyTemperatureValues = allBodyTemperature.bodyTemperature.map((entry) => entry.value);
-        this.result = this.bodyTemperatureValues.map(value => (value > 37 ? 'High' : 'Normal'));
+        this.id = allHearthRate.hearthRate.map((entry, index) => index);
+        this.date = allHearthRate.hearthRate.map((entry) => entry.date);
+        this.hearthRateValues = allHearthRate.hearthRate.map((entry) => entry.value);
+        this.result = this.hearthRateValues.map((value) =>value > 37 ? 'High' : 'Normal');
       }
 
       this.updateTableData();
     });
+  }
+  onSubmitBtn() {
+    this.createHearthRateTable();
   }
 }

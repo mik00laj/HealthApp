@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
   selector: 'app-charts',
   templateUrl: './charts.component.html',
   styleUrl: './charts.component.scss',
-  
 })
 export class ChartsComponent implements OnInit {
   charts = [
@@ -27,8 +26,20 @@ export class ChartsComponent implements OnInit {
   bloodPressureSystolicData: number[] = [];
   bloodPressureDiastolicData: number[] = [];
 
+  selectedStartDateBodyTemperature: Date;
+  selectedEndDateBodyTemperature: Date;
+  selectedStartDateBloodSaturation: Date;
+  selectedEndDateBloodSaturation: Date;
+  selectedStartDateHearthRate: Date;
+  selectedEndDateHearthRate: Date;
   selectedStartDate: Date;
-  selectedEndDate: Date;
+  selectedStartDateBodyWeight: Date;
+  selectedEndDateBodyWeight: Date;
+  selectedStartDateRespirationRate: Date;
+  selectedEndDateRespirationRate: Date;
+  selectedStartDateBloodPressure: Date;
+  selectedEndDateBloodPressure: Date;
+
   formattedStartDate: string;
   formattedEndDate: string;
 
@@ -59,18 +70,20 @@ export class ChartsComponent implements OnInit {
     return `${year}-${month}-${day}`;
   };
 
-  createChart(  
+  createChart(
     chart: any,
     dataType: string,
+    startDate: any,
+    endDate: any,
     dataServiceMethod: () => Observable<any>,
     property: string,
     chartTitle: string,
     unit: string
   ) {
     dataServiceMethod().subscribe((data) => {
-      if (this.selectedStartDate && this.selectedEndDate) {
-        this.formattedStartDate = this.formatDate(this.selectedStartDate);
-        this.formattedEndDate = this.formatDate(this.selectedEndDate);
+      if (startDate && endDate) {
+        this.formattedStartDate = this.formatDate(startDate);
+        this.formattedEndDate = this.formatDate(endDate);
         // Filtrowanie danych
         const filteredData = data[dataType].filter((entry, index) => {
           return (
@@ -86,7 +99,14 @@ export class ChartsComponent implements OnInit {
         this.labels = data[dataType].map((entry, index) => entry.date);
         this[property] = data[dataType].map((entry, index) => entry.value);
       }
-      this.updateChart(chart,this.labels,this[property],[],chartTitle,unit);
+      this.updateChart(
+        chart,
+        this.labels,
+        this[property],
+        [],
+        chartTitle,
+        unit
+      );
     });
   }
   createCharts(): void {
@@ -155,7 +175,9 @@ export class ChartsComponent implements OnInit {
     this.createChart(
       this.chartBodyTemperature,
       'bodyTemperature',
-      this.dataService.getAllTemperatureData.bind(this.dataService),
+      this.selectedStartDateBodyTemperature,
+      this.selectedEndDateBodyTemperature,
+      this.dataService.getAllBodyTemperature.bind(this.dataService),
       'bodyTemperatureData',
       'Body Temperature',
       '[°C]'
@@ -166,6 +188,8 @@ export class ChartsComponent implements OnInit {
     this.createChart(
       this.chartBloodSaturation,
       'bloodSaturation',
+      this.selectedStartDateBloodSaturation,
+      this.selectedEndDateBloodSaturation,
       this.dataService.getAllBloodSaturation.bind(this.dataService),
       'bloodSaturationData',
       'Blood Saturation',
@@ -177,6 +201,8 @@ export class ChartsComponent implements OnInit {
     this.createChart(
       this.chartHearthRate,
       'hearthRate',
+      this.selectedStartDateHearthRate,
+      this.selectedEndDateHearthRate,
       this.dataService.getAllHearthRate.bind(this.dataService),
       'hearthRateData',
       'Hearth Rate',
@@ -186,20 +212,24 @@ export class ChartsComponent implements OnInit {
 
   createBodyWeightChart() {
     this.chartBodyWeight,
-    this.createChart(
-      this.chartBodyWeight,
-      'bodyWeight',
-      this.dataService.getAllBodyWeight.bind(this.dataService),
-      'bodyWeightData',
-      'Body Weight',
-      '[kg]'
-    );
+      this.createChart(
+        this.chartBodyWeight,
+        'bodyWeight',
+        this.selectedStartDateBodyWeight,
+        this.selectedEndDateBodyWeight,
+        this.dataService.getAllBodyWeight.bind(this.dataService),
+        'bodyWeightData',
+        'Body Weight',
+        '[kg]'
+      );
   }
 
   createRespirationRateChart() {
     this.createChart(
       this.chartRespirationRate,
       'respirationRate',
+      this.selectedStartDateRespirationRate,
+      this.selectedEndDateRespirationRate,
       this.dataService.getAllRespirationRate.bind(this.dataService),
       'respirationRateData',
       'Respiration Rate',
@@ -209,22 +239,44 @@ export class ChartsComponent implements OnInit {
 
   createBloodPressureChart() {
     this.dataService.getAllBloodPressure().subscribe((allBloodPressure) => {
-      if (this.selectedStartDate && this.selectedEndDate) {
-        this.formattedStartDate = this.formatDate(this.selectedStartDate);
-        this.formattedEndDate = this.formatDate(this.selectedEndDate);
+      if (
+        this.selectedStartDateBloodPressure &&
+        this.selectedEndDateBloodPressure
+      ) {
+        this.formattedStartDate = this.formatDate(
+          this.selectedStartDateBloodPressure
+        );
+        this.formattedEndDate = this.formatDate(
+          this.selectedEndDateBloodPressure
+        );
 
         // Filtrowanie na podstawie wybranego przedziału dat
         const filteredData = allBloodPressure.bloodPressure.filter(
           (entry, index) => {
-            return (entry.date >= this.formattedStartDate && entry.date <= this.formattedEndDate);});
+            return (
+              entry.date >= this.formattedStartDate &&
+              entry.date <= this.formattedEndDate
+            );
+          }
+        );
         // Mapowanie danych
         this.labels = filteredData.map((entry, index) => entry.date);
-        this.bloodPressureSystolicData = filteredData.map((entry, index) => entry.valueSystolic );
-        this.bloodPressureDiastolicData = filteredData.map((entry, index) => entry.valueDiastolic);
+        this.bloodPressureSystolicData = filteredData.map(
+          (entry, index) => entry.valueSystolic
+        );
+        this.bloodPressureDiastolicData = filteredData.map(
+          (entry, index) => entry.valueDiastolic
+        );
       } else {
-        this.labels = allBloodPressure.bloodPressure.map((entry, index) => entry.date);
-        this.bloodPressureSystolicData = allBloodPressure.bloodPressure.map((entry, index) => entry.valueSystolic);
-        this.bloodPressureDiastolicData = allBloodPressure.bloodPressure.map((entry, index) => entry.valueDiastolic);
+        this.labels = allBloodPressure.bloodPressure.map(
+          (entry, index) => entry.date
+        );
+        this.bloodPressureSystolicData = allBloodPressure.bloodPressure.map(
+          (entry, index) => entry.valueSystolic
+        );
+        this.bloodPressureDiastolicData = allBloodPressure.bloodPressure.map(
+          (entry, index) => entry.valueDiastolic
+        );
       }
       const labels = this.labels;
       const data1 = this.bloodPressureSystolicData;
@@ -234,7 +286,7 @@ export class ChartsComponent implements OnInit {
       this.updateBloodPressure(labels, data1, data2, title, unit);
     });
   }
-  onRefreshCharts(){
+  onRefreshCharts() {
     this.createBodyTemperatureChart();
     this.createBloodSaturationChart();
     this.createHearthRateChart();
@@ -263,7 +315,7 @@ export class ChartsComponent implements OnInit {
     chart.data.datasets[1].borderColor = 'transparent';
     chart.update();
   }
- 
+
   updateBloodPressure(
     labels: string[],
     data1: number[],

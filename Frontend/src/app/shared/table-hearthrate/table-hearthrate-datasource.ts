@@ -5,18 +5,27 @@ import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
 
 // TODO: Replace this with your own data model type
-export interface DataTableItem {
+export interface TableHearthrateItem {
   id: number;
   date: string,
   value: number;
   result: string;
 }
 
-// TODO: replace this with real data from your application
-const TEMPERATURE_DATA: DataTableItem[] = []
+const HEARTH_RATE_DATA: TableHearthrateItem[] = [
+  {id:0,date:"2024-01-11",value:132,result:'normal'},
+  {id:1,date:"2024-01-11",value:223,result:'normal'},
+  {id:2,date:"2024-01-11",value:211,result:'normal'},
+  {id:3,date:"2024-01-11",value:70,result:'normal'},
+  {id:4,date:"2024-01-11",value:70,result:'normal'},
+  {id:6,date:"2024-01-11",value:70,result:'normal'},
+  {id:7,date:"2024-01-11",value:190,result:'normal'},
+  {id:8,date:"2024-01-11",value:70,result:'normal'},
+  {id:9,date:"2024-01-11",value:70,result:'normal'},
+  ]
 
-export class DataTableDataSource extends DataSource<DataTableItem> {
-  data: DataTableItem[] = TEMPERATURE_DATA;
+export class TableHearthrateDataSource extends DataSource<TableHearthrateItem> {
+  data: TableHearthrateItem[] = HEARTH_RATE_DATA;
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
@@ -24,8 +33,7 @@ export class DataTableDataSource extends DataSource<DataTableItem> {
     super();
   }
 
-
-  connect(): Observable<DataTableItem[]> {
+  connect(): Observable<TableHearthrateItem[]> {
     if (this.paginator && this.sort) {
       return merge(observableOf(this.data), this.paginator.page, this.sort.sortChange)
         .pipe(map(() => {
@@ -38,7 +46,7 @@ export class DataTableDataSource extends DataSource<DataTableItem> {
 
   disconnect(): void {}
 
-  private getPagedData(data: DataTableItem[]): DataTableItem[] {
+  private getPagedData(data: TableHearthrateItem[]): TableHearthrateItem[] {
     if (this.paginator) {
       const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
       return data.splice(startIndex, this.paginator.pageSize);
@@ -46,9 +54,7 @@ export class DataTableDataSource extends DataSource<DataTableItem> {
       return data;
     }
   }
-
-
-  private getSortedData(data: DataTableItem[]): DataTableItem[] {
+  private getSortedData(data: TableHearthrateItem[]): TableHearthrateItem[] {
     if (!this.sort || !this.sort.active || this.sort.direction === '') {
       return data;
     }
@@ -64,6 +70,7 @@ export class DataTableDataSource extends DataSource<DataTableItem> {
     });
   }
 }
+
 
 function compare(a: string | number, b: string | number, isAsc: boolean): number {
   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
