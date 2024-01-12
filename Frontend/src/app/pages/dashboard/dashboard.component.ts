@@ -71,7 +71,7 @@ export class DashboardComponent implements OnInit {
     });
     
 
-    setInterval(fetchLatestData, 500);
+    setInterval(fetchLatestData, 1000);
     setInterval(() => {
       this.dataService.getLatestBloodPressure().subscribe((latestbloodPressure) => {
         this.latestData.latestBloodPressureSystolic = latestbloodPressure?.latestBloodPressure?.valueSystolic;
@@ -84,7 +84,7 @@ export class DashboardComponent implements OnInit {
       this.calculateBodyWeightResult(this.latestData.latestBodyWeight)
       this.calculateRespirationRateResult(this.latestData.latestRespirationRate)
       this.calculateBloodPressureResult(this.latestData.latestBloodPressureSystolic,this.latestData.latestBloodPressureDiastolic)
-    }, 500);
+    }, 1000);
   }
 
   fetchLatestDataFor(dataType: string, ...properties: string[]): void {
