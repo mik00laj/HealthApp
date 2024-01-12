@@ -30,6 +30,7 @@ import { TableHearthrateComponent } from './shared/table-hearthrate/table-hearth
 import { TableWeightComponent } from './shared/table-weight/table-weight.component';
 import { TableRespirationComponent } from './shared/table-respiration/table-respiration.component';
 import { TablePressureComponent } from './shared/table-pressure/table-pressure.component';
+import { MapComponent } from './pages/map/map.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { TablePressureComponent } from './shared/table-pressure/table-pressure.c
     TableWeightComponent,
     TableRespirationComponent,
     TablePressureComponent,
+    MapComponent,
   ],
   imports: [
     BrowserModule,

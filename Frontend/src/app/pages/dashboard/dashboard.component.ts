@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
   styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit {
+  user_age = 24
   user_weight:number = 70
 
   latestData: any = {
@@ -20,8 +21,14 @@ export class DashboardComponent implements OnInit {
     latestBloodPressureSystolic: null,
     latestBloodPressureDiastolic: null
   }
-  latestBodyWeightResult:string
-
+  latestResult = {
+    latestBodyTemperatureResult: '',
+    latestBloodSaturationResult: null,
+    latestHearthRateResult: null,
+    latestBodyWeightResult:null,
+    latestRespirationRateResult: null,
+    latestBloodPressureResult: null,
+  }
 
   bodyTemperatureData: number[] = [];
   hearthRateData: number[] = [];
@@ -55,13 +62,14 @@ export class DashboardComponent implements OnInit {
       this.fetchLatestDataFor('BloodSaturation', 'latestBloodSaturation');
       this.fetchLatestDataFor('BodyWeight', 'latestBodyWeight');
       this.fetchLatestDataFor('RespirationRate', 'latestRespirationRate');
+      
     };
-    
     fetchLatestData();
     this.dataService.getLatestBloodPressure().subscribe((latestbloodPressure) => {
       this.latestData.latestBloodPressureSystolic = latestbloodPressure?.latestBloodPressure?.valueSystolic;
       this.latestData.latestBloodPressureDiastolic = latestbloodPressure?.latestBloodPressure?.valueDiastolic;
     });
+    
 
     setInterval(fetchLatestData, 500);
     setInterval(() => {
@@ -69,9 +77,14 @@ export class DashboardComponent implements OnInit {
         this.latestData.latestBloodPressureSystolic = latestbloodPressure?.latestBloodPressure?.valueSystolic;
         this.latestData.latestBloodPressureDiastolic = latestbloodPressure?.latestBloodPressure?.valueDiastolic;
       });
-    }, 500);
 
-    this.calculateBodyWeightResult(this.user_weight,this.latestData.latestBodyWeight)
+      this.calculateBodyTemperatureResult(this.latestData.latestBodyTemperature)
+      this.calculateBloodSaturationResult(this.latestData.latestBloodSaturation)
+      this.calculateHearthRateResult(this.latestData.latestHearthRate)
+      this.calculateBodyWeightResult(this.latestData.latestBodyWeight)
+      this.calculateRespirationRateResult(this.latestData.latestRespirationRate)
+      this.calculateBloodPressureResult(this.latestData.latestBloodPressureSystolic,this.latestData.latestBloodPressureDiastolic)
+    }, 500);
   }
 
   fetchLatestDataFor(dataType: string, ...properties: string[]): void {
@@ -81,14 +94,156 @@ export class DashboardComponent implements OnInit {
       });
     });
   }
+  calculateBodyTemperatureResult(currentValue: number){
+    if (currentValue <= 35) {
+      this.latestResult.latestBodyTemperatureResult = 'Hypothermia';
+    } else if (currentValue > 35 && currentValue < 36) {
+      this.latestResult.latestBodyTemperatureResult = 'Too Small';
+    } else if (currentValue >= 36 && currentValue <= 37) {
+      this.latestResult.latestBodyTemperatureResult = 'Normal';
+    } else if (currentValue > 37 && currentValue <37.9) {
+      this.latestResult.latestBodyTemperatureResult = 'Too High';
+    } else if (currentValue >= 37.9 && currentValue < 39.9) {
+      this.latestResult.latestBodyTemperatureResult = 'Fever';
+    } else if (currentValue >= 39) {
+      this.latestResult.latestBodyTemperatureResult = 'High Fever';
+    }else {
+      this.latestResult.latestBodyTemperatureResult = 'Undefined';
+    } 
+  };
 
-  calculateBodyWeightResult(user_weight: number, currentValue: number) {
+  calculateBloodSaturationResult(currentValue: number){
+    if (currentValue >= 95 && currentValue <= 100) {
+      this.latestResult.latestBloodSaturationResult =  'Normal';
+    } else if (currentValue >= 92 && currentValue < 95) {
+      this.latestResult.latestBloodSaturationResult =  'Small';
+    } else if (currentValue >= 90 && currentValue < 92) {
+      this.latestResult.latestBloodSaturationResult =  'Too Small';
+    } else if (currentValue < 90) {
+      this.latestResult.latestBloodSaturationResult =  'Hypoxemia';
+    }else {
+      this.latestResult.latestBloodSaturationResult = 'Undefined';
+    }
+  }
+  calculateHearthRateResult(currentValue:number){
+    const user_age = 24
+    if(user_age >= 1 && user_age  <= 3 ){
+      if (currentValue >= 98  && currentValue <= 140) {
+        this.latestResult.latestHearthRateResult = 'Normal';
+    } else if(currentValue > 140){
+      this.latestResult.latestHearthRateResult = 'Tachycardia'
+    }
+    else if(currentValue < 98){
+      this.latestResult.latestHearthRateResult = 'Bradycardia'
+    }else {
+      this.latestResult.latestHearthRateResult = 'Undefined';
+    }
+    }else if(user_age  > 3 && user_age  <= 5){
+      if (currentValue >= 80   && currentValue <= 120 ) {
+        this.latestResult.latestHearthRateResult = 'Normal';
+    } else if(currentValue > 120 ){
+      this.latestResult.latestHearthRateResult = 'Tachycardia'
+    }
+    else if(currentValue < 80){
+      this.latestResult.latestHearthRateResult = 'Bradycardia'
+    }else {
+      this.latestResult.latestHearthRateResult = 'Undefined';
+    }
+    }else if(user_age  > 5  && user_age  <= 12){
+      if (currentValue >= 75   && currentValue <= 118 ) {
+        this.latestResult.latestHearthRateResult = 'Normal';
+    } else if(currentValue > 118 ){
+      this.latestResult.latestHearthRateResult = 'Tachycardia'
+    }
+    else if(currentValue < 75 ){
+      this.latestResult.latestHearthRateResult = 'Bradycardia'
+    }else {
+      this.latestResult.latestHearthRateResult = 'Undefined';
+    }   
+    }else if(user_age  > 12  && user_age  <= 18){
+      if (currentValue >= 60   && currentValue <= 100 ) {
+        this.latestResult.latestHearthRateResult = 'Normal';
+    } else if(currentValue > 140){
+      this.latestResult.latestHearthRateResult = 'Tachycardia'
+    }
+    else if(currentValue < 60){
+      this.latestResult.latestHearthRateResult = 'Bradycardia'
+    }else {
+      this.latestResult.latestHearthRateResult = 'Undefined';
+    }
+    }else if(user_age  > 18){
+      if (currentValue >= 60   && currentValue <= 100) {
+        this.latestResult.latestHearthRateResult = 'Normal';
+    } else if(currentValue > 100){
+      this.latestResult.latestHearthRateResult = 'Tachycardia'
+    }
+    else if(currentValue < 60 ){
+      this.latestResult.latestHearthRateResult = 'Bradycardia'
+    }else {
+      this.latestResult.latestHearthRateResult = 'Undefined';
+    }
+    }
+  }
+
+  calculateBodyWeightResult(currentValue: number) {
+    const user_weight = this.user_weight
     if (currentValue > user_weight) {
-      this.latestBodyWeightResult = 'Gain Weight';
+      this.latestResult.latestBodyWeightResult = 'Gain Weight';
     } else if (currentValue < user_weight) {
-      this.latestBodyWeightResult = 'Lose Weight';
+      this.latestResult.latestBodyWeightResult = 'Lose Weight';
     } else {
-      this.latestBodyWeightResult =  'Normal';
+      this.latestResult.latestBodyWeightResult =  'Normal';
+    }
+  }
+
+  calculateRespirationRateResult(currentValue:number){
+    const user_age = this.user_age
+    if(user_age >= 1 && user_age  <= 3 ){
+      if (currentValue >= 24 && currentValue <= 40) {
+        this.latestResult.latestRespirationRateResult =  'Normal';
+    } else{
+      this.latestResult.latestRespirationRateResult = 'Lungs issue'
+    }
+    }else if(user_age  > 3 && user_age  <= 6){
+      if (currentValue >= 22 && currentValue <= 34) {
+        this.latestResult.latestRespirationRateResult = 'Normal';
+    } else{
+      this.latestResult.latestRespirationRateResult = 'Lungs issue'
+    }
+    }else if(user_age  > 6 && user_age  <= 12){
+      if (currentValue >= 18 && currentValue <= 30) {
+        this.latestResult.latestRespirationRateResult = 'Normal';
+    } else{
+      this.latestResult.latestRespirationRateResult = 'Lungs issue'
+    }      
+    }else if(user_age  > 12 && user_age  <= 18){
+      if (currentValue >= 12 && currentValue <= 16) {
+        this.latestResult.latestRespirationRateResult = 'Normal';
+    } else{
+      this.latestResult.latestRespirationRateResult = 'Lungs issue'
+    }
+    }else if(user_age  > 18){
+      if (currentValue >= 12 && currentValue <= 20) {
+        this.latestResult.latestRespirationRateResult = 'Normal';
+    } else{
+      this.latestResult.latestRespirationRateResult = 'Lungs issue'
+      }
+    }
+  }
+
+  calculateBloodPressureResult(systolic: number, diastolic: number) {
+    if (systolic < 120 && diastolic < 80) {
+      this.latestResult.latestBloodPressureResult = 'Normal';
+    } else if (systolic >= 120 && systolic <= 129 && diastolic < 80) {
+      this.latestResult.latestBloodPressureResult = 'Elevated';
+    } else if ((systolic >= 130 && systolic <= 139) || (diastolic >= 80 && diastolic <= 89)) {
+      this.latestResult.latestBloodPressureResult = 'Hypertension stage 1';
+    } else if (systolic >= 140 || diastolic >= 90) {
+      this.latestResult.latestBloodPressureResult = 'Hypertension stage 2';
+    } else if (systolic > 180 || diastolic > 120) {
+      this.latestResult.latestBloodPressureResult = 'Hypertensive crisis';
+    } else {
+      this.latestResult.latestBloodPressureResult = 'Undefined';
     }
   }
 
@@ -192,12 +347,12 @@ export class DashboardComponent implements OnInit {
 
   onChartClick(
     dataType: string,
-    dataServiceMethod: () => Observable<any>,
+    loadDataMethod: () => Observable<any>,
     property: string,
     chartTitle: string,
     unit: string
   ) {
-    dataServiceMethod().subscribe((data) => {
+    loadDataMethod().subscribe((data) => {
       if (this.selectedStartDate && this.selectedEndDate) {
         this.formattedStartDate = this.formatDate(this.selectedStartDate);
         this.formattedEndDate = this.formatDate(this.selectedEndDate);
@@ -295,15 +450,10 @@ export class DashboardComponent implements OnInit {
         this.bloodPressureSystolicData = filteredData.map((entry, index) => entry.valueSystolic);
         this.bloodPressureDiastolicData = filteredData.map((entry, index) => entry.valueDiastolic);
       } else {
-        this.labels = allBloodPressure.bloodPressure.map(
-          (entry, index) =>  entry.date
-        );
-        this.bloodPressureSystolicData = allBloodPressure.bloodPressure.map(
-          (entry, index) => entry.valueSystolic
-        );
-        this.bloodPressureDiastolicData = allBloodPressure.bloodPressure.map(
-          (entry, index) => entry.valueDiastolic
-        );
+        this.labels = allBloodPressure.bloodPressure.map((entry, index) =>  entry.date);
+        this.bloodPressureSystolicData = allBloodPressure.bloodPressure.map((entry, index) => entry.valueSystolic);
+        this.bloodPressureDiastolicData = allBloodPressure.bloodPressure.map((entry, index) => entry.valueDiastolic);
+        
       }
       const labels = this.labels;
       const data1 = this.bloodPressureSystolicData;

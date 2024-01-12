@@ -8,20 +8,21 @@ import { Observable, of as observableOf, merge } from 'rxjs';
 export interface TablePressureItem {
   id: number;
   date: string,
-  value: number;
+  systolic: number;
+  diastolic: number;
   result: string;
 }
 
 const BLOOD_PRESSURE_DATA: TablePressureItem[] = [
-  {id:0,date:"2024-01-11",value:70,result:'normal'},
-  {id:1,date:"2024-01-11",value:70,result:'normal'},
-  {id:2,date:"2024-01-11",value:70,result:'normal'},
-  {id:3,date:"2024-01-11",value:70,result:'normal'},
-  {id:4,date:"2024-01-11",value:70,result:'normal'},
-  {id:6,date:"2024-01-11",value:70,result:'normal'},
-  {id:7,date:"2024-01-11",value:70,result:'normal'},
-  {id:8,date:"2024-01-11",value:70,result:'normal'},
-  {id:9,date:"2024-01-11",value:70,result:'normal'},
+  {id:0,date:"2024-01-11",systolic:140,diastolic:90,result:'normal'},
+  {id:1,date:"2024-01-11",systolic:140,diastolic:90,result:'normal'},
+  {id:2,date:"2024-01-11",systolic:140,diastolic:90,result:'normal'},
+  {id:3,date:"2024-01-11",systolic:140,diastolic:90,result:'normal'},
+  {id:4,date:"2024-01-11",systolic:130,diastolic:80,result:'normal'},
+  {id:6,date:"2024-01-11",systolic:120,diastolic:80,result:'normal'},
+  {id:7,date:"2024-01-11",systolic:110,diastolic:70,result:'To Small'},
+  {id:8,date:"2024-01-11",systolic:140,diastolic:90,result:'normal'},
+  {id:9,date:"2024-01-11",systolic:140,diastolic:90,result:'normal'},
   ]
 
 
@@ -69,7 +70,8 @@ export class TablePressureDataSource extends DataSource<TablePressureItem> {
       const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
         case 'id': return compare(+a.id, +b.id, isAsc);
-        case 'value': return compare(+a.value, +b.value, isAsc);
+        case 'systolic': return compare(+a.systolic, +b.systolic, isAsc);
+        case 'diastolic': return compare(+a.diastolic, +b.diastolic, isAsc);
         case 'date': return compare(a.date, b.date, isAsc);
         default: return 0;
       }

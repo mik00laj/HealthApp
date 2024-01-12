@@ -19,10 +19,11 @@ export class TablePressureComponent implements AfterViewInit {
  
   constructor(private dataService: DataService) {}
 
-  displayedColumns = ['id', 'date', 'value', 'result'];
+  displayedColumns = ['id', 'date', 'systolic', 'diastolic', 'result'];
   id: number[];
   date: string[];
-  bloodPressureValues: number[];
+  bloodPressureSystolicValues: number[];
+  bloodPressureDiastolicValues: number[];
   result: string[];
 
   selectedStartDate: Date;
@@ -52,9 +53,26 @@ export class TablePressureComponent implements AfterViewInit {
     this.dataSource.data = this.id.map((_, index) => ({
       id: this.id[index],
       date: this.date[index],
-      value: this.bloodPressureValues[index],
+      systolic: this.bloodPressureSystolicValues[index],
+      diastolic: this.bloodPressureDiastolicValues[index],
       result: this.result[index],
     }));
+  }
+
+  calculateResult(systolic: number, diastolic: number): string {
+    if (systolic < 120 && diastolic < 80) {
+      return 'Normal';
+    } else if (systolic >= 120 && systolic <= 129 && diastolic < 80) {
+      return 'Elevated';
+    } else if ((systolic >= 130 && systolic <= 139) || (diastolic >= 80 && diastolic <= 89)) {
+      return 'Hypertension stage 1';
+    } else if (systolic >= 140 || diastolic >= 90) {
+      return 'Hypertension stage 2';
+    } else if (systolic > 180 || diastolic > 120) {
+      return 'Hypertensive crisis';
+    } else {
+      return 'Undefined';
+    }
   }
 
   createBlooPressureTable() {
@@ -73,15 +91,19 @@ export class TablePressureComponent implements AfterViewInit {
         // Mapowanie danych
         this.id = filteredData.map((entry, index) => index);
         this.date = filteredData.map((entry) => entry.date);
-        this.bloodPressureValues = filteredData.map((entry) => entry.value);
-        this.result = this.bloodPressureValues.map((value) =>
-          value > 37 ? 'High' : 'Normal'
-        );
+        this.bloodPressureSystolicValues = filteredData.map((entry, index) => entry.valueSystolic);
+        this.bloodPressureDiastolicValues = filteredData.map((entry, index) => entry.valueDiastolic);
+        this.result = filteredData.map((entry) =>
+        this.calculateResult(entry.valueSystolic, entry.valueDiastolic)
+      );
       } else {
         this.id = allBloodPressure.bloodPressure.map((entry, index) => index);
         this.date = allBloodPressure.bloodPressure.map((entry) => entry.date);
-        this.bloodPressureValues = allBloodPressure.bloodPressure.map((entry) => entry.value);
-        this.result = this.bloodPressureValues.map((value) =>value > 37 ? 'High' : 'Normal');
+        this.bloodPressureSystolicValues = allBloodPressure.bloodPressure.map((entry, index) => entry.valueSystolic);
+        this.bloodPressureDiastolicValues = allBloodPressure.bloodPressure.map((entry, index) => entry.valueDiastolic);
+        this.result = allBloodPressure.bloodPressure.map((entry) =>
+        this.calculateResult(entry.valueSystolic, entry.valueDiastolic)
+      );
       }
 
       this.updateTableData();

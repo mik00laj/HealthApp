@@ -55,7 +55,25 @@ export class TableTemperatureComponent implements AfterViewInit {
       result: this.result[index],
     }));
   }
+  calculateResult(value: number){
+      if (value <= 35) {
+        return 'Hypothermia';
+      } else if (value > 35 && value < 36) {
+        return 'Too Small';
+      } else if (value >= 36 && value <= 37) {
+        return 'Normal';
+      } else if (value > 37 && value <37.9) {
+        return 'Too High';
+      } else if (value >= 37.9 && value < 39.9) {
+        return 'Fever';
+      } else if (value >= 39) {
+        return 'High Fever';
+      }else {
+        return 'Undefined';
+      }
+    };
 
+  
   createBodyTemperatureTable() {
     this.dataService.getAllBodyTemperature().subscribe((allBodyTemperature) => {
       if (this.selectedStartDate && this.selectedEndDate) {
@@ -71,14 +89,13 @@ export class TableTemperatureComponent implements AfterViewInit {
         this.id = filteredData.map((entry, index) => index);
         this.date = filteredData.map((entry) => entry.date);
         this.bodyTemperatureValues = filteredData.map((entry) => entry.value);
-        this.result = this.bodyTemperatureValues.map((value) =>
-          value > 37 ? 'High' : 'Normal'
-        );
+        this.result = this.bodyTemperatureValues.map(this.calculateResult);
+
       } else {
         this.id = allBodyTemperature.bodyTemperature.map((entry, index) => index);
         this.date = allBodyTemperature.bodyTemperature.map((entry) => entry.date);
         this.bodyTemperatureValues = allBodyTemperature.bodyTemperature.map((entry) => entry.value);
-        this.result = this.bodyTemperatureValues.map((value) =>value > 37 ? 'High' : 'Normal');
+        this.result = this.bodyTemperatureValues.map(this.calculateResult);
       }
       this.updateTableData();
     });

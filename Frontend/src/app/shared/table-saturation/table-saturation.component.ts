@@ -57,6 +57,20 @@ export class TableSaturationComponent implements AfterViewInit {
     }));
   }
 
+  calculateResult(value: number){
+    if (value >= 95 && value <= 100) {
+      return 'Normal';
+    } else if (value >= 92 && value < 95) {
+      return 'Too Small';
+    } else if (value >= 90 && value < 92 ) {
+      return 'Too Small';
+    } else if (value < 90) {
+      return 'Hypoxemia';
+    }else {
+      return 'Undefined';
+    }
+  }
+
   createBloodSaturationTable() {
     this.dataService.getAllBloodSaturation().subscribe((allBloodSaturation) => {
       if (this.selectedStartDate && this.selectedEndDate) {
@@ -73,14 +87,13 @@ export class TableSaturationComponent implements AfterViewInit {
         this.id = filteredData.map((entry, index) => index);
         this.date = filteredData.map((entry) => entry.date);
         this.BloodSaturationValues = filteredData.map((entry) => entry.value);
-        this.result = this.BloodSaturationValues.map((value) =>
-          value > 37 ? 'High' : 'Normal'
-        );
+        this.result = this.BloodSaturationValues.map(this.calculateResult);
+
       } else {
         this.id = allBloodSaturation.bloodSaturation.map((entry, index) => index);
         this.date = allBloodSaturation.bloodSaturation.map((entry) => entry.date);
         this.BloodSaturationValues = allBloodSaturation.bloodSaturation.map((entry) => entry.value);
-        this.result = this.BloodSaturationValues.map((value) =>value > 37 ? 'High' : 'Normal');
+        this.result = this.BloodSaturationValues.map(this.calculateResult);
       }
 
       this.updateTableData();

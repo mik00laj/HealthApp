@@ -57,6 +57,66 @@ export class TableHearthrateComponent implements AfterViewInit {
     }));
   }
 
+  calculateResult(value:number){
+    const user_age = 24
+    if(user_age >= 1 && user_age  <= 3 ){
+      if (value >= 98  && value <= 140) {
+        return 'Normal';
+    } else if(value > 140){
+      return 'Tachycardia'
+    }
+    else if(value < 98){
+      return 'Bradycardia'
+    }else {
+      return 'Undefined';
+    }
+    }else if(user_age  > 3 && user_age  <= 5){
+      if (value >= 80   && value <= 120 ) {
+        return 'Normal';
+    } else if(value > 120 ){
+      return 'Tachycardia'
+    }
+    else if(value < 80){
+      return 'Bradycardia'
+    }else {
+      return 'Undefined';
+    }
+    }else if(user_age  > 5  && user_age  <= 12){
+      if (value >= 75   && value <= 118 ) {
+        return 'Normal';
+    } else if(value > 118 ){
+      return 'Tachycardia'
+    }
+    else if(value < 75 ){
+      return 'Bradycardia'
+    }else {
+      return 'Undefined';
+    }   
+    }else if(user_age  > 12  && user_age  <= 18){
+      if (value >= 60   && value <= 100 ) {
+        return 'Normal';
+    } else if(value > 140){
+      return 'Tachycardia'
+    }
+    else if(value < 60){
+      return 'Bradycardia'
+    }else {
+      return 'Undefined';
+    }
+    }else if(user_age  > 18){
+      if (value >= 60   && value <= 100) {
+        return 'Normal';
+    } else if(value > 100){
+      return 'Tachycardia'
+    }
+    else if(value < 60 ){
+      return 'Bradycardia'
+    }else {
+        return 'Undefined';
+      }
+    }
+  }
+    
   createHearthRateTable() {
     this.dataService.getAllHearthRate().subscribe((allHearthRate) => {
       if (this.selectedStartDate && this.selectedEndDate) {
@@ -74,14 +134,12 @@ export class TableHearthrateComponent implements AfterViewInit {
         this.id = filteredData.map((entry, index) => index);
         this.date = filteredData.map((entry) => entry.date);
         this.hearthRateValues = filteredData.map((entry) => entry.value);
-        this.result = this.hearthRateValues.map((value) =>
-          value > 37 ? 'High' : 'Normal'
-        );
+        this.result = this.hearthRateValues.map(this.calculateResult);
       } else {
         this.id = allHearthRate.hearthRate.map((entry, index) => index);
         this.date = allHearthRate.hearthRate.map((entry) => entry.date);
         this.hearthRateValues = allHearthRate.hearthRate.map((entry) => entry.value);
-        this.result = this.hearthRateValues.map((value) =>value > 37 ? 'High' : 'Normal');
+        this.result = this.hearthRateValues.map(this.calculateResult);
       }
 
       this.updateTableData();

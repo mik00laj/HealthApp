@@ -8,20 +8,20 @@
                     (click)="onBodyTemperatureClick()">
                     <div class="dashboard__data-item">
                         <div class="dashboard__data-item-text">
-                            <p class="dashboard__data-item-value">{{latestData.latestBodyTemperature }}°C</p>
+                            <p class="dashboard__data-item-value"><b>Value: </b>{{latestData.latestBodyTemperature }}°C</p>
                             <p class="dashboard__data-item-title">Temperature</p>
                         </div>
                         <div class="dashboard__data-item-icon"><i class="fa-solid fa-temperature-quarter"></i></div>
                     </div>
                     <hr>
-                    <p class="dashboard__data-item-result">normal</p>
+                    <p class="dashboard__data-item-result"><b>Result :</b>{{latestResult.latestBodyTemperatureResult}}</p>
                 </div>
 
                 <div class="dashboard__data-item-box dashboard__item-box--saturation"
                     (click)="onBloodSaturationClick()">
                     <div class="dashboard__data-item">
                         <div class="dashboard__data-item-text">
-                            <p class="dashboard__data-item-value">{{latestData.latestBloodSaturation }}%</p>
+                            <p class="dashboard__data-item-value"><b>Value: </b>{{latestData.latestBloodSaturation }}%</p>
                             <p class="dashboard__data-item-title">Blood Saturation</p>
                         </div>
                         <div class="dashboard__data-item-icon"><i class="fa-solid fa-fire-flame-simple"
@@ -29,14 +29,14 @@
                         </div>
                     </div>
                     <hr>
-                    <p class="dashboard__data-item-result">normal</p>
+                    <p class="dashboard__data-item-result"><b>Result: </b>{{latestResult.latestBloodSaturationResult}}</p>
                 </div>
 
                 <div class="dashboard__data-item-box dashboard__data-item-box--hearth-rate"
                     (click)="onHearthRateClick()">
                     <div class="dashboard__data-item">
                         <div class="dashboard__data-item-text">
-                            <p class="dashboard__data-item-value">{{latestData.latestHearthRate }}bpm</p>
+                            <p class="dashboard__data-item-value"><b>Value: </b>{{latestData.latestHearthRate }}bpm</p>
                             <p class="dashboard__data-item-title">Hearth Rate</p>
                         </div>
                         <div class="dashboard__data-item-icon"><i class="fa-solid fa-heart-pulse"
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                     <hr>
-                    <p class="dashboard__data-item-result">normal</p>
+                    <p class="dashboard__data-item-result"><b>Result:</b> {{latestResult.latestHearthRateResult}}</p>
                 </div>
             </div>
 
@@ -53,27 +53,27 @@
                     (click)="onBodyWeightClick()">
                     <div class="dashboard__data-item">
                         <div class="dashboard__data-item-text">
-                            <p class="dashboard__data-item-value">{{latestData.latestBodyWeight}}kg</p>
+                            <p class="dashboard__data-item-value"><b>Value: </b>{{latestData.latestBodyWeight}}kg</p>
                             <p class="dashboard__data-item-title">Body Weight</p>
                         </div>
                         <div class="dashboard__data-item-icon"><i class="fa-solid fa-weight-scale"></i></div>
                     </div>
                     <hr>
-                    <p class="dashboard__data-item-result">{{this.latestBodyWeightResult}}</p>
+                    <p class="dashboard__data-item-result"><b>Result: </b>{{latestResult.latestBodyWeightResult}}</p>
                 </div>
 
                 <div class="dashboard__data-item-box dashboard__data-item-box--respiration-rate"
                     (click)="onRespirationRateClick()">
                     <div class="dashboard__data-item">
                         <div class="dashboard__data-item-text">
-                            <p class="dashboard__data-item-value">{{latestData.latestRespirationRate}}/min</p>
+                            <p class="dashboard__data-item-value"><b>Value: </b>{{latestData.latestRespirationRate}}/min</p>
                             <p class="dashboard__data-item-title">Respiration Rate</p>
                         </div>
                         <div class="dashboard__data-item-icon" style="color: #0CAFFF;"><i class="fa-solid fa-lungs"></i>
                         </div>
                     </div>
                     <hr>
-                    <p class="dashboard__data-item-result">normal</p>
+                    <p class="dashboard__data-item-result"><b>Result: </b>{{latestResult.latestRespirationRateResult}}</p>
                 </div>
 
                 <div class="dashboard__data-item-box dashboard__data-item-box--blood--pressure"
@@ -81,7 +81,7 @@
                     <div class="dashboard__data-item">
                         <div class=" dashboard__data-item-text">
                             <p class="dashboard__data-item-value">
-                                {{latestData.latestBloodPressureSystolic}}/{{latestData.latestBloodPressureDiastolic}}mmHg
+                                <b>Value: </b>{{latestData.latestBloodPressureSystolic}}/{{latestData.latestBloodPressureDiastolic}}mmHg
                             </p>
                             <p class="dashboard__data-item-title">Blood Pressure</p>
                         </div>
@@ -90,7 +90,7 @@
                         </div>
                     </div>
                     <hr>
-                    <p class="dashboard__data-item-result">normal</p>
+                    <p class="dashboard__data-item-result"><b>Result: </b>{{latestResult.latestBloodPressureResult}}</p>
                 </div>
 
             </div>

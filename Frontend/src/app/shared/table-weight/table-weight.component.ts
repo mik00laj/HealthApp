@@ -60,7 +60,6 @@ export class TableWeightComponent implements AfterViewInit {
     if (index === 0) {
       return 'Normal';
     }
-
     const previousValue = this.bodyWeightValues[index - 1];
     const currentValue = this.bodyWeightValues[index];
 

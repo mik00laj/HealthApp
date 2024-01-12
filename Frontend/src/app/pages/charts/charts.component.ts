@@ -75,12 +75,12 @@ export class ChartsComponent implements OnInit {
     dataType: string,
     startDate: any,
     endDate: any,
-    dataServiceMethod: () => Observable<any>,
+    loadDataMethod: () => Observable<any>,
     property: string,
     chartTitle: string,
     unit: string
   ) {
-    dataServiceMethod().subscribe((data) => {
+    loadDataMethod().subscribe((data) => {
       if (startDate && endDate) {
         this.formattedStartDate = this.formatDate(startDate);
         this.formattedEndDate = this.formatDate(endDate);

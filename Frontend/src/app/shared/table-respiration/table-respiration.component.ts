@@ -18,7 +18,6 @@ export class TableRespirationComponent implements AfterViewInit {
 
  
   constructor(private dataService: DataService) {}
-
   displayedColumns = ['id', 'date', 'value', 'result'];
   id: number[];
   date: string[];
@@ -31,6 +30,7 @@ export class TableRespirationComponent implements AfterViewInit {
   formattedEndDate: string;
 
   ngOnInit(): void {
+
     this.createRespirationRateTable();
   }
 
@@ -57,6 +57,42 @@ export class TableRespirationComponent implements AfterViewInit {
     }));
   }
 
+  calculateResult(value:number){
+    const user_age = 24
+    if(user_age >= 1 && user_age  <= 3 ){
+      if (value >= 24 && value <= 40) {
+        return 'Normal';
+    } else{
+      return 'Lungs issue'
+    }
+    }else if(user_age  > 3 && user_age  <= 6){
+      if (value >= 22 && value <= 34) {
+        return 'Normal';
+    } else{
+      return 'Lungs issue'
+    }
+    }else if(user_age  > 6 && user_age  <= 12){
+      if (value >= 18 && value <= 30) {
+        return 'Normal';
+    } else{
+      return 'Lungs issue'
+    }      
+    }else if(user_age  > 12 && user_age  <= 18){
+      if (value >= 12 && value <= 16) {
+        return 'Normal';
+    } else{
+      return 'Lungs issue'
+    }
+    }else if(user_age  > 18){
+      if (value >= 12 && value <= 20) {
+        return 'Normal';
+    } else{
+      return 'Lungs issue'
+      }
+    }
+    
+  }
+  
   createRespirationRateTable() {
     this.dataService.getAllRespirationRate().subscribe((allRespirationRate) => {
       if (this.selectedStartDate && this.selectedEndDate) {
@@ -74,14 +110,13 @@ export class TableRespirationComponent implements AfterViewInit {
         this.id = filteredData.map((entry, index) => index);
         this.date = filteredData.map((entry) => entry.date);
         this.respirationRateValues = filteredData.map((entry) => entry.value);
-        this.result = this.respirationRateValues.map((value) =>
-          value > 37 ? 'High' : 'Normal'
-        );
+        this.result = this.respirationRateValues.map(this.calculateResult);
+
       } else {
         this.id = allRespirationRate.respirationRate.map((entry, index) => index);
         this.date = allRespirationRate.respirationRate.map((entry) => entry.date);
         this.respirationRateValues = allRespirationRate.respirationRate.map((entry) => entry.value);
-        this.result = this.respirationRateValues.map((value) =>value > 37 ? 'High' : 'Normal');
+        this.result = this.respirationRateValues.map(this.calculateResult);
       }
 
       this.updateTableData();
