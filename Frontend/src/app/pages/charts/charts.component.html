@@ -5,6 +5,7 @@
         <div class="charts__boxes">
         <div class="charts__box-filters">
             <div class="charts__box-filter">
+                
                 <mat-form-field class="charts__start-date">
                     <input matInput [matDatepicker]="startDatePickerBodyTemperature" placeholder="Start Date"
                         [(ngModel)]="selectedStartDateBodyTemperature">
@@ -71,8 +72,8 @@
                     <mat-datepicker #endDatePickerHearthRate></mat-datepicker>
                 </mat-form-field>
             </div>
-            <button class="charts__submit-btn "><i class="fa-solid fa-magnifying-glass"
-                    (click)="onRefreshCharts()"></i></button>
+            
+            <button class="charts__submit-btn "><i class="fa-solid fa-magnifying-glass"(click)="onRefreshCharts()"></i></button>
         </div>
             <div class="charts__box-chart">
                 <div class="charts__box-items">

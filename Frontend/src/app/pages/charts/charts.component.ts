@@ -66,7 +66,8 @@ export class ChartsComponent implements OnInit {
   formatDate = (date: Date): string => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = (date.getDate() + 1).toString().padStart(2, '0');
+    // const day = (date.getDate() + 1).toString().padStart(2, '0');  // jeżeli kalendarz wskazuje date o 1 mneijsza
+    const day = (date.getDate()).toString().padStart(2, '0');         // jeżeli kalendarz wskazuje date poprawnie
     return `${year}-${month}-${day}`;
   };
 
@@ -92,7 +93,11 @@ export class ChartsComponent implements OnInit {
           );
         });
         // Mapowanie danych
-        this.labels = filteredData.map((entry, index) => entry.date);
+        if (this.formattedStartDate === this.formattedEndDate) {
+          this.labels = filteredData.map((entry, index) => entry.time);
+        } else {
+          this.labels = filteredData.map((entry, index) => entry.date);
+        }
         this[property] = filteredData.map((entry, index) => entry.value);
       } else {
         // Używanie wszystkich danych

@@ -19,9 +19,10 @@ export class TableHearthrateComponent implements AfterViewInit {
  
   constructor(private dataService: DataService) {}
 
-  displayedColumns = ['id', 'date', 'value', 'result'];
+  displayedColumns = ['id', 'date','time', 'value', 'result'];
   id: number[];
   date: string[];
+  time: string[];
   hearthRateValues: number[];
   result: string[];
 
@@ -43,7 +44,8 @@ export class TableHearthrateComponent implements AfterViewInit {
   formatDate = (date: Date): string => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+    // const day = (date.getDate() + 1).toString().padStart(2, '0');  // jeżeli kalendarz wskazuje date o 1 mneijsza
+    const day = (date.getDate()).toString().padStart(2, '0');         // jeżeli kalendarz wskazuje date poprawnie
     return `${year}-${month}-${day}`;
   };
 
@@ -52,6 +54,7 @@ export class TableHearthrateComponent implements AfterViewInit {
     this.dataSource.data = this.id.map((_, index) => ({
       id: this.id[index],
       date: this.date[index],
+      time: this.time[index],
       value: this.hearthRateValues[index],
       result: this.result[index],
     }));
@@ -133,11 +136,13 @@ export class TableHearthrateComponent implements AfterViewInit {
         // Mapowanie danych
         this.id = filteredData.map((entry, index) => index);
         this.date = filteredData.map((entry) => entry.date);
+        this.time = filteredData.map((entry) => entry.time); 
         this.hearthRateValues = filteredData.map((entry) => entry.value);
         this.result = this.hearthRateValues.map(this.calculateResult);
       } else {
         this.id = allHearthRate.hearthRate.map((entry, index) => index);
         this.date = allHearthRate.hearthRate.map((entry) => entry.date);
+        this.time = allHearthRate.hearthRate.map((entry) => entry.time); 
         this.hearthRateValues = allHearthRate.hearthRate.map((entry) => entry.value);
         this.result = this.hearthRateValues.map(this.calculateResult);
       }

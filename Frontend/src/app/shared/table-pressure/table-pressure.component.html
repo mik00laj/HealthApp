@@ -31,6 +31,10 @@
       <td mat-cell *matCellDef="let row">{{row.date}}</td>
     </ng-container>
 
+    <ng-container matColumnDef="time">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Time[HH-MM]</th>
+      <td mat-cell *matCellDef="let row">{{row.time}}</td>
+    </ng-container>
     <!-- Systolic Column -->
     <ng-container matColumnDef="systolic">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Systolic[mmHg]</th>

@@ -8,20 +8,21 @@ import { Observable, of as observableOf, merge } from 'rxjs';
 export interface TableTemperatureItem {
   id: number;
   date: string,
+  time: string;
   value: number;
   result: string;
 }
 
-const BODY_WEIGHT_DATA: TableTemperatureItem[] = [
-  {id:0,date:"2024-01-11",value:70,result:'normal'},
-  {id:1,date:"2024-01-11",value:70,result:'normal'},
-  {id:2,date:"2024-01-11",value:70,result:'normal'},
-  {id:3,date:"2024-01-11",value:70,result:'normal'},
-  {id:4,date:"2024-01-11",value:70,result:'normal'},
-  {id:6,date:"2024-01-11",value:70,result:'normal'},
-  {id:7,date:"2024-01-11",value:70,result:'normal'},
-  {id:8,date:"2024-01-11",value:70,result:'normal'},
-  {id:9,date:"2024-01-11",value:70,result:'normal'},
+const BODY_TEMPERATURE_DATA: TableTemperatureItem[] = [
+  {id:1,date:"2024-01-01",time:"7:51",value:38.6,result:'Fever'},
+  {id:0,date:"2024-01-01",time:"11:34",value:40.8,result:'High Fever'},
+  {id:2,date:"2024-01-01",time:"18:27",value:38,result:'Fever'},
+  {id:3,date:"2024-01-01",time:"21:19",value:38.8,result:'Fever'},
+  {id:4,date:"2024-01-01",time:"6:10",value:40,result:'High Fever'},
+  {id:6,date:"2024-01-01",time:"12:19",value:40.2,result:'High Fever'},
+  {id:7,date:"2024-01-01",time:"15:58",value:35.7,result:'Too Small'},
+  {id:8,date:"2024-01-01",time:"22:31",value:36.6,result:'Normal'},
+  {id:9,date:"2024-01-01",time:"8:44",value:36.9,result:'Normal'},
   ]
 
 
@@ -31,7 +32,7 @@ const BODY_WEIGHT_DATA: TableTemperatureItem[] = [
  * (including sorting, pagination, and filtering).
  */
 export class TableTemperatureDataSource extends DataSource<TableTemperatureItem> {
-  data: TableTemperatureItem[] = BODY_WEIGHT_DATA;
+  data: TableTemperatureItem[] = BODY_TEMPERATURE_DATA;
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
@@ -89,8 +90,10 @@ export class TableTemperatureDataSource extends DataSource<TableTemperatureItem>
       const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
         case 'id': return compare(+a.id, +b.id, isAsc);
-        case 'value': return compare(+a.value, +b.value, isAsc);
         case 'date': return compare(a.date, b.date, isAsc);
+        case 'time': return compare(a.time, b.time, isAsc);
+        case 'value': return compare(+a.value, +b.value, isAsc);
+        case 'result': return compare(+a.value, +b.value, isAsc);
         default: return 0;
     }});
   }

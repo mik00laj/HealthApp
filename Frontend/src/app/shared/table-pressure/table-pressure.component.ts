@@ -22,6 +22,7 @@ export class TablePressureComponent implements AfterViewInit {
   displayedColumns = ['id', 'date', 'systolic', 'diastolic', 'result'];
   id: number[];
   date: string[];
+  time: string[];
   bloodPressureSystolicValues: number[];
   bloodPressureDiastolicValues: number[];
   result: string[];
@@ -44,7 +45,8 @@ export class TablePressureComponent implements AfterViewInit {
   formatDate = (date: Date): string => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+    // const day = (date.getDate() + 1).toString().padStart(2, '0');  // jeżeli kalendarz wskazuje date o 1 mneijsza
+    const day = (date.getDate()).toString().padStart(2, '0');         // jeżeli kalendarz wskazuje date poprawnie
     return `${year}-${month}-${day}`;
   };
 
@@ -53,6 +55,7 @@ export class TablePressureComponent implements AfterViewInit {
     this.dataSource.data = this.id.map((_, index) => ({
       id: this.id[index],
       date: this.date[index],
+      time: this.time[index],
       systolic: this.bloodPressureSystolicValues[index],
       diastolic: this.bloodPressureDiastolicValues[index],
       result: this.result[index],
@@ -91,6 +94,7 @@ export class TablePressureComponent implements AfterViewInit {
         // Mapowanie danych
         this.id = filteredData.map((entry, index) => index);
         this.date = filteredData.map((entry) => entry.date);
+        this.time = filteredData.map((entry) => entry.time); 
         this.bloodPressureSystolicValues = filteredData.map((entry, index) => entry.valueSystolic);
         this.bloodPressureDiastolicValues = filteredData.map((entry, index) => entry.valueDiastolic);
         this.result = filteredData.map((entry) =>
@@ -99,6 +103,7 @@ export class TablePressureComponent implements AfterViewInit {
       } else {
         this.id = allBloodPressure.bloodPressure.map((entry, index) => index);
         this.date = allBloodPressure.bloodPressure.map((entry) => entry.date);
+        this.time = allBloodPressure.bloodPressure.map((entry) => entry.time); 
         this.bloodPressureSystolicValues = allBloodPressure.bloodPressure.map((entry, index) => entry.valueSystolic);
         this.bloodPressureDiastolicValues = allBloodPressure.bloodPressure.map((entry, index) => entry.valueDiastolic);
         this.result = allBloodPressure.bloodPressure.map((entry) =>

@@ -18,9 +18,10 @@ export class TableTemperatureComponent implements AfterViewInit {
 
   constructor(private dataService: DataService) {}
 
-  displayedColumns = ['id', 'date', 'value', 'result'];
+  displayedColumns = ['id', 'date','time', 'value', 'result'];
   id: number[];
   date: string[];
+  time: string[];
   bodyTemperatureValues: number[];
   result: string[];
 
@@ -42,7 +43,8 @@ export class TableTemperatureComponent implements AfterViewInit {
   formatDate = (date: Date): string => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+    // const day = (date.getDate() + 1).toString().padStart(2, '0');  // jeżeli kalendarz wskazuje date o 1 mneijsza
+    const day = (date.getDate()).toString().padStart(2, '0');         // jeżeli kalendarz wskazuje date poprawnie
     return `${year}-${month}-${day}`;
   };
 
@@ -51,6 +53,7 @@ export class TableTemperatureComponent implements AfterViewInit {
     this.dataSource.data = this.id.map((_, index) => ({
       id: this.id[index],
       date: this.date[index],
+      time: this.time[index],
       value: this.bodyTemperatureValues[index],
       result: this.result[index],
     }));
@@ -88,12 +91,14 @@ export class TableTemperatureComponent implements AfterViewInit {
         // Mapowanie danych
         this.id = filteredData.map((entry, index) => index);
         this.date = filteredData.map((entry) => entry.date);
+        this.time = filteredData.map((entry) => entry.time);
         this.bodyTemperatureValues = filteredData.map((entry) => entry.value);
         this.result = this.bodyTemperatureValues.map(this.calculateResult);
 
       } else {
         this.id = allBodyTemperature.bodyTemperature.map((entry, index) => index);
         this.date = allBodyTemperature.bodyTemperature.map((entry) => entry.date);
+        this.time = allBodyTemperature.bodyTemperature.map((entry) => entry.time);
         this.bodyTemperatureValues = allBodyTemperature.bodyTemperature.map((entry) => entry.value);
         this.result = this.bodyTemperatureValues.map(this.calculateResult);
       }

@@ -18,9 +18,10 @@ export class TableRespirationComponent implements AfterViewInit {
 
  
   constructor(private dataService: DataService) {}
-  displayedColumns = ['id', 'date', 'value', 'result'];
+  displayedColumns = ['id', 'date','time', 'value', 'result'];
   id: number[];
   date: string[];
+  time: string[];
   respirationRateValues: number[];
   result: string[];
 
@@ -43,15 +44,16 @@ export class TableRespirationComponent implements AfterViewInit {
   formatDate = (date: Date): string => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+    // const day = (date.getDate() + 1).toString().padStart(2, '0');  // jeżeli kalendarz wskazuje date o 1 mneijsza
+    const day = (date.getDate()).toString().padStart(2, '0');         // jeżeli kalendarz wskazuje date poprawnie
     return `${year}-${month}-${day}`;
   };
-
   updateTableData() {
     // Mapowanie danych do tablicy TEMPERATURE_DATA zgodnie z warunkiem
     this.dataSource.data = this.id.map((_, index) => ({
       id: this.id[index],
       date: this.date[index],
+      time: this.time[index],
       value: this.respirationRateValues[index],
       result: this.result[index],
     }));
@@ -108,13 +110,15 @@ export class TableRespirationComponent implements AfterViewInit {
 
         // Mapowanie danych
         this.id = filteredData.map((entry, index) => index);
-        this.date = filteredData.map((entry) => entry.date);
+        this.date = filteredData.map((entry) => entry.date); 
+        this.time = filteredData.map((entry) => entry.time); 
         this.respirationRateValues = filteredData.map((entry) => entry.value);
         this.result = this.respirationRateValues.map(this.calculateResult);
 
       } else {
         this.id = allRespirationRate.respirationRate.map((entry, index) => index);
-        this.date = allRespirationRate.respirationRate.map((entry) => entry.date);
+        this.date = allRespirationRate.respirationRate.map((entry) => entry.date);  
+        this.time = allRespirationRate.respirationRate.map((entry) => entry.time);
         this.respirationRateValues = allRespirationRate.respirationRate.map((entry) => entry.value);
         this.result = this.respirationRateValues.map(this.calculateResult);
       }

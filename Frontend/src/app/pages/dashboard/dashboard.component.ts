@@ -341,7 +341,8 @@ export class DashboardComponent implements OnInit {
   formatDate = (date: Date): string => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = (date.getDate() + 1).toString().padStart(2, '0');
+    // const day = (date.getDate() + 1).toString().padStart(2, '0');  // jeżeli kalendarz wskazuje date o 1 mneijsza
+    const day = (date.getDate()).toString().padStart(2, '0');         // jeżeli kalendarz wskazuje date poprawnie
     return `${year}-${month}-${day}`;
   };
 
@@ -358,12 +359,19 @@ export class DashboardComponent implements OnInit {
         this.formattedEndDate = this.formatDate(this.selectedEndDate);
         // Filtrowanie danych
         const filteredData = data[dataType].filter((entry, index) => {
-          return (
-            entry.date >= this.formattedStartDate && entry.date <= this.formattedEndDate
-          );
+          return (entry.date >= this.formattedStartDate && entry.date <= this.formattedEndDate);
         });
+          // console.log(filteredData);
+          // console.log(this.selectedStartDate);
+          // console.log(this.selectedEndDate);
+          // console.log(this.formattedStartDate);
+          // console.log(this.formattedEndDate);
         // Mapowanie danych
-        this.labels = filteredData.map((entry, index) => entry.date);
+        if (this.formattedStartDate === this.formattedEndDate) {
+          this.labels = filteredData.map((entry, index) => entry.time);
+        } else {
+          this.labels = filteredData.map((entry, index) => entry.date);
+        }
         this[property] = filteredData.map((entry, index) => entry.value);
       } else {
         // Używanie wszystkich danych
@@ -437,16 +445,16 @@ export class DashboardComponent implements OnInit {
         this.formattedEndDate = this.formatDate(this.selectedEndDate);
 
         // Filtrowanie na podstawie wybranego przedziału dat
-        const filteredData = allBloodPressure.bloodPressure.filter(
-          (entry, index) => {
-            return (
-              entry.date >= this.formattedStartDate && entry.date <= this.formattedEndDate
-            );
+        const filteredData = allBloodPressure.bloodPressure.filter((entry, index) => {
+          return (entry.date >= this.formattedStartDate && entry.date <= this.formattedEndDate );
           }
         );
-
         // Mapowanie danych
-        this.labels = filteredData.map((entry, index) => entry.date);
+        if (this.formattedStartDate === this.formattedEndDate) {
+          this.labels = filteredData.map((entry, index) => entry.time);
+        } else {
+          this.labels = filteredData.map((entry, index) => entry.date);
+        }
         this.bloodPressureSystolicData = filteredData.map((entry, index) => entry.valueSystolic);
         this.bloodPressureDiastolicData = filteredData.map((entry, index) => entry.valueDiastolic);
       } else {

@@ -19,9 +19,10 @@ export class TableWeightComponent implements AfterViewInit {
  
   constructor(private dataService: DataService) {}
 
-  displayedColumns = ['id', 'date', 'value', 'result'];
+  displayedColumns = ['id', 'date','time', 'value', 'result'];
   id: number[];
   date: string[];
+  time: string[];
   bodyWeightValues: number[];
   result: string[];
 
@@ -43,7 +44,8 @@ export class TableWeightComponent implements AfterViewInit {
   formatDate = (date: Date): string => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+    // const day = (date.getDate() + 1).toString().padStart(2, '0');  // jeżeli kalendarz wskazuje date o 1 mneijsza
+    const day = (date.getDate()).toString().padStart(2, '0');         // jeżeli kalendarz wskazuje date poprawnie
     return `${year}-${month}-${day}`;
   };
 
@@ -52,6 +54,7 @@ export class TableWeightComponent implements AfterViewInit {
     this.dataSource.data = this.id.map((_, index) => ({
       id: this.id[index],
       date: this.date[index],
+      time: this.time[index],
       value: this.bodyWeightValues[index],
       result: this.result[index],
     }));
@@ -86,6 +89,7 @@ export class TableWeightComponent implements AfterViewInit {
         // Mapowanie danych
         this.id = filteredData.map((entry, index) => index);
         this.date = filteredData.map((entry) => entry.date);
+          this.time = filteredData.map((entry) => entry.time);
         this.bodyWeightValues = filteredData.map((entry) => entry.value);
         this.result = this.bodyWeightValues.map((value, index) =>
           this.calculateResult(index)
@@ -93,6 +97,7 @@ export class TableWeightComponent implements AfterViewInit {
       } else {
         this.id = allBodyWeight.bodyWeight.map((entry, index) => index);
         this.date = allBodyWeight.bodyWeight.map((entry) => entry.date);
+        this.time = allBodyWeight.bodyWeight.map((entry) => entry.time);
         this.bodyWeightValues = allBodyWeight.bodyWeight.map((entry) => entry.value);
         this.result = this.bodyWeightValues.map((value, index) =>
         this.calculateResult(index)

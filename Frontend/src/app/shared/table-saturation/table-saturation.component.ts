@@ -19,9 +19,10 @@ export class TableSaturationComponent implements AfterViewInit {
  
   constructor(private dataService: DataService) {}
 
-  displayedColumns = ['id', 'date', 'value', 'result'];
+  displayedColumns = ['id', 'date','time', 'value', 'result'];
   id: number[];
   date: string[];
+  time: string[];
   BloodSaturationValues: number[];
   result: string[];
 
@@ -43,7 +44,8 @@ export class TableSaturationComponent implements AfterViewInit {
   formatDate = (date: Date): string => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+    // const day = (date.getDate() + 1).toString().padStart(2, '0');  // jeżeli kalendarz wskazuje date o 1 mneijsza
+    const day = (date.getDate()).toString().padStart(2, '0');         // jeżeli kalendarz wskazuje date poprawnie
     return `${year}-${month}-${day}`;
   };
 
@@ -52,6 +54,7 @@ export class TableSaturationComponent implements AfterViewInit {
     this.dataSource.data = this.id.map((_, index) => ({
       id: this.id[index],
       date: this.date[index],
+      time: this.time[index],
       value: this.BloodSaturationValues[index],
       result: this.result[index],
     }));
@@ -61,7 +64,7 @@ export class TableSaturationComponent implements AfterViewInit {
     if (value >= 95 && value <= 100) {
       return 'Normal';
     } else if (value >= 92 && value < 95) {
-      return 'Too Small';
+      return 'Small';
     } else if (value >= 90 && value < 92 ) {
       return 'Too Small';
     } else if (value < 90) {
@@ -86,12 +89,14 @@ export class TableSaturationComponent implements AfterViewInit {
         // Mapowanie danych
         this.id = filteredData.map((entry, index) => index);
         this.date = filteredData.map((entry) => entry.date);
+        this.time = filteredData.map((entry) => entry.time);
         this.BloodSaturationValues = filteredData.map((entry) => entry.value);
         this.result = this.BloodSaturationValues.map(this.calculateResult);
 
       } else {
         this.id = allBloodSaturation.bloodSaturation.map((entry, index) => index);
         this.date = allBloodSaturation.bloodSaturation.map((entry) => entry.date);
+        this.time = allBloodSaturation.bloodSaturation.map((entry) => entry.time);
         this.BloodSaturationValues = allBloodSaturation.bloodSaturation.map((entry) => entry.value);
         this.result = this.BloodSaturationValues.map(this.calculateResult);
       }

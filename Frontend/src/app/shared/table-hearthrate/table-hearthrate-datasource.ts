@@ -8,20 +8,21 @@ import { Observable, of as observableOf, merge } from 'rxjs';
 export interface TableHearthrateItem {
   id: number;
   date: string,
+  time: string;
   value: number;
   result: string;
 }
 
 const HEARTH_RATE_DATA: TableHearthrateItem[] = [
-  {id:0,date:"2024-01-11",value:132,result:'normal'},
-  {id:1,date:"2024-01-11",value:223,result:'normal'},
-  {id:2,date:"2024-01-11",value:211,result:'normal'},
-  {id:3,date:"2024-01-11",value:70,result:'normal'},
-  {id:4,date:"2024-01-11",value:70,result:'normal'},
-  {id:6,date:"2024-01-11",value:70,result:'normal'},
-  {id:7,date:"2024-01-11",value:190,result:'normal'},
-  {id:8,date:"2024-01-11",value:70,result:'normal'},
-  {id:9,date:"2024-01-11",value:70,result:'normal'},
+  {id:0,date:"2024-01-01",time:"8:57",value:107,result:'Tachycardia'},
+  {id:1,date:"2024-01-01",time:"11:12",value:94,result:'Normal'},
+  {id:2,date:"2024-01-01",time:"16:48",value:71,result:'Normal'},
+  {id:3,date:"2024-01-01",time:"23:07",value:93,result:'Normal'},
+  {id:4,date:"2024-01-02",time:"8:35",value:150,result:'Tachycardia'},
+  {id:6,date:"2024-01-02",time:"10:16",value:94,result:'Normal'},
+  {id:7,date:"2024-01-02",time:"17:34",value:115 ,result:'Normal'},
+  {id:8,date:"2024-01-02",time:"21:26",value:130,result:'Tachycardia'},
+  {id:9,date:"2024-01-03",time:"6:00",value:87,result:'Normal'},
   ]
 
 export class TableHearthrateDataSource extends DataSource<TableHearthrateItem> {
@@ -63,8 +64,10 @@ export class TableHearthrateDataSource extends DataSource<TableHearthrateItem> {
       const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
         case 'id': return compare(+a.id, +b.id, isAsc);
-        case 'value': return compare(+a.value, +b.value, isAsc);
         case 'date': return compare(a.date, b.date, isAsc);
+        case 'time': return compare(a.time, b.time, isAsc);
+        case 'value': return compare(+a.value, +b.value, isAsc);
+        case 'result': return compare(+a.result, +b.value, isAsc);
         default: return 0;
       }
     });

@@ -30,6 +30,10 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Date[YYYY-MM-DD]</th>
       <td mat-cell *matCellDef="let row">{{row.date}}</td>
     </ng-container>
+    <ng-container matColumnDef="time">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Time[HH-MM]</th>
+      <td mat-cell *matCellDef="let row">{{row.time}}</td>
+    </ng-container>
 
     <!-- value Column -->
     <ng-container matColumnDef="value">

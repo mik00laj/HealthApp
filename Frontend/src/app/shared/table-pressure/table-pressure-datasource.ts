@@ -8,21 +8,22 @@ import { Observable, of as observableOf, merge } from 'rxjs';
 export interface TablePressureItem {
   id: number;
   date: string,
+  time: string,
   systolic: number;
   diastolic: number;
   result: string;
 }
 
 const BLOOD_PRESSURE_DATA: TablePressureItem[] = [
-  {id:0,date:"2024-01-11",systolic:140,diastolic:90,result:'normal'},
-  {id:1,date:"2024-01-11",systolic:140,diastolic:90,result:'normal'},
-  {id:2,date:"2024-01-11",systolic:140,diastolic:90,result:'normal'},
-  {id:3,date:"2024-01-11",systolic:140,diastolic:90,result:'normal'},
-  {id:4,date:"2024-01-11",systolic:130,diastolic:80,result:'normal'},
-  {id:6,date:"2024-01-11",systolic:120,diastolic:80,result:'normal'},
-  {id:7,date:"2024-01-11",systolic:110,diastolic:70,result:'To Small'},
-  {id:8,date:"2024-01-11",systolic:140,diastolic:90,result:'normal'},
-  {id:9,date:"2024-01-11",systolic:140,diastolic:90,result:'normal'},
+  {id:0,date:"2024-01-01",time:'5:04',systolic:145,diastolic:121,result:'Hypertension stage 2'},
+  {id:1,date:"2024-01-01",time:'13:16',systolic:114,diastolic:87,result:'Hypertension stage 1'},
+  {id:2,date:"2024-01-01",time:'16:56',systolic:118,diastolic:81,result:'Hypertension stage 1'},
+  {id:3,date:"2024-01-01",time:'22:23',systolic:115,diastolic:68,result:'Normal'},
+  {id:4,date:"2024-01-02",time:'7:38',systolic:156,diastolic:56,result:'Hypertension stage 2'},
+  {id:6,date:"2024-01-02",time:'11:11',systolic:163,diastolic:65,result:'Normal'},
+  {id:7,date:"2024-01-02",time:'16:45',systolic:100,diastolic:63,result:'Normal'},
+  {id:8,date:"2024-01-02",time:'21:36',systolic:105,diastolic:57,result:'Normal'},
+  {id:9,date:"2024-01-03",time:'5:26',systolic:100,diastolic:64,result:'Hypertension stage 2'},
   ]
 
 
@@ -70,9 +71,11 @@ export class TablePressureDataSource extends DataSource<TablePressureItem> {
       const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
         case 'id': return compare(+a.id, +b.id, isAsc);
+        case 'date': return compare(a.date, b.date, isAsc);
+        case 'time': return compare(a.time, b.time, isAsc);
         case 'systolic': return compare(+a.systolic, +b.systolic, isAsc);
         case 'diastolic': return compare(+a.diastolic, +b.diastolic, isAsc);
-        case 'date': return compare(a.date, b.date, isAsc);
+        case 'result': return compare(+a.systolic, +b.systolic, isAsc);
         default: return 0;
       }
     });
