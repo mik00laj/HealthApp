@@ -8,61 +8,81 @@ const port = 4001
 const username = 'HealthAppUser'
 const password = 'admin'
 const clusterName = 'healthappdb'
-const databaseName = 'User2'
+const databaseName = 'User1'
 const connectionStringMongoDB = `mongodb+srv://${username}:${password}@${clusterName}.tir6wnc.mongodb.net/${databaseName}?retryWrites=true&w=majority`
 
 // Połączenie z MongoDB
 mongoose.connect(connectionStringMongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
 const dataBaseStatus = mongoose.connection
 dataBaseStatus.on('error', console.error.bind(console, 'Błąd połączenia z MongoDB:'))
-dataBaseStatus.once('open', () => {console.log('Połączono z MongoDB Atlas')})
+dataBaseStatus.once('open', () => {
+	console.log('Połączono z MongoDB Atlas')
+})
 // Połączenie z MongoDB
 
 // SCHEMATY BAZY DANYCH
 const BodyTemperatureSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'DS18B20 Temperature Sensor' },
-	fullDate:{type: String,  default: () => new Date().toISOString().split('T')[0] + " " + new Date().getHours()+ ":"+ new Date().getMinutes()},
+	fullDate: {
+		type: String,
+		default: () => new Date().toISOString().split('T')[0] + ' ' + new Date().getHours() + ':' + new Date().getMinutes(),
+	},
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
-	time: { type: String, default: () =>  new Date().getHours()+ ":"+ new Date().getMinutes() },
+	time: { type: String, default: () => new Date().getHours() + ':' + new Date().getMinutes() },
 	value: Number,
 })
 
 const BloodSaturationSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'MAX30102_saturation Sensor' },
-	fullDate:{type: String,  default: () => new Date().toISOString().split('T')[0] + " " + new Date().getHours()+ ":"+ new Date().getMinutes()},
+	fullDate: {
+		type: String,
+		default: () => new Date().toISOString().split('T')[0] + ' ' + new Date().getHours() + ':' + new Date().getMinutes(),
+	},
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
-	time: { type: String, default: () =>  new Date().getHours()+ ":"+ new Date().getMinutes() },
+	time: { type: String, default: () => new Date().getHours() + ':' + new Date().getMinutes() },
 	value: Number,
 })
 
 const HearthRateSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'MAX30102_HearthRate Sensor' },
-	fullDate:{type: String,  default: () => new Date().toISOString().split('T')[0] + " " + new Date().getHours()+ ":"+ new Date().getMinutes()},
+	fullDate: {
+		type: String,
+		default: () => new Date().toISOString().split('T')[0] + ' ' + new Date().getHours() + ':' + new Date().getMinutes(),
+	},
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
-	time: { type: String, default: () =>  new Date().getHours()+ ":"+ new Date().getMinutes() },
+	time: { type: String, default: () => new Date().getHours() + ':' + new Date().getMinutes() },
 	value: Number,
 })
 
 const BodyWeightSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'Body Weight Sensor' },
-	fullDate:{type: String,  default: () => new Date().toISOString().split('T')[0] + " " + new Date().getHours()+ ":"+ new Date().getMinutes()},
+	fullDate: {
+		type: String,
+		default: () => new Date().toISOString().split('T')[0] + ' ' + new Date().getHours() + ':' + new Date().getMinutes(),
+	},
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
-	time: { type: String, default: () =>  new Date().getHours()+ ":"+ new Date().getMinutes() },
+	time: { type: String, default: () => new Date().getHours() + ':' + new Date().getMinutes() },
 	value: Number,
 })
 
 const RespirationRateSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'Respiration Rate Sensor' },
-	fullDate:{type: String,  default: () => new Date().toISOString().split('T')[0] + " " + new Date().getHours()+ ":"+ new Date().getMinutes()},
+	fullDate: {
+		type: String,
+		default: () => new Date().toISOString().split('T')[0] + ' ' + new Date().getHours() + ':' + new Date().getMinutes(),
+	},
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
-	time: { type: String, default: () =>  new Date().getHours()+ ":"+ new Date().getMinutes() },
+	time: { type: String, default: () => new Date().getHours() + ':' + new Date().getMinutes() },
 	value: Number,
 })
 const BloodPressureSchema = new mongoose.Schema({
 	sensorId: { type: String, default: 'Blood Pressure Sensor' },
-	fullDate:{type: String,  default: () => new Date().toISOString().split('T')[0] + " " + new Date().getHours()+ ":"+ new Date().getMinutes()},
+	fullDate: {
+		type: String,
+		default: () => new Date().toISOString().split('T')[0] + ' ' + new Date().getHours() + ':' + new Date().getMinutes(),
+	},
 	date: { type: String, default: () => new Date().toISOString().split('T')[0] },
-	time: { type: String, default: () =>  new Date().getHours()+ ":"+ new Date().getMinutes() },
+	time: { type: String, default: () => new Date().getHours() + ':' + new Date().getMinutes() },
 	valueSystolic: Number,
 	valueDiastolic: Number,
 })
