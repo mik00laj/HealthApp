@@ -191,43 +191,63 @@ export class DashboardComponent implements OnInit {
       this.latestResult.latestBodyWeightResult = 'Gain Weight';
     } else if (currentValue < user_weight) {
       this.latestResult.latestBodyWeightResult = 'Lose Weight';
-    } else {
+    } else if (currentValue == user_weight) {
       this.latestResult.latestBodyWeightResult =  'Normal';
+    } else{
+      this.latestResult.latestBodyWeightResult =  'Undefined';
     }
   }
 
   calculateRespirationRateResult(currentValue:number){
-    const user_age = this.user_age
+    const user_age = 24
     if(user_age >= 1 && user_age  <= 3 ){
+
       if (currentValue >= 24 && currentValue <= 40) {
-        this.latestResult.latestRespirationRateResult =  'Normal';
-    } else{
+        this.latestResult.latestRespirationRateResult = 'Normal';
+    } else if(currentValue < 24 || currentValue > 40){
       this.latestResult.latestRespirationRateResult = 'Lungs issue'
+    }else{
+      this.latestResult.latestRespirationRateResult = 'Undefined'
     }
+
     }else if(user_age  > 3 && user_age  <= 6){
       if (currentValue >= 22 && currentValue <= 34) {
         this.latestResult.latestRespirationRateResult = 'Normal';
-    } else{
+    } else if(currentValue < 22 || currentValue > 34){
       this.latestResult.latestRespirationRateResult = 'Lungs issue'
+    }else{
+      this.latestResult.latestRespirationRateResult = 'Undefined'
     }
+
     }else if(user_age  > 6 && user_age  <= 12){
       if (currentValue >= 18 && currentValue <= 30) {
         this.latestResult.latestRespirationRateResult = 'Normal';
-    } else{
+    } else if(currentValue < 18 || currentValue > 30){
       this.latestResult.latestRespirationRateResult = 'Lungs issue'
-    }      
+    }else{
+      this.latestResult.latestRespirationRateResult = 'Undefined'
+    }   
+
     }else if(user_age  > 12 && user_age  <= 18){
       if (currentValue >= 12 && currentValue <= 16) {
-        this.latestResult.latestRespirationRateResult = 'Normal';
-    } else{
-      this.latestResult.latestRespirationRateResult = 'Lungs issue'
+        this.latestResult.latestRespirationRateResult  = 'Normal';
+    } else if(currentValue < 12 || currentValue > 16){
+      this.latestResult.latestRespirationRateResult  = 'Lungs issue'
+    }else{
+      this.latestResult.latestRespirationRateResult = 'Undefined'
     }
+
     }else if(user_age  > 18){
       if (currentValue >= 12 && currentValue <= 20) {
         this.latestResult.latestRespirationRateResult = 'Normal';
-    } else{
+    } else if(currentValue < 12 || currentValue > 20){
       this.latestResult.latestRespirationRateResult = 'Lungs issue'
+      } else{
+        this.latestResult.latestRespirationRateResult = 'Undefined'
       }
+      
+    } else{
+      this.latestResult.latestRespirationRateResult = 'Undefined'
     }
   }
 

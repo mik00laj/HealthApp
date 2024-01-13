@@ -70,8 +70,10 @@ export class TableWeightComponent implements AfterViewInit {
       return 'Gain Weight';
     } else if (currentValue < previousValue) {
       return 'Lose Weight';
-    } else {
+    } else if (currentValue == previousValue) {
       return 'Normal';
+    } else {
+      return 'Undefined'
     }
   }
   

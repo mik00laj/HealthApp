@@ -8,7 +8,7 @@ const port = 4001
 const username = 'HealthAppUser'
 const password = 'admin'
 const clusterName = 'healthappdb'
-const databaseName = 'User1'
+const databaseName = 'User2'
 const connectionStringMongoDB = `mongodb+srv://${username}:${password}@${clusterName}.tir6wnc.mongodb.net/${databaseName}?retryWrites=true&w=majority`
 
 // Połączenie z MongoDB

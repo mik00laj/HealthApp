@@ -62,37 +62,54 @@ export class TableRespirationComponent implements AfterViewInit {
   calculateResult(value:number){
     const user_age = 24
     if(user_age >= 1 && user_age  <= 3 ){
+
       if (value >= 24 && value <= 40) {
         return 'Normal';
-    } else{
+    } else if(value < 24 || value > 40){
       return 'Lungs issue'
+    }else{
+      return ' Undefined'
     }
+
     }else if(user_age  > 3 && user_age  <= 6){
       if (value >= 22 && value <= 34) {
         return 'Normal';
-    } else{
+    } else if(value < 22 || value > 34){
       return 'Lungs issue'
+    }else{
+      return ' Undefined'
     }
+
     }else if(user_age  > 6 && user_age  <= 12){
       if (value >= 18 && value <= 30) {
         return 'Normal';
-    } else{
+    } else if(value < 18 || value > 30){
       return 'Lungs issue'
-    }      
+    }else{
+      return ' Undefined'
+    }   
+
     }else if(user_age  > 12 && user_age  <= 18){
       if (value >= 12 && value <= 16) {
         return 'Normal';
-    } else{
+    } else if(value < 12 || value > 16){
       return 'Lungs issue'
+    }else{
+      return 'Undefined'
     }
+
     }else if(user_age  > 18){
       if (value >= 12 && value <= 20) {
         return 'Normal';
-    } else{
+    } else if(value < 12 || value > 20){
       return 'Lungs issue'
+      } else{
+        return 'Undefined'
       }
+      
+    } else{
+      return 'Undefined'
     }
-    
   }
   
   createRespirationRateTable() {
