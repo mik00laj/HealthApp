@@ -71,17 +71,16 @@ export class ChartsComponent implements OnInit {
   createChart(
     chart: any,
     dataType: string,
-    startDate: any,
-    endDate: any,
     loadDataMethod: () => Observable<any>,
     property: string,
     chartTitle: string,
     unit: string
   ) {
     loadDataMethod().subscribe((data) => {
-      if (startDate && endDate) {
-        this.formattedStartDate = this.formatDate(startDate);
-        this.formattedEndDate = this.formatDate(endDate);
+      if (this.selectedStartDate && this.selectedEndDate) {
+        // this.formattedStartDate = this.formatDate(this.selectedStartDate);
+        // this.formattedEndDate = this.formatDate(this.selectedEndDate);
+        
         // Filtrowanie danych
         const filteredData = data[dataType].filter((entry, index) => {
           return (
@@ -177,8 +176,6 @@ export class ChartsComponent implements OnInit {
     this.createChart(
       this.chartBodyTemperature,
       'bodyTemperature',
-      this.selectedStartDate,
-      this.selectedEndDate,
       this.dataService.getAllBodyTemperature.bind(this.dataService),
       'bodyTemperatureData',
       'Body Temperature',
@@ -190,8 +187,6 @@ export class ChartsComponent implements OnInit {
     this.createChart(
       this.chartBloodSaturation,
       'bloodSaturation',
-      this.selectedStartDate,
-      this.selectedEndDate,
       this.dataService.getAllBloodSaturation.bind(this.dataService),
       'bloodSaturationData',
       'Blood Saturation',
@@ -203,8 +198,6 @@ export class ChartsComponent implements OnInit {
     this.createChart(
       this.chartHearthRate,
       'hearthRate',
-      this.selectedStartDate,
-      this.selectedEndDate,
       this.dataService.getAllHearthRate.bind(this.dataService),
       'hearthRateData',
       'Hearth Rate',
@@ -217,8 +210,6 @@ export class ChartsComponent implements OnInit {
       this.createChart(
         this.chartBodyWeight,
         'bodyWeight',
-        this.selectedStartDate,
-        this.selectedEndDate,
         this.dataService.getAllBodyWeight.bind(this.dataService),
         'bodyWeightData',
         'Body Weight',
@@ -230,8 +221,6 @@ export class ChartsComponent implements OnInit {
     this.createChart(
       this.chartRespirationRate,
       'respirationRate',
-      this.selectedStartDate,
-      this.selectedEndDate,
       this.dataService.getAllRespirationRate.bind(this.dataService),
       'respirationRateData',
       'Respiration Rate',

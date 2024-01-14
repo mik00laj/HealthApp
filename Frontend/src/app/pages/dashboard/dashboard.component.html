@@ -101,7 +101,7 @@
 
                 <mat-form-field class="dashboard__start-date">
                     <input 
-                        (dateChange)="onUpdateChart($event)"
+                        (dateChange)="onDateChanged($event)"
                         matInput 
                         [matDatepicker]="startDatePicker" 
                         placeholder="Start Date"
@@ -112,7 +112,7 @@
 
                 <mat-form-field class="dashboard__end-date">
                     <input 
-                    (dateChange)="onUpdateChart($event, true)" 
+                    (dateChange)="onDateChanged($event, true)" 
                     matInput [matDatepicker]="endDatePicker" 
                     placeholder="End Date"
                     [(ngModel)]="selectedEndDate">
@@ -137,13 +137,37 @@
                 [startDate]="selectedStartDate"
                 [endDate]="selectedEndDate"
             ></app-table-temperature>
-            <app-table-saturation *ngSwitchCase="'Blood Saturation'"></app-table-saturation>
-            <app-table-hearthrate *ngSwitchCase="'Hearth Rate'"></app-table-hearthrate>
-            <app-table-weight *ngSwitchCase="'Body Weight'"></app-table-weight>
-            <app-table-respiration *ngSwitchCase="'Respiration Rate'"></app-table-respiration>
-            <app-table-pressure *ngSwitchCase="'Blood Pressure'"></app-table-pressure>
-            <ng-container *ngSwitchDefault>
-              <app-table-temperature></app-table-temperature>
+            <app-table-saturation 
+                *ngSwitchCase="'Blood Saturation'"
+                [startDate]="selectedStartDate"
+                [endDate]="selectedEndDate">
+            </app-table-saturation>
+            <app-table-hearthrate 
+                *ngSwitchCase="'Hearth Rate'"
+                [startDate]="selectedStartDate"
+                [endDate]="selectedEndDate">
+            </app-table-hearthrate>
+            <app-table-weight 
+                *ngSwitchCase="'Body Weight'"
+                [startDate]="selectedStartDate"
+                [endDate]="selectedEndDate">
+            </app-table-weight>
+            <app-table-respiration 
+                *ngSwitchCase="'Respiration Rate'"
+                [startDate]="selectedStartDate"
+                [endDate]="selectedEndDate">
+            </app-table-respiration>
+            <app-table-pressure 
+                *ngSwitchCase="'Blood Pressure'"
+                [startDate]="selectedStartDate"
+                [endDate]="selectedEndDate">
+            </app-table-pressure>
+            <ng-container 
+            *ngSwitchDefault>
+              <app-table-temperature
+              [startDate]="selectedStartDate"
+              [endDate]="selectedEndDate"
+              ></app-table-temperature>
             </ng-container>
           </div>
 

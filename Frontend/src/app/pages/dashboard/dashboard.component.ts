@@ -321,6 +321,8 @@ export class DashboardComponent implements OnInit {
             },
           },
           y: {
+            // min: 30,
+            // max:45 ,
             title: {
               display: true,
               text: 'Oś Y',
@@ -497,7 +499,7 @@ export class DashboardComponent implements OnInit {
       this.updateChart(labels, data1, data2, this.title, unit);
     });
   }
-  onUpdateChart(event: any, isEndDate: boolean = false){
+  onDateChanged(event: any, isEndDate: boolean = false){
     if(isEndDate) {
       this.formattedEndDate = this.formatDate(event.value)
     } else {
