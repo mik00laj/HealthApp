@@ -39,6 +39,8 @@ export class ChartsComponent implements OnInit {
   chartRespirationRate: any = [];
   chartBloodPressure: any = [];
   labels = [];
+  minValue: number;
+  maxValue: number;
 
   constructor(private dataService: DataService) {}
 
@@ -95,11 +97,15 @@ export class ChartsComponent implements OnInit {
           this.labels = filteredData.map((entry, index) => entry.date);
         }
         this[property] = filteredData.map((entry, index) => entry.value);
+        this.minValue = Math.min(...this[property]) - 5;
+        this.maxValue = Math.max(...this[property]) + 5;
       } else {
         // Używanie wszystkich danych
         this.labels = data[dataType].map((entry, index) => entry.date);
         this[property] = data[dataType].map((entry, index) => entry.value);
       }
+      this.minValue = Math.min(...this[property]) - 5;
+      this.maxValue = Math.max(...this[property]) + 5;
       this.updateChart(
         chart,
         this.labels,
@@ -273,6 +279,8 @@ export class ChartsComponent implements OnInit {
       const data1 = this.bloodPressureSystolicData;
       const data2 = this.bloodPressureDiastolicData;
       const title = 'Blood Pressure';
+      this.minValue = Math.min(...this.bloodPressureDiastolicData ) - 5;
+      this.maxValue = Math.max(...this.bloodPressureSystolicData) + 5;
       const unit = '[mmHg]';
       this.updateBloodPressure(labels, data1, data2, title, unit);
     });
@@ -293,6 +301,8 @@ export class ChartsComponent implements OnInit {
     chart.data.datasets[1].data = data2;
     chart.data.datasets[0].label = '';
     chart.data.datasets[1].label = '';
+    chart.options.scales.y.min = this.minValue;
+    chart.options.scales.y.max = this.maxValue;
     chart.data.datasets[0].backgroundColor = '#89CFF0';
     chart.data.datasets[0].borderColor = '#0CAFFF';
     chart.data.datasets[1].backgroundColor = 'transparent';
@@ -312,6 +322,8 @@ export class ChartsComponent implements OnInit {
     this.chartBloodPressure.options.scales.y.title.text = unit;
     this.chartBloodPressure.data.datasets[0].data = data1;
     this.chartBloodPressure.data.datasets[1].data = data2;
+    this.chartBloodPressure.options.scales.y.min = this.minValue;
+    this.chartBloodPressure.options.scales.y.max = this.maxValue;
     this.chartBloodPressure.data.datasets[0].label = 'Systolic';
     this.chartBloodPressure.data.datasets[1].label = 'Diastolic';
     this.chartBloodPressure.data.datasets[0].backgroundColor = '';

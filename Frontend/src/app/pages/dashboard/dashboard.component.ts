@@ -47,6 +47,8 @@ export class DashboardComponent implements OnInit {
   chart: any = [];
   labels = [];
   title:string
+  minValue: number;
+  maxValue: number;
 
   constructor(private dataService: DataService) {}
 
@@ -321,8 +323,6 @@ export class DashboardComponent implements OnInit {
             },
           },
           y: {
-            // min: 30,
-            // max:45 ,
             title: {
               display: true,
               text: 'Oś Y',
@@ -349,6 +349,8 @@ export class DashboardComponent implements OnInit {
     this.chart.data.labels = labels;
     this.chart.options.plugins.title.text = title;
     this.chart.options.scales.y.title.text = unit;
+    this.chart.options.scales.y.min = this.minValue;
+    this.chart.options.scales.y.max = this.maxValue;
     this.chart.data.datasets[0].data = data1;
     this.chart.data.datasets[1].data = data2;
 
@@ -393,7 +395,7 @@ export class DashboardComponent implements OnInit {
           return (entry.date >= this.formattedStartDate && entry.date <= this.formattedEndDate);
         });
 
-        this.dataLength = filteredData.length;
+
         // Mapowanie danych
         if (this.formattedStartDate === this.formattedEndDate) {
           this.labels = filteredData.map((entry, index) => entry.time);
@@ -406,6 +408,8 @@ export class DashboardComponent implements OnInit {
         this.labels = data[dataType].map((entry, index) => entry.date);
         this[property] = data[dataType].map((entry, index) => entry.value);
       }
+      this.minValue = Math.min(...this[property]) - 5;
+      this.maxValue = Math.max(...this[property]) + 5;
       this.updateChart(this.labels, this[property], [], chartTitle, unit);
     });
   }
@@ -495,6 +499,8 @@ export class DashboardComponent implements OnInit {
       const data1 = this.bloodPressureSystolicData;
       const data2 = this.bloodPressureDiastolicData;
       this.title = 'Blood Pressure';
+      this.minValue = Math.min(...this.bloodPressureDiastolicData ) - 5;
+      this.maxValue = Math.max(...this.bloodPressureSystolicData) + 5;
       const unit = '[mmHg]';
       this.updateChart(labels, data1, data2, this.title, unit);
     });
