@@ -1,23 +1,5 @@
-<div class="table__box-filters">
-  <div class="table__box-filter">
-      <mat-form-field class="charts__start-date">
-          <input matInput [matDatepicker]="startDatePicker" placeholder="Start Date"
-              [(ngModel)]="selectedStartDate">
-          <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
-          <mat-datepicker #startDatePicker></mat-datepicker>
-      </mat-form-field>
-
-      <mat-form-field class="charts__end-date">
-          <input matInput [matDatepicker]="endDatePicker" placeholder="End Date" [(ngModel)]="selectedEndDate">
-          <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
-          <mat-datepicker #endDatePicker></mat-datepicker>
-      </mat-form-field>
-  </div>
-  <button class="table__submit-btn "><i class="fa-solid fa-magnifying-glass" (click)="onSubmitBtn()"></i></button>
-</div>
-
 <div class="mat-elevation-z8">
-  <div class="table-title"></div>
+  <div class="table-title">Blood Pressure</div>
   <table mat-table class="full-width-table" matSort aria-label="Elements">
     <!-- Id Column -->
     <ng-container matColumnDef="id">

@@ -2,26 +2,38 @@
     <div class="charts__container">
         <h1 class="charts__title"><b>Charts </b></h1>
         <p class="charts__text">Here is your all health parameters presenteed in charts</p>
-        <div class="charts__boxes">
         <div class="charts__box-filters">
             <div class="charts__box-filter">
-                
                 <mat-form-field class="charts__start-date">
-                    <input matInput [matDatepicker]="startDatePickerBodyTemperature" placeholder="Start Date"
-                        [(ngModel)]="selectedStartDateBodyTemperature">
-                    <mat-datepicker-toggle matSuffix [for]="startDatePickerBodyTemperature"></mat-datepicker-toggle>
-                    <mat-datepicker #startDatePickerBodyTemperature></mat-datepicker>
+                    <input 
+                    (dateChange)="onDateChanged($event)"
+                        matInput 
+                        [matDatepicker]="startDatePicker" 
+                        placeholder="Start Date"
+                        [(ngModel)]="selectedStartDate"
+                    >
+                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePicker></mat-datepicker>
                 </mat-form-field>
 
                 <mat-form-field class="charts__end-date">
-                    <input matInput [matDatepicker]="endDatePickerBodyTemperature" placeholder="End Date"
-                        [(ngModel)]="selectedEndDateBodyTemperature">
-                    <mat-datepicker-toggle matSuffix [for]="endDatePickerBodyTemperature"></mat-datepicker-toggle>
-                    <mat-datepicker #endDatePickerBodyTemperature></mat-datepicker>
+                    <input 
+                        (dateChange)="onDateChanged($event, true)"
+                        matInput 
+                        [matDatepicker]="endDatePicker" 
+                        placeholder="End Date"
+                        [(ngModel)]="selectedEndDate"
+                    >
+                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePicker></mat-datepicker>
                 </mat-form-field>
             </div>
-            <button class="charts__submit-btn "><i class="fa-solid fa-magnifying-glass"
-                    (click)="onRefreshCharts()"></i></button>
+            
+
+        </div>
+        <div class="charts__boxes">
+        <div class="charts__box-filters">
+
         </div>
             <div class="charts__box-chart">
                 <div class="charts__box-items">
@@ -31,23 +43,7 @@
 
             </div>
         <div class="charts__box-filters">
-            <div class="charts__box-filter">
-                <mat-form-field class="charts__start-date">
-                    <input matInput [matDatepicker]="startDatePickerBloodSaturation" placeholder="Start Date"
-                        [(ngModel)]="selectedStartDateBloodSaturation">
-                    <mat-datepicker-toggle matSuffix [for]="startDatePickerBloodSaturation"></mat-datepicker-toggle>
-                    <mat-datepicker #startDatePickerBloodSaturation></mat-datepicker>
-                </mat-form-field>
 
-                <mat-form-field class="charts__end-date">
-                    <input matInput [matDatepicker]="endDatePickerBloodSaturation" placeholder="End Date"
-                        [(ngModel)]="selectedEndDateBloodSaturation">
-                    <mat-datepicker-toggle matSuffix [for]="endDatePickerBloodSaturation"></mat-datepicker-toggle>
-                    <mat-datepicker #endDatePickerBloodSaturation></mat-datepicker>
-                </mat-form-field>
-            </div>
-            <button class="charts__submit-btn "><i class="fa-solid fa-magnifying-glass"
-                    (click)="onRefreshCharts()"></i></button>
         </div>
             <div class="charts__box-chart">
                 <div class="charts__box-items">
@@ -56,25 +52,6 @@
                 </div>
 
             </div>
-        <div class="charts__box-filters">
-            <div class="charts__box-filter">
-                <mat-form-field class="charts__start-date">
-                    <input matInput [matDatepicker]="startDatePickerHearthRate" placeholder="Start Date"
-                        [(ngModel)]="selectedStartDateHearthRate">
-                    <mat-datepicker-toggle matSuffix [for]="startDatePickerHearthRate"></mat-datepicker-toggle>
-                    <mat-datepicker #startDatePickerHearthRate></mat-datepicker>
-                </mat-form-field>
-
-                <mat-form-field class="charts__end-date">
-                    <input matInput [matDatepicker]="endDatePickerHearthRate" placeholder="End Date"
-                        [(ngModel)]="selectedEndDateHearthRate">
-                    <mat-datepicker-toggle matSuffix [for]="endDatePickerHearthRate"></mat-datepicker-toggle>
-                    <mat-datepicker #endDatePickerHearthRate></mat-datepicker>
-                </mat-form-field>
-            </div>
-            
-            <button class="charts__submit-btn "><i class="fa-solid fa-magnifying-glass"(click)="onRefreshCharts()"></i></button>
-        </div>
             <div class="charts__box-chart">
                 <div class="charts__box-items">
                     <div class='charts__box-title'>Hearth Rate</div>
@@ -82,25 +59,7 @@
                 </div>
 
             </div>
-        <div class="charts__box-filters">
-            <div class="charts__box-filter">
-                <mat-form-field class="charts__start-date">
-                    <input matInput [matDatepicker]="startDatePickerBodyWeight" placeholder="Start Date"
-                        [(ngModel)]="selectedStartDateBodyWeight">
-                    <mat-datepicker-toggle matSuffix [for]="startDatePickerBodyWeight"></mat-datepicker-toggle>
-                    <mat-datepicker #startDatePickerBodyWeight></mat-datepicker>
-                </mat-form-field>
 
-                <mat-form-field class="charts__end-date">
-                    <input matInput [matDatepicker]="endDatePickerBodyWeight" placeholder="End Date"
-                        [(ngModel)]="selectedEndDateBodyWeight">
-                    <mat-datepicker-toggle matSuffix [for]="endDatePickerBodyWeight"></mat-datepicker-toggle>
-                    <mat-datepicker #endDatePickerBodyWeight></mat-datepicker>
-                </mat-form-field>
-            </div>
-            <button class="charts__submit-btn "><i class="fa-solid fa-magnifying-glass"
-                    (click)="onRefreshCharts()"></i></button>
-        </div>
             <div class="charts__box-chart">
                 <div class="charts__box-items">
                     <div class='charts__box-title'>Body Weight</div>
@@ -108,25 +67,6 @@
                 </div>
 
             </div>
-        <div class="charts__box-filters">
-            <div class="charts__box-filter">
-                <mat-form-field class="charts__start-date">
-                    <input matInput [matDatepicker]="startDatePickerRespirationRate" placeholder="Start Date"
-                        [(ngModel)]="selectedStartDateRespirationRate">
-                    <mat-datepicker-toggle matSuffix [for]="startDatePickerRespirationRate"></mat-datepicker-toggle>
-                    <mat-datepicker #startDatePickerRespirationRate></mat-datepicker>
-                </mat-form-field>
-
-                <mat-form-field class="charts__end-date">
-                    <input matInput [matDatepicker]="endDatePickerRespirationRate" placeholder="End Date"
-                        [(ngModel)]="selectedEndDateRespirationRate">
-                    <mat-datepicker-toggle matSuffix [for]="endDatePickerRespirationRate"></mat-datepicker-toggle>
-                    <mat-datepicker #endDatePickerRespirationRate></mat-datepicker>
-                </mat-form-field>
-            </div>
-            <button class="charts__submit-btn "><i class="fa-solid fa-magnifying-glass"
-                    (click)="onRefreshCharts()"></i></button>
-        </div>
             <div class="charts__box-chart">
                 <div class="charts__box-items">
                     <div class='charts__box-title'>Respiration Rate</div>
@@ -134,25 +74,6 @@
                 </div>
 
             </div>
-        <div class="charts__box-filters">
-            <div class="charts__box-filter">
-                <mat-form-field class="charts__start-date">
-                    <input matInput [matDatepicker]="startDatePickerBloodPressure" placeholder="Start Date"
-                        [(ngModel)]="selectedStartDateBloodPressure">
-                    <mat-datepicker-toggle matSuffix [for]="startDatePickerBloodPressure"></mat-datepicker-toggle>
-                    <mat-datepicker #startDatePickerBloodPressure></mat-datepicker>
-                </mat-form-field>
-
-                <mat-form-field class="charts__end-date">
-                    <input matInput [matDatepicker]="endDatePickerBloodPressure" placeholder="End Date"
-                        [(ngModel)]="selectedEndDateBloodPressure">
-                    <mat-datepicker-toggle matSuffix [for]="endDatePickerBloodPressure"></mat-datepicker-toggle>
-                    <mat-datepicker #endDatePickerBloodPressure></mat-datepicker>
-                </mat-form-field>
-            </div>
-            <button class="charts__submit-btn "><i class="fa-solid fa-magnifying-glass"
-                    (click)="onRefreshCharts()"></i></button>
-        </div>
             <div class="charts__box-chart">
                 <div class="charts__box-items">
                     <div class='charts__box-title'>Blood Pressure</div>

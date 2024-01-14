@@ -42,6 +42,7 @@ export class DashboardComponent implements OnInit {
   selectedEndDate: Date;
   formattedStartDate: string;
   formattedEndDate: string;
+  dataLength: number = 0;
 
   chart: any = [];
   labels = [];
@@ -50,9 +51,17 @@ export class DashboardComponent implements OnInit {
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
+    const dateFromMonthAgo = new Date();
+    dateFromMonthAgo.setMonth(dateFromMonthAgo.getMonth() - 1);
+    const actualDate = new Date();
+    this.selectedStartDate = dateFromMonthAgo;
+    this.selectedEndDate = actualDate;
+    this.formattedEndDate =  this.formatDate(actualDate);
+    this.formattedStartDate = this.formatDate(dateFromMonthAgo);
+    
     this.updateLatestData()
     this.onBodyTemperatureClick()
-    this.createChart()
+    this.createChart();
   }
 
   updateLatestData(): void {
@@ -94,6 +103,7 @@ export class DashboardComponent implements OnInit {
       });
     });
   }
+
   calculateBodyTemperatureResult(currentValue: number){
     if (currentValue <= 35) {
       this.latestResult.latestBodyTemperatureResult = 'Hypothermia';
@@ -375,17 +385,13 @@ export class DashboardComponent implements OnInit {
   ) {
     loadDataMethod().subscribe((data) => {
       if (this.selectedStartDate && this.selectedEndDate) {
-        this.formattedStartDate = this.formatDate(this.selectedStartDate);
-        this.formattedEndDate = this.formatDate(this.selectedEndDate);
+        
         // Filtrowanie danych
         const filteredData = data[dataType].filter((entry, index) => {
           return (entry.date >= this.formattedStartDate && entry.date <= this.formattedEndDate);
         });
-          // console.log(filteredData);
-          // console.log(this.selectedStartDate);
-          // console.log(this.selectedEndDate);
-          // console.log(this.formattedStartDate);
-          // console.log(this.formattedEndDate);
+
+        this.dataLength = filteredData.length;
         // Mapowanie danych
         if (this.formattedStartDate === this.formattedEndDate) {
           this.labels = filteredData.map((entry, index) => entry.time);
@@ -461,8 +467,8 @@ export class DashboardComponent implements OnInit {
   onBloodPressureClick() {
     this.dataService.getAllBloodPressure().subscribe((allBloodPressure) => {
       if (this.selectedStartDate && this.selectedEndDate) {
-        this.formattedStartDate = this.formatDate(this.selectedStartDate);
-        this.formattedEndDate = this.formatDate(this.selectedEndDate);
+        // this.formattedStartDate = this.formatDate(this.selectedStartDate);
+        // this.formattedEndDate = this.formatDate(this.selectedEndDate);
 
         // Filtrowanie na podstawie wybranego przedziału dat
         const filteredData = allBloodPressure.bloodPressure.filter((entry, index) => {
@@ -491,7 +497,13 @@ export class DashboardComponent implements OnInit {
       this.updateChart(labels, data1, data2, this.title, unit);
     });
   }
-  onUpdateChart(){
+  onUpdateChart(event: any, isEndDate: boolean = false){
+    if(isEndDate) {
+      this.formattedEndDate = this.formatDate(event.value)
+    } else {
+      this.formattedStartDate = this.formatDate(event.value);
+    }
+
     if(this.title ==='Body Temperture'){this.onBodyTemperatureClick()}
     if(this.title ==='Blood Saturation'){this.onBloodSaturationClick()}
     if(this.title ==='Hearth Rate'){this.onHearthRateClick()}

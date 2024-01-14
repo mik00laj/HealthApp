@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -11,6 +11,8 @@ import { DataService } from '../../services/get-data.service';
   styleUrls: ['./table-pressure.component.scss']
 })
 export class TablePressureComponent implements AfterViewInit {
+  @Input({ required: false }) startDate: Date;
+  @Input({ required: false }) endDate: Date;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild(MatTable) table!: MatTable<TablePressureItem>;
@@ -27,13 +29,34 @@ export class TablePressureComponent implements AfterViewInit {
   bloodPressureDiastolicValues: number[];
   result: string[];
 
-  selectedStartDate: Date;
-  selectedEndDate: Date;
   formattedStartDate: string;
   formattedEndDate: string;
 
   ngOnInit(): void {
     this.createBlooPressureTable();
+
+    if (!this.startDate) {
+      this.startDate = new Date();
+      this.startDate.setMonth(this.startDate.getMonth() - 1);
+    }
+
+    if (!this.endDate) {
+      this.endDate = new Date();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const { startDate, endDate } = changes;
+
+    if(startDate) {
+      this.startDate = startDate.currentValue;
+      this.createBlooPressureTable();
+    }
+
+    if(endDate) {
+      this.endDate = endDate.currentValue;
+      this.createBlooPressureTable();
+    }
   }
 
   ngAfterViewInit(): void {
@@ -60,6 +83,9 @@ export class TablePressureComponent implements AfterViewInit {
       diastolic: this.bloodPressureDiastolicValues[index],
       result: this.result[index],
     }));
+
+    this.paginator._changePageSize(10);
+    this.paginator._changePageSize(5);
   }
 
   calculateResult(systolic: number, diastolic: number): string {
@@ -80,9 +106,9 @@ export class TablePressureComponent implements AfterViewInit {
 
   createBlooPressureTable() {
     this.dataService.getAllBloodPressure().subscribe((allBloodPressure) => {
-      if (this.selectedStartDate && this.selectedEndDate) {
-        this.formattedStartDate = this.formatDate(this.selectedStartDate);
-        this.formattedEndDate = this.formatDate(this.selectedEndDate);
+      if (this.startDate && this.endDate) {
+        this.formattedStartDate = this.formatDate(this.startDate);
+        this.formattedEndDate = this.formatDate(this.endDate);
 
         // Filtrowanie na podstawie wybranego przedziału dat
         const filteredData = allBloodPressure.bloodPressure.filter(
@@ -114,7 +140,5 @@ export class TablePressureComponent implements AfterViewInit {
       this.updateTableData();
     });
   }
-  onSubmitBtn() {
-    this.createBlooPressureTable();
-  }
+
 }

@@ -13,17 +13,7 @@ export interface TableHearthrateItem {
   result: string;
 }
 
-const HEARTH_RATE_DATA: TableHearthrateItem[] = [
-  {id:0,date:"2024-01-01",time:"8:57",value:107,result:'Tachycardia'},
-  {id:1,date:"2024-01-01",time:"11:12",value:94,result:'Normal'},
-  {id:2,date:"2024-01-01",time:"16:48",value:71,result:'Normal'},
-  {id:3,date:"2024-01-01",time:"23:07",value:93,result:'Normal'},
-  {id:4,date:"2024-01-02",time:"8:35",value:150,result:'Tachycardia'},
-  {id:6,date:"2024-01-02",time:"10:16",value:94,result:'Normal'},
-  {id:7,date:"2024-01-02",time:"17:34",value:115 ,result:'Normal'},
-  {id:8,date:"2024-01-02",time:"21:26",value:130,result:'Tachycardia'},
-  {id:9,date:"2024-01-03",time:"6:00",value:87,result:'Normal'},
-  ]
+const HEARTH_RATE_DATA: TableHearthrateItem[] = [  ]
 
 export class TableHearthrateDataSource extends DataSource<TableHearthrateItem> {
   data: TableHearthrateItem[] = HEARTH_RATE_DATA;

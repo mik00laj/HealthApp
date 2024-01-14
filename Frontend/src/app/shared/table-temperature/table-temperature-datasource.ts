@@ -1,7 +1,7 @@
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
 
 // TODO: Replace this with your own data model type
@@ -13,19 +13,7 @@ export interface TableTemperatureItem {
   result: string;
 }
 
-const BODY_TEMPERATURE_DATA: TableTemperatureItem[] = [
-  {id:1,date:"2024-01-01",time:"7:51",value:38.6,result:'Fever'},
-  {id:0,date:"2024-01-01",time:"11:34",value:40.8,result:'High Fever'},
-  {id:2,date:"2024-01-01",time:"18:27",value:38,result:'Fever'},
-  {id:3,date:"2024-01-01",time:"21:19",value:38.8,result:'Fever'},
-  {id:4,date:"2024-01-01",time:"6:10",value:40,result:'High Fever'},
-  {id:6,date:"2024-01-01",time:"12:19",value:40.2,result:'High Fever'},
-  {id:7,date:"2024-01-01",time:"15:58",value:35.7,result:'Too Small'},
-  {id:8,date:"2024-01-01",time:"22:31",value:36.6,result:'Normal'},
-  {id:9,date:"2024-01-01",time:"8:44",value:36.9,result:'Normal'},
-  ]
-
-
+const BODY_TEMPERATURE_DATA: TableTemperatureItem[] = []
 /**
  * Data source for the TableTemperature view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
@@ -50,9 +38,11 @@ export class TableTemperatureDataSource extends DataSource<TableTemperatureItem>
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
       return merge(observableOf(this.data), this.paginator.page, this.sort.sortChange)
-        .pipe(map(() => {
-          return this.getPagedData(this.getSortedData([...this.data ]));
-        }));
+        .pipe(
+          map(() => {
+           return this.getPagedData(this.getSortedData([...this.data ]));
+        },
+        ));
     } else {
       throw Error('Please set the paginator and sort on the data source before connecting.');
     }

@@ -26,20 +26,9 @@ export class ChartsComponent implements OnInit {
   bloodPressureSystolicData: number[] = [];
   bloodPressureDiastolicData: number[] = [];
 
-  selectedStartDateBodyTemperature: Date;
-  selectedEndDateBodyTemperature: Date;
-  selectedStartDateBloodSaturation: Date;
-  selectedEndDateBloodSaturation: Date;
-  selectedStartDateHearthRate: Date;
-  selectedEndDateHearthRate: Date;
-  selectedStartDate: Date;
-  selectedStartDateBodyWeight: Date;
-  selectedEndDateBodyWeight: Date;
-  selectedStartDateRespirationRate: Date;
-  selectedEndDateRespirationRate: Date;
-  selectedStartDateBloodPressure: Date;
-  selectedEndDateBloodPressure: Date;
 
+  selectedStartDate: Date;
+  selectedEndDate: Date;
   formattedStartDate: string;
   formattedEndDate: string;
 
@@ -54,6 +43,14 @@ export class ChartsComponent implements OnInit {
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
+    const dateFromMonthAgo = new Date();
+    dateFromMonthAgo.setMonth(dateFromMonthAgo.getMonth() - 1);
+    const actualDate = new Date();
+    this.selectedStartDate = dateFromMonthAgo;
+    this.selectedEndDate = actualDate;
+    this.formattedEndDate =  this.formatDate(actualDate);
+    this.formattedStartDate = this.formatDate(dateFromMonthAgo);
+    
     this.createCharts();
     this.createBodyTemperatureChart();
     this.createBloodSaturationChart();
@@ -180,8 +177,8 @@ export class ChartsComponent implements OnInit {
     this.createChart(
       this.chartBodyTemperature,
       'bodyTemperature',
-      this.selectedStartDateBodyTemperature,
-      this.selectedEndDateBodyTemperature,
+      this.selectedStartDate,
+      this.selectedEndDate,
       this.dataService.getAllBodyTemperature.bind(this.dataService),
       'bodyTemperatureData',
       'Body Temperature',
@@ -193,8 +190,8 @@ export class ChartsComponent implements OnInit {
     this.createChart(
       this.chartBloodSaturation,
       'bloodSaturation',
-      this.selectedStartDateBloodSaturation,
-      this.selectedEndDateBloodSaturation,
+      this.selectedStartDate,
+      this.selectedEndDate,
       this.dataService.getAllBloodSaturation.bind(this.dataService),
       'bloodSaturationData',
       'Blood Saturation',
@@ -206,8 +203,8 @@ export class ChartsComponent implements OnInit {
     this.createChart(
       this.chartHearthRate,
       'hearthRate',
-      this.selectedStartDateHearthRate,
-      this.selectedEndDateHearthRate,
+      this.selectedStartDate,
+      this.selectedEndDate,
       this.dataService.getAllHearthRate.bind(this.dataService),
       'hearthRateData',
       'Hearth Rate',
@@ -220,8 +217,8 @@ export class ChartsComponent implements OnInit {
       this.createChart(
         this.chartBodyWeight,
         'bodyWeight',
-        this.selectedStartDateBodyWeight,
-        this.selectedEndDateBodyWeight,
+        this.selectedStartDate,
+        this.selectedEndDate,
         this.dataService.getAllBodyWeight.bind(this.dataService),
         'bodyWeightData',
         'Body Weight',
@@ -233,8 +230,8 @@ export class ChartsComponent implements OnInit {
     this.createChart(
       this.chartRespirationRate,
       'respirationRate',
-      this.selectedStartDateRespirationRate,
-      this.selectedEndDateRespirationRate,
+      this.selectedStartDate,
+      this.selectedEndDate,
       this.dataService.getAllRespirationRate.bind(this.dataService),
       'respirationRateData',
       'Respiration Rate',
@@ -245,14 +242,14 @@ export class ChartsComponent implements OnInit {
   createBloodPressureChart() {
     this.dataService.getAllBloodPressure().subscribe((allBloodPressure) => {
       if (
-        this.selectedStartDateBloodPressure &&
-        this.selectedEndDateBloodPressure
+        this.selectedStartDate &&
+        this.selectedEndDate
       ) {
         this.formattedStartDate = this.formatDate(
-          this.selectedStartDateBloodPressure
+          this.selectedStartDate
         );
         this.formattedEndDate = this.formatDate(
-          this.selectedEndDateBloodPressure
+          this.selectedEndDate
         );
 
         // Filtrowanie na podstawie wybranego przedziału dat
@@ -291,14 +288,7 @@ export class ChartsComponent implements OnInit {
       this.updateBloodPressure(labels, data1, data2, title, unit);
     });
   }
-  onRefreshCharts() {
-    this.createBodyTemperatureChart();
-    this.createBloodSaturationChart();
-    this.createHearthRateChart();
-    this.createBodyWeightChart();
-    this.createRespirationRateChart();
-    this.createBloodPressureChart();
-  }
+
   updateChart(
     chart: any,
     labels: string[],
@@ -341,4 +331,19 @@ export class ChartsComponent implements OnInit {
     this.chartBloodPressure.data.datasets[1].borderColor = '';
     this.chartBloodPressure.update();
   }
+
+  onDateChanged(event: any, isEndDate: boolean = false){
+    if(isEndDate) {
+      this.formattedEndDate = this.formatDate(event.value)
+    } else {
+      this.formattedStartDate = this.formatDate(event.value);
+    }
+
+    this.createBodyTemperatureChart();
+    this.createHearthRateChart();
+    this.createBloodPressureChart();
+    this.createBloodSaturationChart();
+    this.createBodyWeightChart();
+    this.createRespirationRateChart();
+}
 }

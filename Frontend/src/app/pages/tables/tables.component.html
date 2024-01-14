@@ -2,24 +2,68 @@
     <div class="tables__container">
         <h1 class="tables__title"><b>Tables</b></h1>
         <p class="tables__text">Here is your all health parameters presenteed in tables</p>
+        <div class="dashboard__box-filters">
+            <div class="dashboard__box-filter">
+        
+                <mat-form-field class="dashboard__start-date">
+                    <input 
+                        (dateChange)="changeDate($event)"
+                        matInput 
+                        [matDatepicker]="startDatePicker" 
+                        placeholder="Start Date"
+                        [(ngModel)]="selectedStartDate">
+                    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #startDatePicker></mat-datepicker>
+                </mat-form-field>
+        
+                <mat-form-field class="dashboard__end-date">
+                    <input 
+                    (dateChange)="changeDate($event, true)" 
+                    matInput [matDatepicker]="endDatePicker" 
+                    placeholder="End Date"
+                    [(ngModel)]="selectedEndDate">
+                    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #endDatePicker></mat-datepicker>
+                </mat-form-field>
+        
+            </div>
+        </div>
         <div class="tables__boxes">
             <div class="tables__box">
-                <app-table-temperature></app-table-temperature>
+                <app-table-temperature
+                    [startDate]="selectedStartDate"
+                    [endDate]="selectedEndDate"
+                ></app-table-temperature>
             </div>
             <div class="tables__box">
-                <app-table-saturation></app-table-saturation>
+                <app-table-saturation
+                    [startDate]="selectedStartDate"
+                    [endDate]="selectedEndDate"
+                ></app-table-saturation>
             </div>
             <div class="tables__box">
-                <app-table-hearthrate></app-table-hearthrate>
+                <app-table-hearthrate
+                    [startDate]="selectedStartDate"
+                    [endDate]="selectedEndDate"
+                ></app-table-hearthrate>
             </div>
             <div class="tables__box">
-                <app-table-weight></app-table-weight>
+                <app-table-weight
+                    [startDate]="selectedStartDate"
+                    [endDate]="selectedEndDate"
+                ></app-table-weight>
             </div>
             <div class="tables__box">
-                <app-table-respiration></app-table-respiration>
+                <app-table-respiration
+                    [startDate]="selectedStartDate"
+                    [endDate]="selectedEndDate"
+                ></app-table-respiration>
             </div>
             <div class="tables__box">
-                <app-table-pressure></app-table-pressure>
+                <app-table-pressure
+                    [startDate]="selectedStartDate"
+                    [endDate]="selectedEndDate"
+                ></app-table-pressure>
             </div>
         </div>
     </div>

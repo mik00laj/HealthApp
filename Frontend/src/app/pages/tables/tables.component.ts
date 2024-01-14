@@ -6,5 +6,14 @@ import { Component } from '@angular/core';
   styleUrl: './tables.component.scss'
 })
 export class TablesComponent {
+  selectedStartDate: Date;
+  selectedEndDate: Date;
 
+  changeDate(event: any, isEndDate: boolean = false) {
+    if(isEndDate) {
+      this.selectedEndDate = event.value
+    } else {
+      this.selectedStartDate = event.value;
+    }
+  }
 }

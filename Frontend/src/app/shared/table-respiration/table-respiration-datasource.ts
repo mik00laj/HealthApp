@@ -13,17 +13,7 @@ export interface TableRespirationItem {
   result: string;
 }
 
-const RESPIRATION_RATE_DATA: TableRespirationItem[] = [
-  {id:0,date:"2024-01-01",time:"7:23",value:12,result:'Normal'},
-  {id:1,date:"2024-01-01",time:"13:29",value:18,result:'Normal'},
-  {id:2,date:"2024-01-01",time:"15:29",value:11,result:'Lungs issue'},
-  {id:3,date:"2024-01-01",time:"22:50",value:13,result:'Normal'},
-  {id:4,date:"2024-01-02",time:"7:37",value:10,result:'Lungs issue'},
-  {id:6,date:"2024-01-02",time:"12:13",value:19,result:'Normal'},
-  {id:7,date:"2024-01-02",time:"16:35",value:11,result:'Lungs issue'},
-  {id:8,date:"2024-01-02",time:"22:37",value:20,result:'Normal'},
-  {id:9,date:"2024-01-03",time:"6:36",value:16,result:'Normal'},
-  ]
+const RESPIRATION_RATE_DATA: TableRespirationItem[] = []
 
 export class TableRespirationDataSource extends DataSource<TableRespirationItem> {
   data: TableRespirationItem[] = RESPIRATION_RATE_DATA;

@@ -14,17 +14,7 @@ export interface TablePressureItem {
   result: string;
 }
 
-const BLOOD_PRESSURE_DATA: TablePressureItem[] = [
-  {id:0,date:"2024-01-01",time:'5:04',systolic:145,diastolic:121,result:'Hypertension stage 2'},
-  {id:1,date:"2024-01-01",time:'13:16',systolic:114,diastolic:87,result:'Hypertension stage 1'},
-  {id:2,date:"2024-01-01",time:'16:56',systolic:118,diastolic:81,result:'Hypertension stage 1'},
-  {id:3,date:"2024-01-01",time:'22:23',systolic:115,diastolic:68,result:'Normal'},
-  {id:4,date:"2024-01-02",time:'7:38',systolic:156,diastolic:56,result:'Hypertension stage 2'},
-  {id:6,date:"2024-01-02",time:'11:11',systolic:163,diastolic:65,result:'Normal'},
-  {id:7,date:"2024-01-02",time:'16:45',systolic:100,diastolic:63,result:'Normal'},
-  {id:8,date:"2024-01-02",time:'21:36',systolic:105,diastolic:57,result:'Normal'},
-  {id:9,date:"2024-01-03",time:'5:26',systolic:100,diastolic:64,result:'Hypertension stage 2'},
-  ]
+const BLOOD_PRESSURE_DATA: TablePressureItem[] = []
 
 
 export class TablePressureDataSource extends DataSource<TablePressureItem> {
