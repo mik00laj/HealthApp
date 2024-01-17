@@ -335,10 +335,9 @@ export class ChartsComponent implements OnInit {
 
   onDateChanged(event: any, isEndDate: boolean = false){
     if(isEndDate) {
-      if (this.selectedEndDate){this.formattedEndDate = this.formatDate(event.value)}
-
+      this.formattedEndDate = this.formatDate(event.value)
     } else {
-      if (this.selectedStartDate){ this.formattedStartDate = this.formatDate(event.value)}
+      this.formattedStartDate = this.formatDate(event.value);
     }
 
     this.createBodyTemperatureChart();
