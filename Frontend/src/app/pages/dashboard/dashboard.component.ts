@@ -389,7 +389,8 @@ export class DashboardComponent implements OnInit {
   ) {
     loadDataMethod().subscribe((data) => {
       if (this.selectedStartDate && this.selectedEndDate) {
-        
+        // this.formattedStartDate = this.formatDate(this.selectedStartDate);
+        // this.formattedEndDate = this.formatDate(this.selectedEndDate);
         // Filtrowanie danych
         const filteredData = data[dataType].filter((entry, index) => {
           return (entry.date >= this.formattedStartDate && entry.date <= this.formattedEndDate);
@@ -411,6 +412,8 @@ export class DashboardComponent implements OnInit {
       this.minValue = Math.min(...this[property]) - 5;
       this.maxValue = Math.max(...this[property]) + 5;
       this.updateChart(this.labels, this[property], [], chartTitle, unit);
+      console.log(this.selectedEndDate);
+      console.log(this.selectedStartDate);
     });
   }
 
@@ -507,9 +510,10 @@ export class DashboardComponent implements OnInit {
   }
   onDateChanged(event: any, isEndDate: boolean = false){
     if(isEndDate) {
-      this.formattedEndDate = this.formatDate(event.value)
+      if (this.selectedEndDate){this.formattedEndDate = this.formatDate(event.value)}
+
     } else {
-      this.formattedStartDate = this.formatDate(event.value);
+      if (this.selectedStartDate){ this.formattedStartDate = this.formatDate(event.value)}
     }
 
     if(this.title ==='Body Temperture'){this.onBodyTemperatureClick()}

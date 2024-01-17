@@ -128,11 +128,9 @@
             <canvas id="chart" class="dashboard__chart">{{chart}} </canvas>
         </div>
         <div 
-        *ngIf="selectedStartDate && selectedEndDate && dataLength"
         class="dashboard__box-table" 
         [ngSwitch]="this.title"
-        >
-            <app-table-temperature 
+        ><app-table-temperature 
                 *ngSwitchCase="'Body Temperture'"
                 [startDate]="selectedStartDate"
                 [endDate]="selectedEndDate"
@@ -170,6 +168,5 @@
               ></app-table-temperature>
             </ng-container>
           </div>
-
     </div>
 </div>
