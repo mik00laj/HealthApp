@@ -23,13 +23,6 @@ export class TablesComponent implements OnInit {
     this.formattedStartDate = this.formatDate(dateFromMonthAgo);
   }
 
-  changeDate(event: any, isEndDate: boolean = false) {
-    if(isEndDate) {
-      this.selectedEndDate = event.value
-    } else {
-      this.selectedStartDate = event.value;
-    }
-  }
   formatDate = (date: Date): string => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -37,6 +30,16 @@ export class TablesComponent implements OnInit {
     const day = (date.getDate()).toString().padStart(2, '0');         // jeżeli kalendarz wskazuje date poprawnie
     return `${year}-${month}-${day}`;
   };
+
+  changeDate(event: any, isEndDate: boolean = false) {
+    if(isEndDate) {
+      if(this.selectedEndDate){this.formattedEndDate = this.formatDate(event.value)}
+
+    } else {
+      if(this.selectedStartDate){      this.formattedStartDate = this.formatDate(event.value)}
+    }
+  }
+
 }
 
 

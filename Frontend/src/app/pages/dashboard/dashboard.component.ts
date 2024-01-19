@@ -396,7 +396,6 @@ export class DashboardComponent implements OnInit {
           return (entry.date >= this.formattedStartDate && entry.date <= this.formattedEndDate);
         });
 
-
         // Mapowanie danych
         if (this.formattedStartDate === this.formattedEndDate) {
           this.labels = filteredData.map((entry, index) => entry.time);
@@ -409,11 +408,10 @@ export class DashboardComponent implements OnInit {
         this.labels = data[dataType].map((entry, index) => entry.date);
         this[property] = data[dataType].map((entry, index) => entry.value);
       }
-      this.minValue = Math.min(...this[property]) - 5;
-      this.maxValue = Math.max(...this[property]) + 5;
+      this.minValue = Math.min(...this[property]) - 0.1*Math.min(...this[property]) ;
+      this.maxValue = Math.max(...this[property]) + 0.1*Math.max(...this[property]);
       this.updateChart(this.labels, this[property], [], chartTitle, unit);
-      console.log(this.selectedEndDate);
-      console.log(this.selectedStartDate);
+
     });
   }
 
@@ -426,7 +424,7 @@ export class DashboardComponent implements OnInit {
       'Body Temperature',
       '[°C]'
     );
-    this.title = 'Body Temperture'
+    this.title = 'Body Temperature'
   }
 
   onBloodSaturationClick() {
@@ -502,20 +500,21 @@ export class DashboardComponent implements OnInit {
       const data1 = this.bloodPressureSystolicData;
       const data2 = this.bloodPressureDiastolicData;
       this.title = 'Blood Pressure';
-      this.minValue = Math.min(...this.bloodPressureDiastolicData ) - 5;
-      this.maxValue = Math.max(...this.bloodPressureSystolicData) + 5;
+      this.minValue = Math.min(...this.bloodPressureDiastolicData ) - 0.1*Math.min(...this.bloodPressureDiastolicData);
+      this.maxValue = Math.max(...this.bloodPressureSystolicData) + 0.1*Math.min(...this.bloodPressureDiastolicData);
       const unit = '[mmHg]';
       this.updateChart(labels, data1, data2, this.title, unit);
     });
   }
   onDateChanged(event: any, isEndDate: boolean = false){
     if(isEndDate) {
-      this.formattedEndDate = this.formatDate(event.value)
+      if(this.selectedEndDate){this.formattedEndDate = this.formatDate(event.value)}
+
     } else {
-      this.formattedStartDate = this.formatDate(event.value);
+      if(this.selectedStartDate){      this.formattedStartDate = this.formatDate(event.value)}
     }
 
-    if(this.title ==='Body Temperture'){this.onBodyTemperatureClick()}
+    if(this.title ==='Body Temperature'){this.onBodyTemperatureClick()}
     if(this.title ==='Blood Saturation'){this.onBloodSaturationClick()}
     if(this.title ==='Hearth Rate'){this.onHearthRateClick()}
     if(this.title ==='Body Weight'){this.onBodyWeightClick()}

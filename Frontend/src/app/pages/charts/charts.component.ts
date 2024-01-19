@@ -97,15 +97,13 @@ export class ChartsComponent implements OnInit {
           this.labels = filteredData.map((entry, index) => entry.date);
         }
         this[property] = filteredData.map((entry, index) => entry.value);
-        this.minValue = Math.min(...this[property]) - 5;
-        this.maxValue = Math.max(...this[property]) + 5;
       } else {
         // Używanie wszystkich danych
         this.labels = data[dataType].map((entry, index) => entry.date);
         this[property] = data[dataType].map((entry, index) => entry.value);
       }
-      this.minValue = Math.min(...this[property]) - 5;
-      this.maxValue = Math.max(...this[property]) + 5;
+      this.minValue = Math.min(...this[property]) - 0.1*Math.min(...this[property]) ;
+      this.maxValue = Math.max(...this[property]) + 0.1*Math.max(...this[property]);
       this.updateChart(
         chart,
         this.labels,
@@ -279,8 +277,8 @@ export class ChartsComponent implements OnInit {
       const data1 = this.bloodPressureSystolicData;
       const data2 = this.bloodPressureDiastolicData;
       const title = 'Blood Pressure';
-      this.minValue = Math.min(...this.bloodPressureDiastolicData ) - 5;
-      this.maxValue = Math.max(...this.bloodPressureSystolicData) + 5;
+      this.minValue = Math.min(...this.bloodPressureDiastolicData ) - 0.1 *Math.min(...this.bloodPressureDiastolicData);
+      this.maxValue = Math.max(...this.bloodPressureSystolicData) + 0.1*Math.min(...this.bloodPressureDiastolicData);
       const unit = '[mmHg]';
       this.updateBloodPressure(labels, data1, data2, title, unit);
     });
@@ -335,9 +333,10 @@ export class ChartsComponent implements OnInit {
 
   onDateChanged(event: any, isEndDate: boolean = false){
     if(isEndDate) {
-      this.formattedEndDate = this.formatDate(event.value)
+      if(this.selectedEndDate){this.formattedEndDate = this.formatDate(event.value)}
+
     } else {
-      this.formattedStartDate = this.formatDate(event.value);
+      if(this.selectedStartDate){      this.formattedStartDate = this.formatDate(event.value)}
     }
 
     this.createBodyTemperatureChart();
