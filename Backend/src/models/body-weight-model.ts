@@ -14,3 +14,5 @@ const BodyWeightSchema = new mongoose.Schema({
 const BodyWeightModel = mongoose.model('BodyWeight', BodyWeightSchema, 'BodyWeight');
 
 export default BodyWeightModel;
+
+

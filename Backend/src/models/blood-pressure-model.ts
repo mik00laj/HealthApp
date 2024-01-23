@@ -15,3 +15,4 @@ const BloodPressureSchema = new mongoose.Schema({
 const BloodPressureModel = mongoose.model('BloodPressure', BloodPressureSchema, 'BloodPressure');
 
 export default BloodPressureModel;
+

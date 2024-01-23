@@ -110,7 +110,7 @@ export class DashboardComponent implements OnInit {
     if (currentValue <= 35) {
       this.latestResult.latestBodyTemperatureResult = 'Hypothermia';
     } else if (currentValue > 35 && currentValue < 36) {
-      this.latestResult.latestBodyTemperatureResult = 'Too Small';
+      this.latestResult.latestBodyTemperatureResult = 'Too low';
     } else if (currentValue >= 36 && currentValue <= 37) {
       this.latestResult.latestBodyTemperatureResult = 'Normal';
     } else if (currentValue > 37 && currentValue <37.9) {
@@ -130,7 +130,7 @@ export class DashboardComponent implements OnInit {
     } else if (currentValue >= 92 && currentValue < 95) {
       this.latestResult.latestBloodSaturationResult =  'Small';
     } else if (currentValue >= 90 && currentValue < 92) {
-      this.latestResult.latestBloodSaturationResult =  'Too Small';
+      this.latestResult.latestBloodSaturationResult =  'Too low';
     } else if (currentValue < 90) {
       this.latestResult.latestBloodSaturationResult =  'Hypoxemia';
     }else {

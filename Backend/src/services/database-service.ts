@@ -9,3 +9,4 @@ export const connectToDatabase = (connectionString: string) => {
       console.error('MongoDB connection error:', error);
     });
 };
+

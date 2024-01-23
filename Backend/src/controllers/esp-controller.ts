@@ -56,3 +56,4 @@ export const handleSaturationSensor = async (req: Request, res: Response) => {
     res.status(500).send('Error while saving data.');
   }
 };
+

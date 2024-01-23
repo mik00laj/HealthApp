@@ -88,7 +88,7 @@ export class TableTemperatureComponent implements AfterViewInit {
       if (value <= 35) {
         return 'Hypothermia';
       } else if (value > 35 && value < 36) {
-        return 'Too Small';
+        return 'Too low';
       } else if (value >= 36 && value <= 37) {
         return 'Normal';
       } else if (value > 37 && value <37.9) {

@@ -81,6 +81,8 @@
     Serial.println(ConnectedMAX30102);
     digitalWrite(MAX30102_Led_On, HIGH); 
     digitalWrite(MAX30102_Led_Off, LOW); 
+
+    
   
   }
 

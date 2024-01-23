@@ -14,3 +14,4 @@ const RespirationRateSchema = new mongoose.Schema({
 const RespirationRateModel = mongoose.model('RespirationRate', RespirationRateSchema, 'RespirationRate');
 
 export default RespirationRateModel;
+
