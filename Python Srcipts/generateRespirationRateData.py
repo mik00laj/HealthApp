@@ -21,7 +21,7 @@ collection = db[collection_name]
 start_date = datetime(2024, 1, 1)
 end_date = datetime(2024, 12, 31)
 current_date = start_date
-sensor_id = "DS18B20 Temperature Sensor"
+sensor_id = "Respiration Rate Sensor"
 data_list = []
 
 
