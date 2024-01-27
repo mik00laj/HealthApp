@@ -45,13 +45,13 @@ export class ChartsComponent implements OnInit {
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
-    const dateFromMonthAgo = new Date();
-    dateFromMonthAgo.setMonth(dateFromMonthAgo.getMonth() - 1);
+    const dateFromWeekAgo = new Date();
+    dateFromWeekAgo.setDate(dateFromWeekAgo.getDate() - 7);
     const actualDate = new Date();
-    this.selectedStartDate = dateFromMonthAgo;
+    this.selectedStartDate = dateFromWeekAgo;
     this.selectedEndDate = actualDate;
     this.formattedEndDate =  this.formatDate(actualDate);
-    this.formattedStartDate = this.formatDate(dateFromMonthAgo);
+    this.formattedStartDate = this.formatDate(dateFromWeekAgo);
     
     this.createCharts();
     this.createBodyTemperatureChart();
@@ -65,8 +65,7 @@ export class ChartsComponent implements OnInit {
   formatDate = (date: Date): string => {
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    // const day = (date.getDate() + 1).toString().padStart(2, '0');  // jeżeli kalendarz wskazuje date o 1 mneijsza
-    const day = (date.getDate()).toString().padStart(2, '0');         // jeżeli kalendarz wskazuje date poprawnie
+    const day = (date.getDate()).toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
 
