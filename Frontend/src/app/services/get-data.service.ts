@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class DataService {
-  serverAddress = '192.168.0.14';
+  serverAddress = '192.168.0.17';
   serverPort = 4001;
   private apiUrl = `http://${this.serverAddress}:${this.serverPort}/api`;
 
