@@ -1,27 +1,31 @@
 <div class="dashboard">
     <div class="dashboard__container">
         <div class="dashboard__box-data">
-            <h1 class="dashboard__title">Hello, <b>User </b> <i class="fa-solid fa-hands" style="color: #FFD43B;"></i> </h1>
+            <h1 class="dashboard__title">Hello, <b>User </b> <i class="fa-solid fa-hands" style="color: #FFD43B;"></i>
+            </h1>
             <p class="dashboard__text">Here is your summary of your measured values </p>
             <div class="dashboard__data-items">
                 <div class="dashboard__data-item-box dashboard__data-item-box--temperature"
                     (click)="onBodyTemperatureClick()">
                     <div class="dashboard__data-item">
                         <div class="dashboard__data-item-text">
-                            <p class="dashboard__data-item-value"><b>Value: </b>{{latestData.latestBodyTemperature }}°C</p>
-                            <p class="dashboard__data-item-title">Temperature</p>
+                            <p class="dashboard__data-item-value"><b>Value: </b>{{latestData.latestBodyTemperature }}°C
+                            </p>
+                            <p class="dashboard__data-item-title">Body Temperature</p>
                         </div>
                         <div class="dashboard__data-item-icon"><i class="fa-solid fa-temperature-quarter"></i></div>
                     </div>
                     <hr>
-                    <p class="dashboard__data-item-result"><b>Result: </b>{{latestResult.latestBodyTemperatureResult}}</p>
+                    <p class="dashboard__data-item-result"><b>Result: </b>{{latestResult.latestBodyTemperatureResult}}
+                    </p>
                 </div>
 
                 <div class="dashboard__data-item-box dashboard__item-box--saturation"
                     (click)="onBloodSaturationClick()">
                     <div class="dashboard__data-item">
                         <div class="dashboard__data-item-text">
-                            <p class="dashboard__data-item-value"><b>Value: </b>{{latestData.latestBloodSaturation }}%</p>
+                            <p class="dashboard__data-item-value"><b>Value: </b>{{latestData.latestBloodSaturation }}%
+                            </p>
                             <p class="dashboard__data-item-title">Blood Saturation</p>
                         </div>
                         <div class="dashboard__data-item-icon"><i class="fa-solid fa-fire-flame-simple"
@@ -29,7 +33,8 @@
                         </div>
                     </div>
                     <hr>
-                    <p class="dashboard__data-item-result"><b>Result: </b>{{latestResult.latestBloodSaturationResult}}</p>
+                    <p class="dashboard__data-item-result"><b>Result: </b>{{latestResult.latestBloodSaturationResult}}
+                    </p>
                 </div>
 
                 <div class="dashboard__data-item-box dashboard__data-item-box--hearth-rate"
@@ -66,14 +71,16 @@
                     (click)="onRespirationRateClick()">
                     <div class="dashboard__data-item">
                         <div class="dashboard__data-item-text">
-                            <p class="dashboard__data-item-value"><b>Value: </b>{{latestData.latestRespirationRate}}/min</p>
+                            <p class="dashboard__data-item-value"><b>Value: </b>{{latestData.latestRespirationRate}}/min
+                            </p>
                             <p class="dashboard__data-item-title">Respiration Rate</p>
                         </div>
                         <div class="dashboard__data-item-icon" style="color: #0CAFFF;"><i class="fa-solid fa-lungs"></i>
                         </div>
                     </div>
                     <hr>
-                    <p class="dashboard__data-item-result"><b>Result: </b>{{latestResult.latestRespirationRateResult}}</p>
+                    <p class="dashboard__data-item-result"><b>Result: </b>{{latestResult.latestRespirationRateResult}}
+                    </p>
                 </div>
 
                 <div class="dashboard__data-item-box dashboard__data-item-box--blood--pressure"
@@ -81,7 +88,8 @@
                     <div class="dashboard__data-item">
                         <div class=" dashboard__data-item-text">
                             <p class="dashboard__data-item-value">
-                                <b>Value: </b>{{latestData.latestBloodPressureSystolic}}/{{latestData.latestBloodPressureDiastolic}}mmHg
+                                <b>Value:
+                                </b>{{latestData.latestBloodPressureSystolic}}/{{latestData.latestBloodPressureDiastolic}}mmHg
                             </p>
                             <p class="dashboard__data-item-title">Blood Pressure</p>
                         </div>
@@ -100,22 +108,15 @@
             <div class="dashboard__box-filter">
 
                 <mat-form-field class="dashboard__start-date">
-                    <input 
-                        (dateChange)="onDateChanged($event)"
-                        matInput 
-                        [matDatepicker]="startDatePicker" 
-                        placeholder="Start Date"
-                        [(ngModel)]="selectedStartDate">
+                    <input (dateChange)="onDateChanged($event)" matInput [matDatepicker]="startDatePicker"
+                        placeholder="Start Date" [(ngModel)]="selectedStartDate">
                     <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
                     <mat-datepicker #startDatePicker></mat-datepicker>
                 </mat-form-field>
 
                 <mat-form-field class="dashboard__end-date">
-                    <input 
-                    (dateChange)="onDateChanged($event, true)" 
-                    matInput [matDatepicker]="endDatePicker" 
-                    placeholder="End Date"
-                    [(ngModel)]="selectedEndDate">
+                    <input (dateChange)="onDateChanged($event, true)" matInput [matDatepicker]="endDatePicker"
+                        placeholder="End Date" [(ngModel)]="selectedEndDate">
                     <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
                     <mat-datepicker #endDatePicker></mat-datepicker>
                 </mat-form-field>
@@ -127,47 +128,27 @@
             <div class='dashboard__box-title'>{{title}}</div>
             <canvas id="chart" class="dashboard__chart">{{chart}} </canvas>
         </div>
-        <div 
-        *ngIf="selectedStartDate && selectedEndDate"
-        class="dashboard__box-table" 
-        [ngSwitch]="this.title"
-        ><app-table-temperature 
-                *ngSwitchCase="'Body Temperture'"
-                [startDate]="selectedStartDate"
-                [endDate]="selectedEndDate"
-            ></app-table-temperature>
-            <app-table-saturation 
-                *ngSwitchCase="'Blood Saturation'"
-                [startDate]="selectedStartDate"
+        <div *ngIf="selectedStartDate && selectedEndDate" class="dashboard__box-table" [ngSwitch]="this.title">
+            <app-table-temperature *ngSwitchCase="'Body Temperture'" [startDate]="selectedStartDate"
+                [endDate]="selectedEndDate"></app-table-temperature>
+            <app-table-saturation *ngSwitchCase="'Blood Saturation'" [startDate]="selectedStartDate"
                 [endDate]="selectedEndDate">
             </app-table-saturation>
-            <app-table-hearthrate 
-                *ngSwitchCase="'Hearth Rate'"
-                [startDate]="selectedStartDate"
+            <app-table-hearthrate *ngSwitchCase="'Hearth Rate'" [startDate]="selectedStartDate"
                 [endDate]="selectedEndDate">
             </app-table-hearthrate>
-            <app-table-weight 
-                *ngSwitchCase="'Body Weight'"
-                [startDate]="selectedStartDate"
-                [endDate]="selectedEndDate">
+            <app-table-weight *ngSwitchCase="'Body Weight'" [startDate]="selectedStartDate" [endDate]="selectedEndDate">
             </app-table-weight>
-            <app-table-respiration 
-                *ngSwitchCase="'Respiration Rate'"
-                [startDate]="selectedStartDate"
+            <app-table-respiration *ngSwitchCase="'Respiration Rate'" [startDate]="selectedStartDate"
                 [endDate]="selectedEndDate">
             </app-table-respiration>
-            <app-table-pressure 
-                *ngSwitchCase="'Blood Pressure'"
-                [startDate]="selectedStartDate"
+            <app-table-pressure *ngSwitchCase="'Blood Pressure'" [startDate]="selectedStartDate"
                 [endDate]="selectedEndDate">
             </app-table-pressure>
-            <ng-container 
-            *ngSwitchDefault>
-              <app-table-temperature
-              [startDate]="selectedStartDate"
-              [endDate]="selectedEndDate"
-              ></app-table-temperature>
+            <ng-container *ngSwitchDefault>
+                <app-table-temperature [startDate]="selectedStartDate"
+                    [endDate]="selectedEndDate"></app-table-temperature>
             </ng-container>
-          </div>
+        </div>
     </div>
 </div>
