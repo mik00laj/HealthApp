@@ -10,7 +10,7 @@ The project is about health parameter monitoring system enabling the reading, st
 - storing measurement results in a database
 ## Project Technologies
 #### Frontend
-- HTML, CSS(SAS), JavaScript
+- HTML, CSS(SCSS), JavaScript
 - Angular 
 - TypeScript
 - Chart.js
