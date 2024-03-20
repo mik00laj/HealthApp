@@ -1,5 +1,5 @@
 # HealthApp
-The project is about health parameter monitoring system enabling the reading, storage, and presentation of data. The system is composed of specialized biomedical sensors for measuring vital signs and a web application for presenting data collected from these sensors. The project is focus on frontend development in Angular, backend development in Node and hardwwre development in Arduino.
+The project is about health parameter monitoring system enabling the reading, storage, and presentation of data. The system is composed of specialized biomedical sensors for measuring vital signs and a web application for presenting data collected from these sensors. The project is focus on frontend development in Angular and TypeScript, backend development in Express.js,  hardwwre development in Arduino ecosystem (C).
 ## Project Overview
 - summary of health data
 - display of the health status
@@ -10,7 +10,7 @@ The project is about health parameter monitoring system enabling the reading, st
 - storing measurement results in a database
 ## Project Technologies
 #### Frontend
-- HTML, CSS(SAS), JavaScript
+- HTML, CSS(SCSS), JavaScript
 - Angular 
 - TypeScript
 - Chart.js
