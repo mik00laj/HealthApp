@@ -20,7 +20,7 @@ except Exception as error:
     print(f"Failed generateHearthRateData.py: {error}")
 try:
     exec(open('generateBodyWeightData.py').read())
-    print("Succeeded sie uruchomić generateBodyWeightData.py")
+    print("Succeeded generateBodyWeightData.py")
 except Exception as error:
     print(f"Failed generateBodyWeightData.py: {error}")
 try:
