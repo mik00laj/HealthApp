@@ -21,7 +21,7 @@ The project is about health parameter monitoring system enabling the reading, st
 #### Data Base
 - Mongo DB Atlas
 #### Hardware 
-- Arduino IDE 
+- Arduino IDE
 - Microcontroller ESP 32 WROOM DevKit
 - DS18B20 sensor
 - MAX30102 sensor 
