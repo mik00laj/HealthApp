@@ -24,7 +24,7 @@ The project is about health parameter monitoring system enabling the reading, st
 - Arduino IDE
 - Microcontroller ESP 32 WROOM DevKit
 - DS18B20 sensor
-- MAX30102 sensor 
+- MAX30102 sensor
 ## Screenshots of this project
 These are just a screenshots of UI, to see the entire project you need to run it locally.
 #### Dasboard 
